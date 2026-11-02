@@ -1,0 +1,98 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { DataReadoutCarousel } from "@/registry/ui/data-readout-carousel";
+
+export const item = getRegistryItem("data-readout-carousel");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+export function Readout({ code, title, value, unit, note }) {
+  return (
+    <div className="flex min-h-56 flex-col justify-between gap-6 px-6 py-6 sm:px-8">
+      <span className="text-caption tracking-label text-label">
+        <span className="text-signal">{code}</span> / {title}
+      </span>
+      <span className="font-display text-[clamp(3rem,10vw,5.5rem)] leading-[0.85] tabular-nums text-ink">
+        {value}
+        <span className="text-signal">{unit}</span>
+      </span>
+      <span className="text-xs leading-relaxed text-label">{note}</span>
+    </div>
+  );
+}
+
+<ComponentDocHeader item="data-readout-carousel" />
+
+<InstallCommand item="data-readout-carousel" />
+
+<ComponentPreview item="data-readout-carousel">
+  <DataReadoutCarousel
+    className="w-full max-w-xl"
+    label="SYSTEM READOUT"
+    slides={[
+      <Readout key="a" code="R-01" title="UPTIME" value="99.98" unit="%" note="Rolling 30-day availability across all nodes." />,
+      <Readout key="b" code="R-02" title="LATENCY" value="042" unit="MS" note="Median edge response, EU-NE cluster." />,
+      <Readout key="c" code="R-03" title="COMPONENTS" value="038" unit="//" note="Registry items shipped in this revision." />,
+      <Readout key="d" code="R-04" title="BUNDLE" value="0" unit="KB" note="Runtime added by the pure-CSS backgrounds." />,
+    ]}
+  />
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    { name: "label", type: "string", description: "Required. The carousel's accessible name, also shown in the header bar." },
+    { name: "slides", type: "ReactNode[]", description: "Slide contents in order. Give each a key." },
+    { name: "defaultIndex / index", type: "number", default: "0", description: "Starting slide (uncontrolled) or the current slide (controlled). Values out of range clamp to the first or last slide." },
+    { name: "onIndexChange", type: "(index: number) => void", description: "Called with the new index when PREV, NEXT or an arrow key changes the slide." },
+    { name: "loop", type: "boolean", default: "false", description: "Wrap from the last slide to the first and back. Without it, the buttons disable at the ends." },
+    { name: "className", type: "string", description: "Extra classes, merged after the defaults with cn()." },
+    { name: "...props", type: 'Omit<ComponentProps<"section">, "children" | "aria-label">', description: "Every other native <section> attribute and ref is forwarded. Your onKeyDown runs first; call preventDefault() to stop the arrow keys." },
+  ]}
+/>
+
+## Usage
+
+Needs both stylesheets from `@cybr/tokens` and `@cybr/effects`. After the install, import them in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+@import "../styles/cybr-effects.css";
+```
+
+```tsx
+import { DataReadoutCarousel } from "@/components/ui/data-readout-carousel";
+
+export function Readouts() {
+  return (
+    <DataReadoutCarousel
+      label="SYSTEM READOUT"
+      slides={[<p key="a">Uptime 99.98%</p>, <p key="b">Latency 42ms</p>]}
+    />
+  );
+}
+```
+
+## Behaviour
+
+- **Counter:** the current slide in `--signal` and the total in `--label`, both padded to 2 digits (`01 / 04`).
+- **Stepping:** PREV and NEXT move one slide. Left and Right arrow keys do the same while focus is anywhere in the carousel, except in a text field inside a slide.
+- **Ends:** without `loop`, PREV is disabled on the first slide and NEXT on the last, shown as `--dim` text with a not-allowed cursor. With `loop` they wrap.
+- **Wipe:** after the first change, each new slide wipes in from the left in stepped 300ms frames. The first slide never animates on load.
+- **Static:** before hydration and without JavaScript, slide 1 shows and the other slides are hidden. Under `prefers-reduced-motion` slides swap instantly.
+- **Empty:** with no slides the counter reads `00 / 00` and both buttons are disabled. With one slide both buttons are disabled.
+- No autoplay, so there is nothing to pause. Swipe is not built in; the buttons work on touch.
+
+## Accessibility
+
+- A `<section>` with `aria-roledescription="carousel"` and your `label` as its name. Each slide is a group with `aria-roledescription="slide"` and a label like "2 of 4".
+- The slide area is `aria-live="polite"`, so screen readers announce the new slide after PREV or NEXT. Hidden slides are out of the accessibility tree.
+- The buttons are named "Previous slide" and "Next slide"; the bracket and arrow glyphs are `aria-hidden`. At the ends the buttons are `aria-disabled` rather than `disabled`, so a focused button keeps focus and the arrow keys keep working; activating it does nothing.
+- The counter and segment strip are `aria-hidden`, because the slide labels carry the position.
+- `--label` on `--ground-deep` is 8.51:1, the `--signal` counter on `--ground-deep` is 5.31:1 and button text is `--ink` on `--ground-deep` at 16.74:1.

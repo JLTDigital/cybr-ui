@@ -1,0 +1,74 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { PixelatedImageTrail } from "@/registry/ui/pixelated-image-trail";
+
+export const item = getRegistryItem("pixelated-image-trail");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="pixelated-image-trail" />
+
+<InstallCommand item="pixelated-image-trail" />
+
+<ComponentPreview item="pixelated-image-trail">
+  <PixelatedImageTrail
+    className="flex h-90 w-full items-center justify-center bg-ground-void"
+    images={["/demo/trail-01.svg", "/demo/trail-02.svg", "/demo/trail-03.svg", "/demo/trail-04.svg"]}
+  >
+    <div className="text-center font-display text-[clamp(2rem,7vw,4rem)] leading-[0.9] text-ink">MOVE THE<br />CURSOR<span className="text-signal">_</span></div>
+  </PixelatedImageTrail>
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    { name: "images", type: "string[]", description: "Image URLs, used in order and repeated. Any image the browser can load works, cross-origin included. Images that fail to load are skipped." },
+    { name: "spacing", type: "number", default: "80", description: "Pointer travel in px before the next tile drops." },
+    { name: "size", type: "{ width: number; height: number }", default: "{ width: 160, height: 120 }", description: "Tile size in CSS px. Images are cropped to fill it." },
+    { name: "max", type: "number", default: "8", description: "Most tiles on screen at once. The oldest goes first." },
+    { name: "children", type: "ReactNode", description: "The host content. It stays readable and clickable under the trail." },
+    { name: "className", type: "string", description: "Extra classes, merged after the defaults with cn(). Give the host a size." },
+    { name: "...props", type: 'ComponentProps<"div">', description: "Every other native <div> attribute and ref is forwarded. Your onPointerMove runs before the trail's." },
+  ]}
+/>
+
+## Usage
+
+Needs the stylesheet from `@cybr/tokens`; `@cybr/use-reduced-motion` arrives with it. After the install, import it in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+```
+
+```tsx
+import { PixelatedImageTrail } from "@/components/ui/pixelated-image-trail";
+
+export function Hero() {
+  return (
+    <PixelatedImageTrail className="h-96" images={["/work/01.jpg", "/work/02.jpg"]}>
+      <h1>Selected work</h1>
+    </PixelatedImageTrail>
+  );
+}
+```
+
+## Behaviour
+
+- **Drop:** moving a mouse or pen `spacing` px drops the next image as a tile centred on the pointer, with a 1px `--line` border.
+- **Resolve:** each tile steps through 24, 12, 6, 3 and 1px blocks at 70ms a step, holds sharp for 400ms, then steps back through 3, 12 and 24px and disappears. About 1 second per tile, with no smooth fades.
+- **Limit:** at most `max` tiles at once; a new drop removes the oldest.
+- **Off:** no trail for touch, under `prefers-reduced-motion`, before hydration or without JavaScript. The children render as normal.
+- **No images:** if none of the images load, there is no trail.
+- The demo plates in `/demo` are docs assets only. They are not installed with the component.
+
+## Accessibility
+
+- The trail layer is `aria-hidden` and ignores pointer events, so screen readers and clicks only meet your children.
+- Tiles appear only when the user moves the pointer, and stop when it stops. They are small tiles, not full-screen flashes, and the resolve steps do not repeat as a flicker.
+- Under `prefers-reduced-motion` nothing appears at all. If you put meaningful images in the trail, also show them somewhere static: the trail is decoration.

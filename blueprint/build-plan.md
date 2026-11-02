@@ -15,7 +15,7 @@
 - [x] 8. **Accessible primitives decision + Tooltip & Marquee set** - Pick Radix or Base UI, then HUD Tooltip, Classified FAQ Accordion, Ticker Marquee, Warning Tape and Logo Wall
 - [x] 9. **Backgrounds set** - Blueprint Grid, Perspective Grid, Béton Brut, CRT Overlay, Data Rain and Exposed Wiring, all in CSS/SVG
 - [x] 10. **Navbar, Footer & Loader set** - Status Bar, Terminal Navbar, Brutal Mega Menu, Monolith Footer, Boot Sequence Loader and Segmented Progress
-- [ ] 11. **Interactive set** - Command Palette (⌘K), Pixelated Image Trail and Data-Readout Carousel
+- [x] 11. **Interactive set** - Command Palette (⌘K), Pixelated Image Trail and Data-Readout Carousel
 - [ ] 12. **Theme presets & switching** - Lock the final palette, add 1–2 alternate presets, and check every component swaps cleanly and passes contrast
 - [ ] 13. **Docs site built with the library** - Landing page, component index and search, using its own components as the showcase
 - [ ] 14. **Quality gates in CI** - Lint, type-check, registry build, Playwright visual snapshots and reduced-motion and keyboard checks on every PR

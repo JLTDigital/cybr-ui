@@ -1,0 +1,82 @@
+import { CommandPaletteDemo } from "@/app/docs/_components/command-palette-demo";
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+
+export const item = getRegistryItem("command-palette");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="command-palette" />
+
+<InstallCommand item="command-palette" />
+
+<ComponentPreview item="command-palette">
+  <CommandPaletteDemo />
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    { name: "groups", type: "{ label: string; items: { value: string; label: string; hint?: string }[] }[]", description: "Commands in labelled groups. Typing filters by label; groups with no matches hide." },
+    { name: "onSelect", type: "(value: string) => void", description: "Called with the chosen item's value. The palette then closes. Navigate here, for example with your router." },
+    { name: "defaultOpen / open", type: "boolean", default: "false", description: "Starting state (uncontrolled) or the open state (controlled)." },
+    { name: "onOpenChange", type: "(open: boolean) => void", description: "Called when the palette opens or closes, including from the shortcut." },
+    { name: "shortcut", type: "boolean", default: "true", description: "While mounted, ⌘K or Ctrl+K anywhere on the page toggles the palette." },
+    { name: "shortcutLabel", type: "string", default: '"⌘K"', description: "Key-cap text on the trigger. Both ⌘K and Ctrl+K work whatever it says." },
+    { name: "trigger", type: "ReactNode | false", default: '"SEARCH"', description: "Content of the trigger button, or false for no trigger (open it with the shortcut or open)." },
+    { name: "label", type: "string", default: '"Command palette"', description: "Accessible name of the dialog." },
+    { name: "placeholder", type: "string", default: '"Type a command…"', description: "Input placeholder." },
+    { name: "className", type: "string", description: "Extra classes on the trigger, merged after the defaults with cn()." },
+  ]}
+/>
+
+## Usage
+
+Installs `@base-ui/react`. Needs the stylesheet from `@cybr/tokens`. After the install, import it in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+```
+
+```tsx
+"use client";
+
+import { useRouter } from "next/navigation";
+
+import { CommandPalette } from "@/components/ui/command-palette";
+
+export function Search() {
+  const router = useRouter();
+  return (
+    <CommandPalette
+      groups={[{ label: "DOCS", items: [{ value: "/docs/install", label: "Install" }] }]}
+      onSelect={(href) => router.push(href)}
+    />
+  );
+}
+```
+
+The trigger fits the `actions` slot of a Terminal Navbar. Mount one palette per page, because each one with `shortcut` on listens for ⌘K.
+
+## States
+
+- **Closed:** the `SEARCH` trigger with a `⌘K` key-cap. Hovering turns its border `--ink`.
+- **Open:** a `--ground-void` backdrop at 80% covers the page, with no blur. The popup sits 15vh from the top on `--ground-deep` with a solid offset shadow. Focus is in the input after the `--signal` `>` prompt.
+- **Filtering:** typing keeps items whose label contains the text, case-insensitive. The first match is always highlighted: `--ground-deep` text on a `--signal` row. The footer counts matches.
+- **Empty:** no matches, or no groups, shows `NO MATCH // 0 RESULTS`.
+- **Run:** Enter or a click calls `onSelect`, then closes. The next open starts with an empty query.
+- Nothing animates, so there is no reduced-motion variant.
+
+## Accessibility
+
+- Built on Base UI's Dialog and Autocomplete. The dialog is modal and named by `label`. Focus moves to the input on open and returns to the trigger on close.
+- The input is named "Search commands" and described by hidden instructions: arrows to move, Enter to run, Escape to close. The visible footer hint is `aria-hidden`.
+- Up and Down move the highlight; Enter runs it. Escape, the hidden Close button or a backdrop click closes the palette.
+- The shortcut ignores key presses while an input method is composing text.
+- `--ink` on `--ground-deep` is 16.74:1, hints are `--label` on `--ground-deep` at 8.51:1 and the highlighted row is `--ground-deep` on `--signal` at 5.31:1.

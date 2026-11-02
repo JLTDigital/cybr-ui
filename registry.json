@@ -498,6 +498,46 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "data-readout-carousel",
+      "type": "registry:ui",
+      "title": "Data-Readout Carousel",
+      "description": "Framed slide viewer with a --signal 01 / 08 counter, bracketed PREV / NEXT buttons, arrow-key stepping and a segment strip. Slides change with a short stepped wipe, instant under reduced motion. Requires @cybr/tokens and @cybr/effects.",
+      "registryDependencies": ["utils", "@cybr/tokens", "@cybr/effects"],
+      "files": [
+        {
+          "path": "registry/ui/data-readout-carousel.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "command-palette",
+      "type": "registry:ui",
+      "title": "Command Palette",
+      "description": "⌘K / Ctrl+K dialog with a > prompt input that filters grouped commands; the highlighted row fills --signal. Built on Base UI. Requires @cybr/tokens.",
+      "dependencies": ["@base-ui/react"],
+      "registryDependencies": ["utils", "@cybr/tokens"],
+      "files": [
+        {
+          "path": "registry/ui/command-palette.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "pixelated-image-trail",
+      "type": "registry:ui",
+      "title": "Pixelated Image Trail",
+      "description": "Drops image tiles behind the mouse that resolve from coarse pixels to sharp, then step back out. Off for touch and under reduced motion. Requires @cybr/tokens.",
+      "registryDependencies": ["utils", "@cybr/tokens", "@cybr/use-reduced-motion"],
+      "files": [
+        {
+          "path": "registry/ui/pixelated-image-trail.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }
