@@ -16,6 +16,8 @@ export function getRegistryItem(name: string): RegistryItem {
   return item;
 }
 
+// NEXT_PUBLIC_SITE_URL overrides the production origin at build time; no trailing slash.
 export function getRegistryOrigin(): string {
-  return registry.homepage;
+  const override = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "");
+  return override || registry.homepage;
 }

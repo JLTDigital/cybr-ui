@@ -1,36 +1,97 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CYBR//UI
 
-## Getting Started
+Animated React components in one Cyberpunk Brutalism design language. Hard
+edges, offset shadows, mechanical motion. Built for Next.js and Tailwind CSS v4,
+and distributed as a [shadcn registry](https://ui.shadcn.com/docs/registry) so
+you install the source into your own project and own it from there.
 
-First, run the development server:
+Docs and live previews: **[cybr-ui.com](https://cybr-ui.com)**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Install
+
+### 1. Map the `@cybr` namespace
+
+Add the registry to your project's `components.json`:
+
+```json
+"registries": { "@cybr": "https://cybr-ui.com/r/{name}.json" }
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Add components
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+One at a time (each component's docs page shows its exact name):
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npx shadcn@latest add @cybr/hard-offset-button
+```
 
-## Learn More
+Or everything at once, with the tokens, effects and helpers they need:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npx shadcn@latest add @cybr/all
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Browse every component at [cybr-ui.com/docs/components](https://cybr-ui.com/docs/components).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 3. Import the tokens and effects
 
-## Deploy on Vercel
+Components use design tokens and shared effect utilities, installed as
+`styles/cybr-tokens.css` and `styles/cybr-effects.css`. Import them in
+`app/globals.css`, after Tailwind:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+@import "../styles/cybr-effects.css";
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Fonts
+
+Display and UI text fall back to Impact and `ui-monospace` unless you define
+`--font-archivo-black` and `--font-jetbrains-mono`. Load both with `next/font`:
+
+```tsx
+import { Archivo_Black, JetBrains_Mono } from "next/font/google";
+
+const archivoBlack = Archivo_Black({ weight: "400", variable: "--font-archivo-black", subsets: ["latin"] });
+const jetbrainsMono = JetBrains_Mono({ variable: "--font-jetbrains-mono", subsets: ["latin"] });
+
+// <html className={`${archivoBlack.variable} ${jetbrainsMono.variable}`}>
+```
+
+### Theme presets (optional)
+
+Two alternate palettes are available: `@cybr/theme-acid-terminal` and
+`@cybr/theme-ice-neon`. Install one, import its CSS after the tokens, then set
+`data-theme="acid-terminal"` (or `"ice-neon"`) on `<html>` or on any element to
+scope it to that subtree.
+
+### Reduced motion
+
+Every animated component has a static fallback under
+`prefers-reduced-motion`.
+
+## Develop
+
+Requires Node.js 22 and npm.
+
+```bash
+npm install
+npm run dev            # http://localhost:3000
+npm run verify         # lint, typecheck, registry build, next build
+npm run test:browser   # Playwright (run `npm run build` and `npx playwright install chromium` first)
+```
+
+`npm run build` runs `shadcn build` first, which writes the registry JSON to
+`public/r/`. Registry items are declared in `registry.json`. Component source
+lives in `registry/`, and tokens, effects and theme presets in `styles/`.
+
+### Environment
+
+| Variable | Purpose |
+| --- | --- |
+| `NEXT_PUBLIC_SITE_URL` | Optional. Overrides the origin shown in install commands (default `https://cybr-ui.com`). Read at build time. |
+
+## Licence
+
+[MIT](LICENSE) © 2026 JLTDigital and Jonathan Taft

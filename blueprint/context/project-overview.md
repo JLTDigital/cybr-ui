@@ -1,6 +1,6 @@
 # Cyberpunk Brutalism UI Library - Project Overview
 
-<!-- blueprint:source-hash 8eddfa6daa5239928fabd1885a544ad49b1a6e259ae91d1d59b986a9287a6f53 -->
+<!-- blueprint:source-hash 91db7130074a41e20c6cbde32e4cc50ec76d4cf7a887d86cb92ef5448aefe8a5 -->
 
 > A copy-paste and CLI-installable library of animated React components in one
 > consistent Cyberpunk Brutalism design language, shipped as a shadcn registry

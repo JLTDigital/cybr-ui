@@ -1,6 +1,6 @@
 # Project Plan: Cyberpunk Brutalism UI Library
 
-> Working name: **TBD**. `@cybr` is used as a placeholder namespace below.
+> Name: **CYBR//UI**, install namespace `@cybr`, domain **cybr-ui.com** (decided for Feature 15).
 > Items marked **[DECIDE]** are open questions. I didn't want to guess the answers.
 > Items marked **[VERIFY]** depend on third-party tools that change often, so check their current docs before building.
 
@@ -271,7 +271,7 @@ The docs site *is* the showcase, so it's built entirely with the library's own c
 - **Database/storage:** none for MVP
 - **Workers/cron:** none
 - **Health check:** `/` or `/r/registry.json`
-- **Domain:** **[DECIDE]**. Name not chosen yet; the namespace in install commands depends on it.
+- **Domain:** `cybr-ui.com`. Install commands use the `@cybr` namespace mapped to `https://cybr-ui.com/r/{name}.json`.
 - **Source:** public GitHub repo, MIT licence, CI running lint, type-check, registry build and Playwright snapshots on PRs
 
 ---

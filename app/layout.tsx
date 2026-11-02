@@ -4,6 +4,7 @@ import { SiteFooter } from "@/app/_components/site-footer";
 import { SiteHeader } from "@/app/_components/site-header";
 import { themeInitScript } from "@/app/_lib/themes";
 import { CATALOG } from "@/app/docs/_lib/catalog";
+import { getRegistryOrigin } from "@/app/docs/_lib/registry";
 
 import "./globals.css";
 
@@ -21,6 +22,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(getRegistryOrigin()),
   title: "CYBR//UI",
   description:
     "Animated React components in a Cyberpunk Brutalism design language.",
