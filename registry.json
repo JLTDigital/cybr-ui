@@ -419,6 +419,85 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "status-bar",
+      "type": "registry:ui",
+      "title": "Status Bar",
+      "description": "Thin --ground-void system strip with fake system strings, an optional 4-bar signal meter and a live UTC clock. Requires @cybr/tokens.",
+      "registryDependencies": ["utils", "@cybr/tokens"],
+      "files": [
+        {
+          "path": "registry/ui/status-bar.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "terminal-navbar",
+      "type": "registry:ui",
+      "title": "Terminal Navbar",
+      "description": "Primary nav bar with a display wordmark, mono links split by rules, a [ BRACKETED ] current link and an actions slot for a ⌘K hint or a solid --signal CTA. Folds into a MENU toggle panel when narrow. Requires @cybr/tokens.",
+      "registryDependencies": ["utils", "@cybr/tokens"],
+      "files": [
+        {
+          "path": "registry/ui/terminal-navbar.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "mega-menu",
+      "type": "registry:ui",
+      "title": "Brutal Mega Menu",
+      "description": "Navigation menu trigger that opens a hairline grid of link columns and a hazard-striped promo tile. Built on Base UI. Requires @cybr/tokens and @cybr/effects.",
+      "dependencies": ["@base-ui/react"],
+      "registryDependencies": ["utils", "@cybr/tokens", "@cybr/effects"],
+      "files": [
+        {
+          "path": "registry/ui/mega-menu.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "monolith-footer",
+      "type": "registry:ui",
+      "title": "Monolith Footer",
+      "description": "Footer with up to four link or text columns and a giant wordmark cropped by its bottom edge. Requires @cybr/tokens.",
+      "registryDependencies": ["utils", "@cybr/tokens"],
+      "files": [
+        {
+          "path": "registry/ui/monolith-footer.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "boot-sequence-loader",
+      "type": "registry:ui",
+      "title": "Boot Sequence Loader",
+      "description": "Terminal boot log that prints one line at a time, fills each status in --signal and ends on a blinking cursor. Shows the full log under reduced motion. Requires @cybr/tokens and @cybr/effects.",
+      "registryDependencies": ["utils", "@cybr/tokens", "@cybr/effects", "@cybr/use-reduced-motion"],
+      "files": [
+        {
+          "path": "registry/ui/boot-sequence-loader.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "segmented-progress",
+      "type": "registry:ui",
+      "title": "Segmented Progress",
+      "description": "Determinate progress bar of hard --signal segments under a big padded percentage and a phase label. Requires @cybr/tokens.",
+      "registryDependencies": ["utils", "@cybr/tokens"],
+      "files": [
+        {
+          "path": "registry/ui/segmented-progress.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }

@@ -1,0 +1,84 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { Replay } from "@/app/docs/_components/replay";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { BootSequenceLoader } from "@/registry/ui/boot-sequence-loader";
+
+export const item = getRegistryItem("boot-sequence-loader");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="boot-sequence-loader" />
+
+<InstallCommand item="boot-sequence-loader" />
+
+<ComponentPreview item="boot-sequence-loader">
+  <Replay>
+    <BootSequenceLoader
+      className="mx-auto min-h-40 max-w-xl"
+      lines={[
+        { text: "[0000.01] init kernel ............ ", status: "OK" },
+        { text: "[0000.18] mount /dev/concrete .... ", status: "OK" },
+        { text: "[0000.42] load neon.drv .......... ", status: "OK" },
+        { text: "[0000.77] handshake uplink ....... ", status: "READY" },
+      ]}
+    />
+  </Replay>
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    { name: "lines", type: "{ text: string; status: string }[]", description: "Log lines in order. text prints in --label; status is appended in --signal once the line completes. Include any dot leaders and trailing space in text." },
+    { name: "lineDuration", type: "number", default: "1000", description: "Milliseconds per line. Values that are not finite or not above 0 fall back to 1000." },
+    { name: "onComplete", type: "() => void", description: "Called once after the last status fills in, or straight after mount under reduced motion." },
+    { name: "className", type: "string", description: "Extra classes, merged after the defaults with cn()." },
+    { name: "...props", type: 'Omit<ComponentProps<"div">, "children">', description: "Every other native <div> attribute and ref is forwarded." },
+  ]}
+/>
+
+## Usage
+
+Needs both stylesheets from `@cybr/tokens` and `@cybr/effects`, and `@cybr/use-reduced-motion` arrives with them. After the install, import them in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+@import "../styles/cybr-effects.css";
+```
+
+```tsx
+import { BootSequenceLoader } from "@/components/ui/boot-sequence-loader";
+
+export function Splash({ onReady }: { onReady: () => void }) {
+  return (
+    <BootSequenceLoader
+      onComplete={onReady}
+      lines={[
+        { text: "[0000.01] init kernel ...... ", status: "OK" },
+        { text: "[0000.42] handshake uplink . ", status: "READY" },
+      ]}
+    />
+  );
+}
+```
+
+## Behaviour
+
+- **Trigger:** plays once when it mounts. Changing the lines or the duration plays it again.
+- **Timing:** line 1 appears at once; every `lineDuration` the current line gets its status and the next line appears. With 4 lines at 1000ms the log finishes after 4 seconds.
+- **Cursor:** a `--signal` block under the lines that blinks once a second.
+- **Finished:** every line with its status, the cursor still blinking, and `onComplete` called once.
+- **Static:** before hydration, without JavaScript and under `prefers-reduced-motion`, it renders the finished log with a solid cursor. On the client it then restarts from the first line when motion is allowed.
+- **Empty:** an empty `lines` array renders the panel with only the cursor and calls `onComplete` straight away.
+
+## Accessibility
+
+- The log and cursor are `aria-hidden`. A visually hidden `role="status"` region announces only the final line, such as "[0000.77] handshake uplink READY", once the sequence finishes. Lines are not announced one by one.
+- If the loader guards real work, announce the real outcome as well. This component only plays the sequence you give it.
+- The cursor blinks at 1Hz, under the 3-flashes-per-second limit (WCAG 2.3.1). Under `prefers-reduced-motion` nothing prints and the cursor is solid.
+- `--label` on `--ground-void` is 9.19:1 and `--signal` on `--ground-void` is 5.74:1. If you override colours with `className`, keep text at 4.5:1 or above.

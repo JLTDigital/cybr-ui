@@ -1,0 +1,66 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { SegmentedProgress } from "@/registry/ui/segmented-progress";
+
+export const item = getRegistryItem("segmented-progress");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="segmented-progress" />
+
+<InstallCommand item="segmented-progress" />
+
+<ComponentPreview item="segmented-progress">
+  <SegmentedProgress className="w-full max-w-xl bg-bg p-6" value={65} label="Loading" phase="HANDSHAKE" />
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    { name: "value", type: "number", description: "Current progress. Clamped to 0 to max; a value that is not finite counts as 0." },
+    { name: "max", type: "number", default: "100", description: "The value at full. Values that are not finite or not above 0 fall back to 100." },
+    { name: "segments", type: "number", default: "20", description: "Number of segments in the track, at least 1." },
+    { name: "label", type: "string", description: "Required accessible name for the progressbar, such as Loading or Uploading assets." },
+    { name: "phase", type: "ReactNode", description: "Short status on the right of the readout, such as HANDSHAKE." },
+    { name: "showValue", type: "boolean", default: "true", description: "Shows the big 3-digit percentage readout." },
+    { name: "className", type: "string", description: "Extra classes, merged after the defaults with cn()." },
+    { name: "...props", type: 'Omit<ComponentProps<"div">, "children">', description: "Every other native <div> attribute and ref is forwarded." },
+  ]}
+/>
+
+## Usage
+
+Needs the stylesheet from `@cybr/tokens`. After the install, import it in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+```
+
+```tsx
+import { SegmentedProgress } from "@/components/ui/segmented-progress";
+
+export function Upload({ done }: { done: number }) {
+  return <SegmentedProgress value={done} label="Uploading assets" phase="TRANSFER" />;
+}
+```
+
+## States
+
+- **Empty:** `000%` over an `--ink` framed track with no lit segments.
+- **Partial:** `floor(value / max × segments)` segments lit in `--signal`; the readout rounds to the nearest whole percent and pads to 3 digits.
+- **Full:** `100%` and every segment lit.
+- **Out of range:** values below 0 show as 0, above `max` as full.
+- Segments snap on and off. Nothing animates, so there is no reduced-motion variant.
+
+## Accessibility
+
+- The track is `role="progressbar"` with `aria-valuemin`, `aria-valuemax`, `aria-valuenow` and your `label` as its name.
+- The big readout is `aria-hidden`, because the progressbar already exposes the value. The phase text stays readable.
+- This is determinate only. For unknown durations, show a Boot Sequence Loader or your own status text instead.
+- `--ink` on `--bg` is 14.6:1 and `--label` on `--bg` is 7.43:1. Lit `--signal` segments are not text, but keep them at 3:1 against the background (WCAG 1.4.11) if you override colours.

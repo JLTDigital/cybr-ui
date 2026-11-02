@@ -1,0 +1,140 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { MegaMenu } from "@/registry/ui/mega-menu";
+import { TerminalNavbar } from "@/registry/ui/terminal-navbar";
+
+export const item = getRegistryItem("mega-menu");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+export const columns = [
+  {
+    heading: "BUTTONS",
+    links: [
+      { label: "Hard-Offset", href: "/docs/components/hard-offset-button" },
+      { label: "Glitch", href: "/docs/components/glitch-button" },
+      { label: "HUD Bracket", href: "/docs/components/hud-bracket-button" },
+      { label: "Terminal", href: "/docs/components/terminal-button" },
+      { label: "Hazard", href: "/docs/components/hazard-button" },
+    ],
+  },
+  {
+    heading: "TEXT & MOTION",
+    links: [
+      { label: "Decrypt Text", href: "/docs/components/decrypt-text" },
+      { label: "Glitch Heading", href: "/docs/components/glitch-heading" },
+      { label: "Typewriter", href: "/docs/components/typewriter-terminal" },
+      { label: "Telemetry Counter", href: "/docs/components/telemetry-counter" },
+      { label: "Wipe Reveal", href: "/docs/components/stepped-wipe-reveal" },
+    ],
+  },
+  {
+    heading: "LAYOUT & CARDS",
+    links: [
+      { label: "Brutal Bento", href: "/docs/components/bento-grid" },
+      { label: "Spec Card", href: "/docs/components/spec-card" },
+      { label: "Access Card", href: "/docs/components/access-card" },
+      { label: "Hardware Panel", href: "/docs/components/hardware-panel" },
+      { label: "Stat Band", href: "/docs/components/stat-band" },
+    ],
+  },
+  {
+    heading: "BACKGROUNDS",
+    links: [
+      { label: "Blueprint Grid", href: "/docs/components/blueprint-grid" },
+      { label: "Perspective Grid", href: "/docs/components/perspective-grid" },
+      { label: "Béton Brut", href: "/docs/components/beton-brut" },
+      { label: "CRT Overlay", href: "/docs/components/crt-overlay" },
+      { label: "Data Rain", href: "/docs/components/data-rain" },
+    ],
+  },
+];
+
+export const feature = { eyebrow: "NEW DROP", title: "GLITCH BUTTON →", href: "/docs/components/glitch-button" };
+
+<ComponentDocHeader item="mega-menu" />
+
+<InstallCommand item="mega-menu" />
+
+<ComponentPreview item="mega-menu">
+  <div className="flex w-full flex-col gap-10">
+    <nav aria-label="Standalone demo" className="flex self-start bg-ground-deep">
+      <MegaMenu label="COMPONENTS" columns={columns} feature={feature} />
+    </nav>
+    <TerminalNavbar
+      aria-label="Navbar demo"
+      className="w-full"
+      brandHref="#"
+      links={[
+        { label: "INDEX", href: "#index" },
+        { label: "DOCS", href: "#docs" },
+      ]}
+    >
+      <MegaMenu label="COMPONENTS" columns={columns} feature={feature} />
+    </TerminalNavbar>
+  </div>
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    { name: "label", type: "ReactNode", description: "Trigger text, styled like a Terminal Navbar link, followed by a +/− mark." },
+    { name: "columns", type: "{ heading: string; links: { label: string; href: string }[] }[]", description: "Link columns in order. The first heading gets a --signal rule, the rest --line." },
+    { name: "feature", type: "{ eyebrow: string; title: string; href: string }", description: "Optional promo tile in a hazard-stripe frame, placed after the columns." },
+    { name: "render", type: "ReactElement", default: "<div />", description: "Root element. Pass <nav aria-label=\"…\" /> to use the menu as its own landmark." },
+    { name: "className", type: "string", description: "Extra classes on the root, merged after the defaults with cn()." },
+    { name: "...props", type: "NavigationMenu.Root props", description: "Forwarded to Base UI's NavigationMenu.Root, such as value, onValueChange, delay and closeDelay." },
+  ]}
+/>
+
+## Usage
+
+Installs `@base-ui/react`. Needs both stylesheets from `@cybr/tokens` and `@cybr/effects`. After the install, import them in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+@import "../styles/cybr-effects.css";
+```
+
+Put it inside a `TerminalNavbar` as `children`, or inside your own `<nav>`:
+
+```tsx
+import { MegaMenu } from "@/components/ui/mega-menu";
+import { TerminalNavbar } from "@/components/ui/terminal-navbar";
+
+export function SiteNav() {
+  return (
+    <TerminalNavbar links={[{ label: "DOCS", href: "/docs" }]}>
+      <MegaMenu
+        label="COMPONENTS"
+        columns={[{ heading: "BUTTONS", links: [{ label: "Glitch", href: "/docs/glitch" }] }]}
+        feature={{ eyebrow: "NEW DROP", title: "GLITCH BUTTON →", href: "/docs/glitch" }}
+      />
+    </TerminalNavbar>
+  );
+}
+```
+
+## States
+
+- **Closed:** the trigger reads `LABEL +` in `--label`, with the `+` in `--signal`.
+- **Hover:** the trigger fills with `--bg` and turns `--ink`. Hovering also opens the panel after Base UI's short delay.
+- **Open:** the trigger stays filled and the mark becomes `−`. The panel drops below the trigger: columns on `--bg` separated by 2px `--line` gaps, then the promo tile.
+- **Link hover:** column links turn from `--label` to `--signal`.
+- **Focus-visible:** a 3px solid `--signal` outline inset inside the trigger, each link and the promo tile.
+- **Narrow:** the panel stays inside the viewport and drops to 2 columns, then 1, with the promo tile last.
+- Opening and closing are instant, with no transition, so there is no reduced-motion variant.
+
+## Accessibility
+
+- Built on Base UI's NavigationMenu. The trigger is a `<button>` with `aria-expanded`. Enter or Space toggles the panel and ArrowDown opens it. Tab moves on from the trigger into the panel's links.
+- Escape closes the panel and returns focus to the trigger. Clicking outside or tabbing out of the menu also closes it.
+- Each column's links are a list named by its heading. The `+`/`−` mark is `aria-hidden`.
+- The root is a `<div>`, so the menu does not add a second navigation landmark inside a `TerminalNavbar`.
+- `--label` on `--bg` is 7.43:1, `--signal` on `--bg` (link hover) is 4.64:1 and `--ink` on `--ground-deep` (promo title) is 16.74:1.

@@ -1,0 +1,63 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { StatusBar } from "@/registry/ui/status-bar";
+
+export const item = getRegistryItem("status-bar");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="status-bar" />
+
+<InstallCommand item="status-bar" />
+
+<ComponentPreview item="status-bar">
+  <StatusBar className="w-full" items={["SYS:OK", "REV 0.1", "NODE / EU-NE"]} signal={3} />
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    { name: "items", type: "ReactNode[]", description: "System strings on the left, such as SYS:OK or REV 0.1. They clip on narrow screens; the right side never does." },
+    { name: "signal", type: "0 | 1 | 2 | 3 | 4", description: "Shows a 4-bar meter with this many bars lit in --signal. Leave it out to hide the meter." },
+    { name: "clock", type: "boolean", default: "true", description: "Shows a live HH:MM:SS UTC clock." },
+    { name: "className", type: "string", description: "Extra classes, merged after the defaults with cn()." },
+    { name: "...props", type: 'Omit<ComponentProps<"div">, "children">', description: "Every other native <div> attribute and ref is forwarded." },
+  ]}
+/>
+
+## Usage
+
+Needs the stylesheet from `@cybr/tokens`. After the install, import it in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+```
+
+```tsx
+import { StatusBar } from "@/components/ui/status-bar";
+
+export function Header() {
+  return <StatusBar items={["SYS:OK", "REV 0.1"]} signal={3} />;
+}
+```
+
+## States
+
+- **Default:** 28px strip on `--ground-void` with `--label` strings and a `--line` rule underneath.
+- **Signal:** lit bars are `--signal`, unlit bars are `--line`, rising 4, 7, 10 and 13px.
+- **Clock:** shows `--:--:-- UTC` on the server and during hydration, then the real UTC time, updated every second.
+- **Narrow:** the left strings clip; the meter and clock keep their space.
+
+## Accessibility
+
+- A plain `<div>`, not a landmark. Place it above your `<nav>` or inside a `<header>`.
+- The meter is `role="img"` with the label "Signal strength N of 4". The bars themselves carry no text.
+- The clock is plain text, not a live region, so screen readers do not announce every second.
+- `--label` on `--ground-void` is 9.19:1 and `--ink` on `--ground-void` is 18.09:1. If you override colours with `className`, keep text at 4.5:1 or above.
+- Nothing animates; the clock text simply changes.

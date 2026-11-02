@@ -1,0 +1,102 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { TerminalNavbar, TerminalNavbarCta } from "@/registry/ui/terminal-navbar";
+
+export const item = getRegistryItem("terminal-navbar");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="terminal-navbar" />
+
+<InstallCommand item="terminal-navbar" />
+
+<ComponentPreview item="terminal-navbar">
+  <TerminalNavbar
+    aria-label="Demo"
+    className="w-full"
+    brandHref="#"
+    links={[
+      { label: "INDEX", href: "#index" },
+      { label: "COMPONENTS", href: "#components", current: true },
+      { label: "DOCS", href: "#docs" },
+      { label: "GITHUB", href: "#github" },
+    ]}
+    actions={
+      <>
+        <span aria-hidden="true" className="hidden items-center gap-2.5 border-l-(length:--border-base) border-line px-5 text-[0.8125rem] text-label @5xl:flex">
+          ⌘K <span>SEARCH</span>
+        </span>
+        <TerminalNavbarCta href="#install">INSTALL →</TerminalNavbarCta>
+      </>
+    }
+  />
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    { name: "links", type: "{ label: string; href: string; current?: boolean }[]", description: "Links in order. The one with current: true gets aria-current=\"page\" and shows as [ LABEL ] in --signal." },
+    { name: "brand", type: "ReactNode", default: "CYBR//UI", description: "Wordmark content, set in the display font." },
+    { name: "brandHref", type: "string", default: '"/"', description: "Where the wordmark links to." },
+    { name: "actions", type: "ReactNode", description: "Right-hand slot that never scrolls, for a ⌘K hint or a TerminalNavbarCta. Moves to the bottom of the MENU panel when the navbar is narrow." },
+    { name: "children", type: "ReactNode", description: "Rendered after the links, for extra triggers such as a Brutal Mega Menu. Moves into the MENU panel with the links when the navbar is narrow." },
+    { name: "aria-label", type: "string", default: '"Primary"', description: "Name of the navigation landmark. Give each <nav> on a page a different name." },
+    { name: "className", type: "string", description: "Extra classes, merged after the defaults with cn()." },
+    { name: "...props", type: 'ComponentProps<"nav">', description: "Every other native <nav> attribute is forwarded. Your onKeyDown and onPointerDown run before the menu's own handling." },
+    { name: "TerminalNavbarCta", type: 'ComponentProps<"a">', description: "Solid --signal link styled for the actions slot. Pass href and children." },
+  ]}
+/>
+
+## Usage
+
+Needs the stylesheet from `@cybr/tokens`. After the install, import it in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+```
+
+```tsx
+import { TerminalNavbar, TerminalNavbarCta } from "@/components/ui/terminal-navbar";
+
+export function SiteNav() {
+  return (
+    <TerminalNavbar
+      links={[
+        { label: "INDEX", href: "/" },
+        { label: "DOCS", href: "/docs", current: true },
+      ]}
+      actions={<TerminalNavbarCta href="/install">INSTALL →</TerminalNavbarCta>}
+    />
+  );
+}
+```
+
+Links are plain `<a>` elements. To use client-side routing, edit the installed source and swap them for your framework's link component.
+
+## States
+
+- **Idle link:** `--label` mono text between 2px `--line` rules.
+- **Hover:** the link fills with `--bg` and the text turns `--ink`.
+- **Current:** `[ LABEL ]` in `--signal`.
+- **Focus-visible:** a 3px solid `--signal` outline inset inside the link, wordmark or CTA. The CTA turns `--ink` on hover and focus so the outline shows against it.
+- **Narrow (under 48rem of navbar width):** the bar shows only the wordmark and a `MENU` button with a 3-bar icon. Under 20rem the word MENU is visually hidden and only the icon shows; it is still the button's name. The breakpoint is a container query on the navbar's own width, not the viewport, so it behaves the same in a sidebar layout or a full-width header.
+- **Menu open:** the button fills with `--bg` and its icon becomes an ×. A panel drops over the page below the bar on `--ground-deep`, with the links as full-width 48px rows, then any `children`, then the actions. Opening and closing are instant.
+- **Menu closes** when you press the button again, press Escape, follow a link in the panel, or press anywhere outside the navbar.
+- **Wide but crowded:** if the links still do not fit, the link row scrolls sideways with its scrollbar hidden; focusing a link scrolls it into view.
+
+## Accessibility
+
+- A `<nav>` landmark named "Primary" by default, with the links in a list.
+- The current link has `aria-current="page"`. Its brackets are `aria-hidden`, so it reads as "COMPONENTS, current page".
+- Tab order runs wordmark, links, any children, then the actions. When narrow it runs wordmark, `MENU`, then the panel's links, children and actions.
+- `MENU` is a disclosure button: `aria-expanded` reports the state and `aria-controls` points at the panel. Its name stays "MENU" in both states, and the icon is `aria-hidden`.
+- The closed panel is `display: none`, so its links leave the tab order and the accessibility tree. Escape closes it and puts focus back on `MENU`. There is no focus trap, because the panel is part of the page, not a modal.
+- The demo's ⌘K hint is decorative and `aria-hidden`. If you wire up a real search, make it a button with a name.
+- `--label` on `--ground-deep` is 8.51:1, `--signal` on `--ground-deep` is 5.31:1 and hover text is `--ink` on `--bg` at 14.63:1. CTA text is `--ground-deep` on `--signal` at 5.31:1.
+- Nothing animates, including the icon change, so there is no reduced-motion variant.
