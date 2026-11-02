@@ -1,5 +1,8 @@
 // Temporary token specimen; Feature 13 replaces it with the real landing page.
 
+import { MotionStatus } from "@/app/_components/motion-status";
+import { cn } from "@/lib/utils";
+
 const colors = [
   { token: "--bg", swatch: "bg-bg", use: "Base canvas" },
   { token: "--surface", swatch: "bg-surface", use: "Panels, cards" },
@@ -54,6 +57,21 @@ const motion = [
   "ease-step-2 steps(2)",
   "ease-step-3 steps(3)",
   "ease-step-12 steps(12)",
+];
+
+const effects = [
+  { name: "scanlines", className: "relative scanlines" },
+  { name: "grain", className: "relative grain" },
+  { name: "hud-corners", className: "hud-corners" },
+  { name: "crosshair", className: "crosshair" },
+  { name: "hazard-stripes", className: "hazard-stripes" },
+  { name: "scanlines + grain + hud-corners", className: "relative scanlines grain hud-corners" },
+];
+
+// Shows that cn() keeps a custom font size beside a colour and lets the last colour win.
+const merges = [
+  { call: 'cn("text-display-md text-signal")', className: cn("text-display-md text-signal") },
+  { call: 'cn("text-ink", "text-signal")', className: cn("text-ink", "text-signal") },
 ];
 
 function SectionLabel({ index, title }: { index: string; title: string }) {
@@ -140,6 +158,40 @@ export default function Home() {
         <ul className="flex flex-col gap-2 text-sm">
           {motion.map((item) => (
             <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="flex flex-col gap-6">
+        <SectionLabel index="07" title="Effects" />
+        <MotionStatus />
+        <ul className="grid grid-cols-1 gap-px bg-line sm:grid-cols-3">
+          {effects.map(({ name, className }) => (
+            <li key={name} className="flex flex-col gap-3 bg-bg p-4">
+              <div
+                className={cn(
+                  "flex h-32 items-end border-(length:--border-hair) border-line bg-surface p-3 text-xs uppercase text-ink",
+                  className,
+                )}
+              >
+                <span className="bg-bg px-1">UNIT / D-01</span>
+              </div>
+              <span className="text-caption tracking-label uppercase text-label">{name}</span>
+            </li>
+          ))}
+        </ul>
+        <div className="flex flex-col gap-2">
+          <span className="text-caption tracking-label uppercase text-label">glitch</span>
+          <p className="glitch font-display text-display-lg uppercase">Signal lost</p>
+        </div>
+        <ul className="flex flex-col gap-4">
+          {merges.map(({ call, className }) => (
+            <li key={call} className="flex flex-col gap-1">
+              <span className="text-caption text-label">
+                {call} → {className}
+              </span>
+              <span className={cn("font-display uppercase", className)}>Merged</span>
+            </li>
           ))}
         </ul>
       </section>

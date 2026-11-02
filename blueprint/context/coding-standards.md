@@ -45,9 +45,13 @@
 - Routes: `app/[route]/page.tsx`, with `layout.tsx`, `loading.tsx`, and
   `error.tsx` beside them when needed
 - Static assets: `public/`
-- > TODO: shared component, server action, type, and util folders are not
-  > established yet. Proposed default when first needed: `components/`,
-  > `lib/`, and colocated route-private files in `app/` (`_components/`).
+- Shared helpers: `lib/` (`lib/utils.ts` for `cn()`, one kebab-case file per
+  hook such as `lib/use-reduced-motion.ts`)
+- Route-private components: colocated in `app/_components/`
+- Effect utilities: `styles/effects.css` (opt-in, imported after
+  `styles/tokens.css`)
+- > TODO: shared component, server action, and type folders are not
+  > established yet. Proposed default when first needed: `components/`.
 
 ## Naming
 

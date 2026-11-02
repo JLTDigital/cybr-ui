@@ -1,0 +1,103 @@
+/* Opt-in effect utilities. Import after `tokens.css`. Tailwind only emits a utility when a class uses it. */
+
+/*
+ * Layer ownership, so effects combine predictably:
+ *   scanlines       ::after overlay          host must be positioned (relative/absolute)
+ *   grain           ::before overlay         host must be positioned (relative/absolute)
+ *   hud-corners     background-image         no host requirement
+ *   crosshair       background-image         no host requirement
+ *   hazard-stripes  background-image         no host requirement
+ *   glitch          text-shadow + animation  no host requirement
+ * hud-corners, crosshair and hazard-stripes all set background-image, so use at
+ * most one of them per element. Overlays are decorative and never take pointer
+ * events. Glitch only animates when the user has not asked for reduced motion.
+ */
+
+@utility scanlines {
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0 2px,
+      color-mix(in srgb, var(--ground-void) 25%, transparent) 2px 3px
+    );
+  }
+}
+
+@utility grain {
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.12;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+@utility hud-corners {
+  --hud-len: 14px;
+  --hud-w: var(--border-base);
+  background-image:
+    linear-gradient(var(--signal), var(--signal)), linear-gradient(var(--signal), var(--signal)),
+    linear-gradient(var(--signal), var(--signal)), linear-gradient(var(--signal), var(--signal)),
+    linear-gradient(var(--signal), var(--signal)), linear-gradient(var(--signal), var(--signal)),
+    linear-gradient(var(--signal), var(--signal)), linear-gradient(var(--signal), var(--signal));
+  background-position:
+    left top, left top,
+    right top, right top,
+    left bottom, left bottom,
+    right bottom, right bottom;
+  background-size:
+    var(--hud-len) var(--hud-w), var(--hud-w) var(--hud-len),
+    var(--hud-len) var(--hud-w), var(--hud-w) var(--hud-len),
+    var(--hud-len) var(--hud-w), var(--hud-w) var(--hud-len),
+    var(--hud-len) var(--hud-w), var(--hud-w) var(--hud-len);
+  background-repeat: no-repeat;
+}
+
+@utility crosshair {
+  --crosshair-len: 24px;
+  background-image:
+    linear-gradient(var(--line), var(--line)), linear-gradient(var(--line), var(--line));
+  background-position: center, center;
+  background-size:
+    var(--crosshair-len) var(--border-hair),
+    var(--border-hair) var(--crosshair-len);
+  background-repeat: no-repeat;
+}
+
+@utility hazard-stripes {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--signal) 0 12px,
+    var(--ground-deep) 12px 24px
+  );
+}
+
+/* A ~240ms burst every 3s keeps the split well under 3 flashes per second (WCAG 2.3.1). */
+@utility glitch {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: glitch 3s steps(1, end) infinite;
+  }
+}
+
+@keyframes glitch {
+  0%,
+  8%,
+  100% {
+    text-shadow: none;
+  }
+  2% {
+    text-shadow: -2px 0 var(--signal), 2px 0 var(--neon-2);
+  }
+  4% {
+    text-shadow: 3px 0 var(--signal), -3px 0 var(--neon-2);
+  }
+  6% {
+    text-shadow: -1px 0 var(--signal), 1px 0 var(--neon-2);
+  }
+}
