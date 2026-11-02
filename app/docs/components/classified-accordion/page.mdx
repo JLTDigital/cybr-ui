@@ -1,0 +1,93 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { ClassifiedAccordion, ClassifiedAccordionItem } from "@/registry/ui/classified-accordion";
+
+export const item = getRegistryItem("classified-accordion");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="classified-accordion" />
+
+<InstallCommand item="classified-accordion" />
+
+<ComponentPreview item="classified-accordion">
+  <ClassifiedAccordion className="w-full max-w-xl bg-bg" defaultValue={["f-01"]}>
+    <ClassifiedAccordionItem value="f-01" id="F-01" question="HOW DO I INSTALL ONE?">
+      Run npx shadcn add @cybr/&lt;name&gt;. The source lands in your project, so you own and edit it.
+    </ClassifiedAccordionItem>
+    <ClassifiedAccordionItem value="f-02" id="F-02" question="WHAT DOES IT NEED?">
+      Next.js App Router, React, Tailwind CSS and Motion. Heavier pieces opt in to GSAP.
+    </ClassifiedAccordionItem>
+    <ClassifiedAccordionItem value="f-03" id="F-03" question="REDUCED MOTION?">
+      Every animation falls back to a static state when prefers-reduced-motion is set.
+    </ClassifiedAccordionItem>
+  </ClassifiedAccordion>
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    { name: "defaultValue / value", type: "string[]", description: "Values of the open items, uncontrolled or controlled. All items start closed by default." },
+    { name: "onValueChange", type: "(value: string[]) => void", description: "Called when an item opens or closes." },
+    { name: "multiple", type: "boolean", default: "false", description: "Let more than one item be open at a time." },
+    {
+      name: "...props",
+      type: "Accordion.Root props",
+      description: "Forwarded to Base UI's Accordion.Root; className is merged last with cn().",
+    },
+    { name: "Item value", type: "string", description: "Unique value for the item." },
+    { name: "Item id", type: "ReactNode", description: "Signal-coloured tag before the question, such as F-01." },
+    { name: "Item question", type: "ReactNode", description: "The trigger text." },
+    { name: "Item headingAs", type: '"h2" | "h3" | "h4"', default: '"h3"', description: "Heading level wrapping the trigger. Match your page outline." },
+    { name: "Item children", type: "ReactNode", description: "The answer, shown in the panel." },
+    {
+      name: "Item ...props",
+      type: "Accordion.Item props",
+      description: "Forwarded to Base UI's Accordion.Item, such as disabled; className is merged last with cn().",
+    },
+  ]}
+/>
+
+## Usage
+
+Installs `@base-ui/react`. Needs the stylesheet from `@cybr/tokens`. After the install, import it in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+```
+
+```tsx
+import { ClassifiedAccordion, ClassifiedAccordionItem } from "@/components/ui/classified-accordion";
+
+export function Faq() {
+  return (
+    <ClassifiedAccordion>
+      <ClassifiedAccordionItem value="install" id="F-01" question="HOW DO I INSTALL ONE?">
+        Run npx shadcn add @cybr/&lt;name&gt;.
+      </ClassifiedAccordionItem>
+    </ClassifiedAccordion>
+  );
+}
+```
+
+## States
+
+- **Closed:** the question row with a `+` mark.
+- **Hover:** the row fills with `--surface` and the id switches from `--signal` to `--ink`, because small `--signal` text does not pass contrast on `--surface`.
+- **Focus-visible:** a 3px solid `--signal` outline inset inside the row.
+- **Open:** the mark becomes `−` and the answer shows on `--ground-deep` under a dashed rule. Opening is instant, with no height animation.
+- **One at a time:** opening an item closes the others, and clicking an open item closes it. Pass `multiple` to change this. The artboard opens F-01; the component starts with all items closed, so this demo passes `defaultValue`.
+
+## Accessibility
+
+- Built on Base UI's Accordion. Each trigger is a native `<button>` with `aria-expanded` and `aria-controls`, inside a heading (`h3` by default; set `headingAs`).
+- Enter and Space toggle an item. Tab moves between triggers.
+- The `+` and `−` marks are decorative; the open state comes from `aria-expanded`.
+- Question text is `--ink` on `--bg` (14.6:1). Answers are `--label` on `--ground-deep`, darker than `--bg`, so at least 7.43:1. If you override colours with `className`, keep text contrast at 4.5:1 or above.
+- Nothing animates.

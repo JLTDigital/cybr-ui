@@ -15,6 +15,7 @@
  *   glitch-heading-a  transform + clip-path anim  host is an absolutely positioned heading copy
  *   glitch-heading-b  transform + clip-path anim  host is an absolutely positioned heading copy
  *   wipe-reveal     clip-path animation      no host requirement; stays clipped through its delay
+ *   marquee         transform animation      host is a w-max track holding two identical copies
  * hud-corners, crosshair and hazard-stripes all set background-image, so use at
  * most one of them per element. Overlays are decorative and never take pointer
  * events. Every animation only runs when the user has not asked for reduced motion.
@@ -261,5 +262,23 @@
   }
   to {
     clip-path: inset(0 0 0 0);
+  }
+}
+
+/*
+ * Endless horizontal scroll. The host track holds two identical copies side by
+ * side, so translating by -50% loops seamlessly. Tune with --marquee-duration
+ * and --marquee-direction (normal | reverse). Smooth movement, no flashing.
+ */
+@utility marquee {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: marquee var(--marquee-duration, 26s) linear infinite;
+    animation-direction: var(--marquee-direction, normal);
+  }
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
   }
 }

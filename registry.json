@@ -274,6 +274,73 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "hud-tooltip",
+      "type": "registry:ui",
+      "title": "HUD Tooltip",
+      "description": "Hover and focus tooltip in two looks: a bordered data readout and a target-lock card with bracket corners and a leader line. Built on Base UI. Requires @cybr/tokens.",
+      "dependencies": ["@base-ui/react"],
+      "registryDependencies": ["utils", "@cybr/tokens"],
+      "files": [
+        {
+          "path": "registry/ui/hud-tooltip.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "classified-accordion",
+      "type": "registry:ui",
+      "title": "Classified FAQ Accordion",
+      "description": "Framed FAQ accordion with mono question rows, signal ids and +/\u2212 marks. One item open at a time by default. Built on Base UI. Requires @cybr/tokens.",
+      "dependencies": ["@base-ui/react"],
+      "registryDependencies": ["utils", "@cybr/tokens"],
+      "files": [
+        {
+          "path": "registry/ui/classified-accordion.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "ticker-marquee",
+      "type": "registry:ui",
+      "title": "Ticker Marquee",
+      "description": "Signal band that scrolls its items endlessly, with hover, focus and button pause and a static reduced-motion state. Requires @cybr/tokens and @cybr/effects.",
+      "registryDependencies": ["utils", "@cybr/tokens", "@cybr/effects"],
+      "files": [
+        {
+          "path": "registry/ui/ticker-marquee.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "warning-tape",
+      "type": "registry:ui",
+      "title": "Warning Tape",
+      "description": "Tilted hazard-stripe tape with scrolling label chips, or a static stripe band without items. Pauses on hover, focus and button; static under reduced motion. Requires @cybr/tokens and @cybr/effects.",
+      "registryDependencies": ["utils", "@cybr/tokens", "@cybr/effects"],
+      "files": [
+        {
+          "path": "registry/ui/warning-tape.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "logo-wall",
+      "type": "registry:ui",
+      "title": "Logo Wall",
+      "description": "Hairline grid of logo cells after a label cell, with signal hover on linked logos. One row from lg. Requires @cybr/tokens.",
+      "registryDependencies": ["utils", "@cybr/tokens"],
+      "files": [
+        {
+          "path": "registry/ui/logo-wall.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }

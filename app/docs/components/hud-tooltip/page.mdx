@@ -1,0 +1,89 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { HudTooltip } from "@/registry/ui/hud-tooltip";
+
+export const item = getRegistryItem("hud-tooltip");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="hud-tooltip" />
+
+<InstallCommand item="hud-tooltip" />
+
+<ComponentPreview item="hud-tooltip">
+  <div className="flex w-full max-w-lg flex-wrap items-start justify-between gap-8">
+    <HudTooltip content={<>STATUS: ONLINE<br />LOAD: [VALUE]</>}>
+      <button type="button" className="min-h-11 cursor-help border-(length:--border-base) border-ink bg-ground-deep px-4.5 font-mono text-[0.8125rem] font-bold tracking-label text-ink focus-visible:outline-(length:--focus-width) focus-visible:outline-offset-4 focus-visible:outline-signal">
+        NODE 07
+      </button>
+    </HudTooltip>
+    <HudTooltip variant="lock" side="right" eyebrow="TARGET LOCKED" title="NODE 12" content="Bracket corners and a leader line. Opens on hover and keyboard focus.">
+      <button type="button" className="min-h-11 cursor-help border-(length:--border-base) border-ink bg-ground-deep px-4.5 font-mono text-[0.8125rem] font-bold tracking-label text-ink focus-visible:outline-(length:--focus-width) focus-visible:outline-offset-4 focus-visible:outline-signal">
+        NODE 12
+      </button>
+    </HudTooltip>
+  </div>
+</ComponentPreview>
+
+Hover over or tab to a node to open its tooltip.
+
+<PropsTable
+  rows={[
+    { name: "content", type: "ReactNode", description: "Tooltip text. In the lock variant, this is the body under the title." },
+    { name: "children", type: "ReactElement", description: "One focusable element, such as a <button>, used as the trigger. Give it its own accessible name." },
+    { name: "variant", type: '"readout" | "lock"', default: '"readout"', description: "Readout is a small bordered data box. Lock is the target-lock card with bracket corners and a leader line." },
+    { name: "eyebrow", type: "ReactNode", description: "Small label above the title. Lock variant only." },
+    { name: "title", type: "ReactNode", description: "Display title. Lock variant only." },
+    { name: "side", type: '"top" | "right" | "bottom" | "left"', default: '"bottom"', description: "Preferred side. It flips when there is no room." },
+    { name: "align", type: '"start" | "center" | "end"', default: '"start"', description: "Alignment along that side." },
+    { name: "open / defaultOpen / onOpenChange", type: "boolean / boolean / function", description: "Control the open state, for example to pin a tooltip open." },
+    {
+      name: "...props",
+      type: "Tooltip.Popup props",
+      description: "Forwarded to Base UI's Tooltip.Popup; className is merged last with cn().",
+    },
+  ]}
+/>
+
+## Usage
+
+Installs `@base-ui/react`. Needs the stylesheet from `@cybr/tokens`. After the install, import it in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+```
+
+```tsx
+import { HudTooltip } from "@/components/ui/hud-tooltip";
+
+export function Node() {
+  return (
+    <HudTooltip variant="lock" eyebrow="TARGET LOCKED" title="NODE 12" content="Relay online.">
+      <button type="button">NODE 12</button>
+    </HudTooltip>
+  );
+}
+```
+
+## States
+
+- **Closed:** nothing is rendered.
+- **Open:** appears instantly, with no fade. Hover opens it after 150ms, and keyboard focus opens it straight away.
+- **Hovering the popup:** it stays open while the pointer moves from the trigger into it.
+- **Flipped:** when there is no room on the chosen side, it moves to the opposite side. The lock leader line moves with it to the edge facing the trigger.
+- **Pinned:** pass `open` or `defaultOpen`. The artboard's "pinned" tooltip is this state; there is no separate component.
+
+## Accessibility
+
+- Built on Base UI's Tooltip. It opens on hover and on keyboard focus, and Escape closes it.
+- While open, the popup has `role="tooltip"` and the trigger points at it with `aria-describedby`. The trigger still needs its own accessible name, such as its text.
+- Tooltips are supplementary. Base UI does not show them on touch devices, so never put information that people need only in a tooltip.
+- Bracket corners, the leader line and its node are decorative and hidden from assistive tech.
+- Text is `--ink` (readout) or `--ink` and `--label` (lock) on `--ground-void`, which is darker than `--bg`, so contrast is at least the 14.6:1 and 7.43:1 measured on `--bg`. If you override colours with `className`, keep text contrast at 4.5:1 or above.

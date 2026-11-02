@@ -1,0 +1,79 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { TickerMarquee } from "@/registry/ui/ticker-marquee";
+
+export const item = getRegistryItem("ticker-marquee");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="ticker-marquee" />
+
+<InstallCommand item="ticker-marquee" />
+
+<ComponentPreview item="ticker-marquee">
+  <TickerMarquee
+    className="w-full"
+    aria-label="Ticker"
+    items={[
+      "01 / TICKER MARQUEE",
+      "// NEW DROP: GLITCH BUTTON",
+      "// REV 0.1 LIVE",
+      "// SYS:OK",
+      "// NPX SHADCN ADD @CYBR/TICKER-MARQUEE",
+    ]}
+  />
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    { name: "items", type: "ReactNode[]", description: "The ticker entries. Pass enough to fill the widest band, or a gap shows before the loop repeats." },
+    { name: "duration", type: "number", default: "26", description: "Seconds for one full loop." },
+    { name: "reverse", type: "boolean", default: "false", description: "Scroll left to right instead." },
+    { name: "pauseControl", type: "boolean", default: "true", description: "Show the PAUSE/PLAY button. Keep it unless the page offers another way to stop the motion." },
+    {
+      name: "...props",
+      type: 'Omit<ComponentProps<"div">, "children">',
+      description: "Every other native <div> attribute is forwarded, such as aria-label; className is merged last with cn().",
+    },
+  ]}
+/>
+
+## Usage
+
+Needs the stylesheets from `@cybr/tokens` and `@cybr/effects`. After the install, import them in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+@import "../styles/cybr-effects.css";
+```
+
+```tsx
+import { TickerMarquee } from "@/components/ui/ticker-marquee";
+
+export function News() {
+  return <TickerMarquee aria-label="Latest updates" items={["// REV 0.1 LIVE", "// SYS:OK", "// NEW DROP"]} />;
+}
+```
+
+## States
+
+- **Running:** the items scroll right to left at a steady, linear speed.
+- **Hover or focus inside:** the scroll pauses and resumes when the pointer or focus leaves.
+- **Paused by the button:** stays paused until PLAY is pressed, even after the pointer leaves.
+- **Reduced motion:** the band is static, showing the first items, and the button is not rendered.
+- **Empty:** with no items, the band renders with no track and no button.
+
+## Accessibility
+
+- The items render once as a list. The second copy that makes the loop seamless is `aria-hidden`, so screen readers hear each item once.
+- Moving content that runs longer than 5 seconds needs a way to pause it (WCAG 2.2.2). The visible PAUSE/PLAY button gives keyboard and touch users that control, and hover and focus pause it too.
+- The button's visible text is in its accessible name ("PAUSE ticker" / "PLAY ticker"). Its focus outline is `--ink`, because a `--signal` outline would not show on the `--signal` band.
+- The scroll is a smooth slide with no flashing.
+- `--ground-deep` text on `--signal`, the overview's text-on-accent pair. If you override colours with `className`, keep text contrast at 4.5:1 or above.

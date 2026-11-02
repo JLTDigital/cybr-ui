@@ -1,0 +1,78 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { WarningTape } from "@/registry/ui/warning-tape";
+
+export const item = getRegistryItem("warning-tape");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="warning-tape" />
+
+<InstallCommand item="warning-tape" />
+
+<ComponentPreview item="warning-tape">
+  <div className="w-full bg-ground-deep">
+    <WarningTape
+      aria-label="Site notices"
+      className="pb-0"
+      items={["CAUTION // UNDER CONSTRUCTION", "RESTRICTED SECTOR", "CAUTION // UNDER CONSTRUCTION", "RESTRICTED SECTOR"]}
+    />
+    <WarningTape variant="ink" tilt={1.5} className="pt-2" />
+  </div>
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    { name: "items", type: "ReactNode[]", default: "[]", description: "Label chips that scroll along the tape. Without items, the tape is a static, decorative band." },
+    { name: "variant", type: '"signal" | "ink"', default: '"signal"', description: "Signal is the 40px hazard tape. Ink is the thinner ink-striped tape." },
+    { name: "tilt", type: "number", default: "-2.5", description: "Rotation in degrees. The tape overhangs each side by 40px so the ends stay hidden." },
+    { name: "duration", type: "number", default: "20", description: "Seconds for one full loop." },
+    { name: "reverse", type: "boolean", default: "true", description: "Scroll left to right, as on the artboard. Set false for right to left." },
+    { name: "pauseControl", type: "boolean", default: "true", description: "Show the PAUSE/PLAY button when there are items." },
+    {
+      name: "...props",
+      type: 'Omit<ComponentProps<"div">, "children">',
+      description: "Every other native <div> attribute is forwarded, such as aria-label; className is merged last with cn(). Set the background behind the tape here.",
+    },
+  ]}
+/>
+
+## Usage
+
+Needs the stylesheets from `@cybr/tokens` and `@cybr/effects`. After the install, import them in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+@import "../styles/cybr-effects.css";
+```
+
+```tsx
+import { WarningTape } from "@/components/ui/warning-tape";
+
+export function Construction() {
+  return <WarningTape className="bg-ground-deep" items={["CAUTION // UNDER CONSTRUCTION", "RESTRICTED SECTOR"]} />;
+}
+```
+
+## States
+
+- **Running:** the chips scroll in reverse (left to right) along the tilted tape.
+- **Hover or focus inside:** the scroll pauses.
+- **Paused by the button:** stays paused until PLAY is pressed.
+- **Reduced motion:** the tape is static and the button is not rendered.
+- **No items:** a static, decorative stripe band, hidden from assistive tech, with no button. The demo stacks one under the signal tape, as on the artboard.
+- The stripes reuse the shared `hazard-stripes` utility, so they are 12px rather than the artboard's 14px. A palette swap changes them in one place.
+
+## Accessibility
+
+- With items, the chips render once as a list and the second copy is `aria-hidden`. Without items, the whole tape is `aria-hidden`.
+- The PAUSE/PLAY button meets WCAG 2.2.2 for keyboard and touch users. Its name is "PAUSE warning tape" / "PLAY warning tape". It sits unrotated in the top-right corner and has an `--ink` focus outline.
+- The scroll is a smooth slide with no flashing.
+- Chip text is `--ink` on `--ground-deep` chips, at least the 14.6:1 measured on `--bg`. If you override colours, keep text contrast at 4.5:1 or above.

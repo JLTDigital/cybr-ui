@@ -1,6 +1,6 @@
 # Cyberpunk Brutalism UI Library - Project Overview
 
-<!-- blueprint:source-hash f12ea962390e3b557575e094822656f0f41d908c69ee961e173b28ad54e337d3 -->
+<!-- blueprint:source-hash 8eddfa6daa5239928fabd1885a544ad49b1a6e259ae91d1d59b986a9287a6f53 -->
 
 > A copy-paste and CLI-installable library of animated React components in one
 > consistent Cyberpunk Brutalism design language, shipped as a shadcn registry
@@ -147,7 +147,7 @@ features depend on.
   guidance
 - **GSAP** - heavier timelines, opt-in per component only
 - **CSS + SVG filters first**, then Canvas 2D, WebGL only if needed - effects
-- **Radix UI or Base UI** - tooltip, menu, dialog, accordion primitives
+- **Base UI** (`@base-ui/react`) - tooltip, menu, dialog, accordion primitives
   (decided in Feature 8)
 - **shadcn registry + CLI** - `registry.json` -> `shadcn build` -> `public/r/`
 - **MDX** via `@next/mdx` - docs content; **Shiki** - server-rendered code
@@ -238,7 +238,6 @@ navbar, blueprint-grid background, spec-card previews).
   plan §3b lists; plan §3b "Data-Readout Slider or Carousel" became Carousel.
 - **Analytics:** optional in plan §4; no build-plan feature owns it.
 - **Second accent `--neon-2`:** keep cyan, lime, or drop.
-- **Accessible primitives:** Radix vs Base UI (Feature 8).
 - **Name, domain, licence for paid tier, monetization model.**
 - **Prettier and Playwright** are in the plan but not installed; Feature 14
   owns CI, but local commands land via `/tests browser` or that feature.

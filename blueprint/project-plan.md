@@ -104,7 +104,7 @@ Developers who want a cyberpunk or brutalist look in React and Next.js have no r
 - Three.js / React Three Fiber heavy pieces (3D wireframe heads, low-poly meshes)
 - Full page templates and blocks (landing, portfolio, pricing, 404)
 - Figma kit
-- Form primitives (inputs, selects, checkboxes), wrapping Radix or Base UI for accessibility
+- Form primitives (inputs, selects, checkboxes), wrapping Base UI for accessibility
 - Theme builder UI on the docs site
 
 ---
@@ -133,7 +133,7 @@ If monetised later (section 6), the store would need **users, licences and purch
 | Animation | **Motion** (`motion` package, import from `motion/react`) | Motion is the successor to Framer Motion. For App Router server components, `motion/react-client` is the documented import. **[VERIFY]** |
 | Heavier timelines | **GSAP**, opt-in per component only | Don't make it a dependency of every component |
 | Effects | CSS + SVG filters (feTurbulence, feDisplacementMap) first, then Canvas 2D, then WebGL only if needed | Keeps bundles light |
-| Accessible primitives | Radix UI or Base UI for tooltip, menu, dialog, accordion | **[DECIDE]** which one |
+| Accessible primitives | **Base UI** (`@base-ui/react`) for tooltip, menu, dialog, accordion | Decided in Feature 8 over Radix UI: actively developed, stable v1, `render` prop composition |
 | Distribution | **shadcn registry**: `registry.json`, then `shadcn build`, which generates JSON into `public/r/` | Lets users run `npx shadcn add <url>`. Namespaced registries are also supported. **[VERIFY]** current CLI flags |
 | Docs | Next.js + `@next/mdx`; Shiki for server-rendered code highlighting | Decided in Feature 4 |
 | Fonts | Heavy grotesk for display (e.g. Archivo Black, Inter Black) and mono for UI/data (e.g. JetBrains Mono, IBM Plex Mono, Space Mono), via `next/font` | All are free Google Fonts. Check the licences for redistribution in templates. |

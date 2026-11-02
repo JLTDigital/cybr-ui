@@ -1,0 +1,84 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { LogoWall, LogoWallItem } from "@/registry/ui/logo-wall";
+
+export const item = getRegistryItem("logo-wall");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="logo-wall" />
+
+<InstallCommand item="logo-wall" />
+
+<ComponentPreview item="logo-wall">
+  <LogoWall className="w-full" label="TRUSTED BY">
+    <LogoWallItem href="#">[LOGO 01]</LogoWallItem>
+    <LogoWallItem href="#">[LOGO 02]</LogoWallItem>
+    <LogoWallItem href="#">[LOGO 03]</LogoWallItem>
+    <LogoWallItem href="#">[LOGO 04]</LogoWallItem>
+    <LogoWallItem href="#">[LOGO 05]</LogoWallItem>
+    <LogoWallItem href="#">[LOGO 06]</LogoWallItem>
+  </LogoWall>
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    { name: "label", type: "ReactNode", description: "Text for the leading label cell. Omitted when unset." },
+    { name: "children", type: "ReactNode", description: "LogoWallItem cells. Any number is allowed." },
+    {
+      name: "...props",
+      type: 'ComponentProps<"div">',
+      description: "Every other native <div> attribute is forwarded; className is merged last with cn().",
+    },
+    { name: "Item href", type: "string", description: "Makes the cell a link with a signal hover. Without it, the cell is plain." },
+    { name: "Item children", type: "ReactNode", description: "The logo: text, an <img> with alt text, or an inline SVG with a title." },
+    {
+      name: "Item ...props",
+      type: 'ComponentProps<"a">',
+      description: "Forwarded to the <a> when href is set; className is merged last with cn() on the inner cell.",
+    },
+  ]}
+/>
+
+## Usage
+
+Needs the stylesheet from `@cybr/tokens`. After the install, import it in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+```
+
+```tsx
+import { LogoWall, LogoWallItem } from "@/components/ui/logo-wall";
+
+export function Clients() {
+  return (
+    <LogoWall label="TRUSTED BY">
+      <LogoWallItem href="https://example.com">
+        <img src="/logos/example.svg" alt="Example Corp" className="h-6" />
+      </LogoWallItem>
+    </LogoWall>
+  );
+}
+```
+
+## States
+
+- **Idle:** `--label` text in a cell with a transparent 2px border.
+- **Hover:** linked logos turn `--signal`, text and border, in two hard steps over 90ms.
+- **Focus-visible:** a 3px solid `--signal` outline inset inside the cell.
+- **Reduced motion:** the hover change snaps with no transition.
+- **Layout:** 2 columns below `sm` with the label across the top, 3 from `sm`, and one row from `lg` with a 220px label cell.
+
+## Accessibility
+
+- Each linked logo is a native `<a>`. Its accessible name comes from its content, so give logo images `alt` text naming the company.
+- Unlinked cells are plain `<div>`s with no hover.
+- The label is `--label` on `--bg` (7.43:1). Hovered text is `--signal` on `--bg` (4.64:1). If you override colours with `className`, keep text contrast at 4.5:1 or above.
