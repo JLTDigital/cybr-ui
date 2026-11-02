@@ -1,6 +1,6 @@
 # Cyberpunk Brutalism UI Library - Project Overview
 
-<!-- blueprint:source-hash 82d480f982af468cf6cdcbe346da4a916832c4d82ea74798a836781bb952d1dc -->
+<!-- blueprint:source-hash f12ea962390e3b557575e094822656f0f41d908c69ee961e173b28ad54e337d3 -->
 
 > A copy-paste and CLI-installable library of animated React components in one
 > consistent Cyberpunk Brutalism design language, shipped as a shadcn registry
@@ -118,7 +118,8 @@ features depend on.
   accessibility notes
 - linked demo/preview component (one per registry item)
 - install command and copyable source
-- > Locked in Feature 4. MDX tooling (Fumadocs vs `@next/mdx`) TODO.
+- File `app/docs/components/<item>/page.mdx` (`<item>` = registry item
+  `name`), served at `/docs/components/<item>`; built with `@next/mdx`
 
 ### Theme preset (token file)
 
@@ -149,7 +150,8 @@ features depend on.
 - **Radix UI or Base UI** - tooltip, menu, dialog, accordion primitives
   (decided in Feature 8)
 - **shadcn registry + CLI** - `registry.json` -> `shadcn build` -> `public/r/`
-- **MDX** (Fumadocs or `@next/mdx`) - docs content
+- **MDX** via `@next/mdx` - docs content; **Shiki** - server-rendered code
+  highlighting
 - **next/font** - Archivo Black (display), JetBrains Mono (UI/data)
 - **ESLint, Prettier, Playwright visual snapshots** - quality (Prettier and
   Playwright not installed yet)
@@ -199,8 +201,8 @@ one or two neon signals. Mockups canvas is the agreed visual direction.
 **Routes**
 
 - `/` - landing page showcase (Feature 13)
-- Component index with search, and one docs page per component (Features 4,
-  13) - > TODO: URL structure
+- `/docs/components/<item>` - one docs page per component (Feature 4)
+- `/docs/components` - component index with search (Feature 13)
 - `/r/<item>.json`, `/r/registry.json` - static registry output
 
 The docs site is built entirely with the library's own components (terminal
@@ -227,8 +229,6 @@ navbar, blueprint-grid background, spec-card previews).
   (`package-lock.json`). Pick one.
 - **Static export vs `next start`:** `next.config.ts` enables
   `cacheComponents`; confirm compatibility if choosing static export.
-- **Docs tooling:** Fumadocs vs `@next/mdx` is undecided but Feature 4 needs it.
-- **Docs URL structure** for the component index and pages is unspecified.
 - **Foundation ordering:** plan §3a lists theme presets and the docs site as
   foundation; build plan places them at 12 and 13. Build plan order is used.
 - **Accordion placement:** plan lists it under Interactive; build plan puts the

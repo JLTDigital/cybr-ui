@@ -115,7 +115,7 @@ The MVP is a static library, so there's **no user database**.
 
 - **Component source files** (`.tsx`) in the repo
 - **Registry JSON** (`registry.json` and generated `public/r/*.json` items), served statically
-- **Docs content:** MDX pages per component (description, props, usage, accessibility notes)
+- **Docs content:** MDX pages per component (description, props, usage, accessibility notes) at `app/docs/components/<item>/page.mdx`, served at `/docs/components/<item>`; `/docs/components` is reserved for the component index (Feature 13)
 - **Demo/preview components:** one per registry item
 - **Theme token files:** CSS variables per preset
 - **Optional:** privacy-friendly analytics (page views, copy-button clicks) to see which components get used
@@ -135,7 +135,7 @@ If monetised later (section 6), the store would need **users, licences and purch
 | Effects | CSS + SVG filters (feTurbulence, feDisplacementMap) first, then Canvas 2D, then WebGL only if needed | Keeps bundles light |
 | Accessible primitives | Radix UI or Base UI for tooltip, menu, dialog, accordion | **[DECIDE]** which one |
 | Distribution | **shadcn registry**: `registry.json`, then `shadcn build`, which generates JSON into `public/r/` | Lets users run `npx shadcn add <url>`. Namespaced registries are also supported. **[VERIFY]** current CLI flags |
-| Docs | Next.js + MDX (Fumadocs or plain `@next/mdx` are options) | **[DECIDE] / [VERIFY]** |
+| Docs | Next.js + `@next/mdx`; Shiki for server-rendered code highlighting | Decided in Feature 4 |
 | Fonts | Heavy grotesk for display (e.g. Archivo Black, Inter Black) and mono for UI/data (e.g. JetBrains Mono, IBM Plex Mono, Space Mono), via `next/font` | All are free Google Fonts. Check the licences for redistribution in templates. |
 | Quality | ESLint, Prettier, Playwright visual snapshots of the demo pages | Visual regression matters for a style-led library |
 | Repo | Single Next.js app (docs + registry) to start, moving to a monorepo only if an npm package is added | |
