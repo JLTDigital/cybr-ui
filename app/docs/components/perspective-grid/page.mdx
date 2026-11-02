@@ -1,0 +1,78 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { PerspectiveGrid } from "@/registry/ui/perspective-grid";
+
+export const item = getRegistryItem("perspective-grid");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="perspective-grid" />
+
+<InstallCommand item="perspective-grid" />
+
+<ComponentPreview item="perspective-grid">
+  <PerspectiveGrid className="h-90 w-full font-mono">
+    <div
+      aria-hidden="true"
+      className="absolute top-[18%] left-1/2 size-30 -translate-x-1/2 border-(length:--border-base) border-dim bg-[repeating-linear-gradient(0deg,var(--dim)_0_3px,transparent_3px_12px)]"
+    />
+    <div className="absolute top-4.5 left-5 border-(length:--border-hair) border-line bg-ground-deep px-2.5 py-1.5 text-xs tracking-label text-label">
+      <span className="text-signal">02</span> / PERSPECTIVE GRID
+    </div>
+    <div className="absolute bottom-4 left-5 bg-ground-deep px-2 py-1 text-caption tracking-label text-label">
+      DESATURATED · NO SUNSET GRADIENTS
+    </div>
+  </PerspectiveGrid>
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    { name: "cellSize", type: "number", default: "48", description: "Grid cell size in px before the tilt. The scroll moves one cell per 1.4s." },
+    {
+      name: "...props",
+      type: 'ComponentProps<"div">',
+      description: "Every other native <div> attribute is forwarded; className is merged last with cn(). Give the root a height (or content) and any layout classes; they apply to the children directly.",
+    },
+  ]}
+/>
+
+## Usage
+
+Needs the stylesheets from `@cybr/tokens` and `@cybr/effects`. After the install, import them in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+@import "../styles/cybr-effects.css";
+```
+
+```tsx
+import { PerspectiveGrid } from "@/components/ui/perspective-grid";
+
+export function Horizon() {
+  return (
+    <PerspectiveGrid className="flex min-h-96 items-start justify-center pt-16">
+      <h1 className="font-display text-display-lg text-ink uppercase">Sector 7</h1>
+    </PerspectiveGrid>
+  );
+}
+```
+
+## States
+
+- **Running:** the floor grid scrolls toward the viewer below a glowing `--signal` horizon at 46% height.
+- **Reduced motion:** the grid is still; the horizon and grid stay visible.
+- The monolith block in the preview is demo content from the artboard, not part of the component.
+
+## Accessibility
+
+- The horizon and floor are one `aria-hidden` layer behind the children and never take pointer events.
+- The motion is a smooth slide with no flashing.
+- **The motion cannot be paused.** It stops only under `prefers-reduced-motion`. Beside other content for more than 5 seconds, that falls short of WCAG 2.2.2 (Pause, Stop, Hide).
+- Keep text above the horizon, on `--ground-void`. Text over the grid lines loses contrast.

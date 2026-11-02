@@ -13,7 +13,7 @@
 - [x] 6. **Text & Motion set** - Decrypt Text, Typewriter Terminal, Glitch Heading, Telemetry Counter (counts on scroll into view) and Stepped Wipe Reveal
 - [x] 7. **Layout & Cards set** - Brutal Bento Grid, Spec Card, Access/ID Card, Hardware Panel, HUD Image Frame, Neon Edge Card, Classified Card and Stat Band
 - [x] 8. **Accessible primitives decision + Tooltip & Marquee set** - Pick Radix or Base UI, then HUD Tooltip, Classified FAQ Accordion, Ticker Marquee, Warning Tape and Logo Wall
-- [ ] 9. **Backgrounds set** - Blueprint Grid, Perspective Grid, Béton Brut, CRT Overlay, Data Rain and Exposed Wiring, all in CSS/SVG
+- [x] 9. **Backgrounds set** - Blueprint Grid, Perspective Grid, Béton Brut, CRT Overlay, Data Rain and Exposed Wiring, all in CSS/SVG
 - [ ] 10. **Navbar, Footer & Loader set** - Status Bar, Terminal Navbar, Brutal Mega Menu, Monolith Footer, Boot Sequence Loader and Segmented Progress
 - [ ] 11. **Interactive set** - Command Palette (⌘K), Pixelated Image Trail and Data-Readout Carousel
 - [ ] 12. **Theme presets & switching** - Lock the final palette, add 1–2 alternate presets, and check every component swaps cleanly and passes contrast

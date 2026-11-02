@@ -16,6 +16,10 @@
  *   glitch-heading-b  transform + clip-path anim  host is an absolutely positioned heading copy
  *   wipe-reveal     clip-path animation      no host requirement; stays clipped through its delay
  *   marquee         transform animation      host is a w-max track holding two identical copies
+ *   perspective-scroll  background-position anim  host draws a grid with --perspective-cell sized cells
+ *   crt-flicker     opacity animation        no host requirement
+ *   data-rain       top + transform anim     host is absolutely positioned in a positioned parent
+ *   trace-pulse     stroke-dashoffset anim   host is an SVG path with pathLength 440 and stroke-dasharray 40 400
  * hud-corners, crosshair and hazard-stripes all set background-image, so use at
  * most one of them per element. Overlays are decorative and never take pointer
  * events. Every animation only runs when the user has not asked for reduced motion.
@@ -280,5 +284,82 @@
 @keyframes marquee {
   to {
     transform: translateX(-50%);
+  }
+}
+
+/*
+ * Scrolls a grid toward the viewer by one cell, smoothly and endlessly. Set the
+ * cell size with --perspective-cell. Lines slide; nothing flashes.
+ */
+@utility perspective-scroll {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: perspective-scroll 1.4s linear infinite;
+  }
+}
+
+@keyframes perspective-scroll {
+  to {
+    background-position: 0 var(--perspective-cell, 48px);
+  }
+}
+
+/* Two brief opacity dips (to 0.94 and 0.96) every 4s: 0.5 flashes per second, far under 3 (WCAG 2.3.1). */
+@utility crt-flicker {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: crt-flicker 4s steps(1, end) infinite;
+  }
+}
+
+@keyframes crt-flicker {
+  0%,
+  48%,
+  74%,
+  100% {
+    opacity: 1;
+  }
+  47% {
+    opacity: 0.94;
+  }
+  73% {
+    opacity: 0.96;
+  }
+}
+
+/*
+ * A glyph column falls from above its parent to below it in 28 hard steps, at
+ * any parent height. Tune with --rain-duration and --rain-delay (negative to
+ * start mid-fall). Small glyphs moving, not flashing. Under reduced motion the
+ * column rests at the top.
+ */
+@utility data-rain {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: data-rain var(--rain-duration, 4s) steps(28, end) var(--rain-delay, 0s) infinite;
+  }
+}
+
+@keyframes data-rain {
+  from {
+    top: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    top: 100%;
+    transform: none;
+  }
+}
+
+/* A 40px dash travels along a trace every 2.4s. A smooth slide, no flashing. */
+@utility trace-pulse {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: trace-pulse 2.4s linear infinite;
+  }
+}
+
+@keyframes trace-pulse {
+  from {
+    stroke-dashoffset: 440;
+  }
+  to {
+    stroke-dashoffset: 0;
   }
 }

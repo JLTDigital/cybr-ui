@@ -1,0 +1,80 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { CrtOverlay } from "@/registry/ui/crt-overlay";
+
+export const item = getRegistryItem("crt-overlay");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="crt-overlay" />
+
+<InstallCommand item="crt-overlay" />
+
+<ComponentPreview item="crt-overlay">
+  <CrtOverlay className="flex h-90 w-full items-center justify-center font-mono">
+    <div className="text-center">
+      <p className="font-display text-display-md text-signal [text-shadow:0_0_14px_var(--signal)]">NO CARRIER</p>
+      <p className="mt-3 text-xs tracking-[0.3em] text-label">CH 03 · RETRY IN 05</p>
+    </div>
+    <div className="absolute top-4.5 left-5 border-(length:--border-hair) border-line bg-ground-deep px-2.5 py-1.5 text-xs tracking-label text-label">
+      <span className="text-signal">04</span> / CRT OVERLAY
+    </div>
+    <div className="absolute bottom-4 left-5 bg-ground-deep px-2 py-1 text-caption tracking-label text-label">
+      SCANLINES · VIGNETTE · FLICKER &lt; 3HZ
+    </div>
+  </CrtOverlay>
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    { name: "vignette", type: "boolean", default: "true", description: "Darken the edges toward --ground-void." },
+    { name: "flicker", type: "boolean", default: "true", description: "Two faint opacity dips every 4s on the whole screen, children included." },
+    {
+      name: "...props",
+      type: 'ComponentProps<"div">',
+      description: "Every other native <div> attribute is forwarded; className is merged last with cn(). Give the root a height (or content) and any layout classes; they apply to the children directly.",
+    },
+  ]}
+/>
+
+## Usage
+
+Needs the stylesheets from `@cybr/tokens` and `@cybr/effects`. After the install, import them in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+@import "../styles/cybr-effects.css";
+```
+
+```tsx
+import { CrtOverlay } from "@/components/ui/crt-overlay";
+
+export function SignalLost() {
+  return (
+    <CrtOverlay className="flex min-h-80 items-center justify-center">
+      <p className="font-display text-display-md text-signal">NO CARRIER</p>
+    </CrtOverlay>
+  );
+}
+```
+
+## States
+
+- **Running:** scanlines and vignette over the children; the screen dips in brightness twice every 4s.
+- **No vignette / no flicker:** turn either off with its prop.
+- **Reduced motion:** no flicker; scanlines and vignette stay.
+- Unlike the other backgrounds, the scanlines and vignette sit *above* the children. Children with their own `z-index` above 10 will cover them.
+
+## Accessibility
+
+- The overlays are `aria-hidden` and never take pointer events, so links and buttons inside still work.
+- The flicker is 0.5 dips per second, far under the WCAG 2.3.1 limit of 3 flashes per second, and only dims to 94%.
+- **The flicker cannot be paused.** It stops only under `prefers-reduced-motion` or with `flicker={false}`. Beside other content for more than 5 seconds, that falls short of WCAG 2.2.2 (Pause, Stop, Hide).
+- Scanlines darken the children by up to 45% on alternate lines. Use large `--signal` or `--ink` text, and avoid small `--label` text for anything people must read.

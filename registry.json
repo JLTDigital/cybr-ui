@@ -20,7 +20,7 @@
       "name": "effects",
       "type": "registry:file",
       "title": "CYBR//UI effects",
-      "description": "Opt-in effect utilities (scanlines, grain, HUD corners, crosshair, hazard stripes, glitch, cursor blink, hazard march). Add @import \"../styles/cybr-effects.css\"; after the cybr-tokens import in app/globals.css. Every animation is off under prefers-reduced-motion.",
+      "description": "Opt-in effect utilities (scanlines, grain, HUD corners, crosshair, hazard stripes, glitch, cursor blink, hazard march, glitch heading, wipe reveal, marquee, perspective scroll, CRT flicker, data rain, trace pulse). Add @import \"../styles/cybr-effects.css\"; after the cybr-tokens import in app/globals.css. Every animation is off under prefers-reduced-motion.",
       "files": [
         {
           "path": "styles/effects.css",
@@ -338,6 +338,84 @@
       "files": [
         {
           "path": "registry/ui/logo-wall.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "blueprint-grid",
+      "type": "registry:ui",
+      "title": "Blueprint Grid",
+      "description": "Drafting-paper background: 24px minor and 120px major --label grid lines with optional --ink crosshairs at the major intersections. Static, pure CSS. Requires @cybr/tokens.",
+      "registryDependencies": ["utils", "@cybr/tokens"],
+      "files": [
+        {
+          "path": "registry/ui/blueprint-grid.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "perspective-grid",
+      "type": "registry:ui",
+      "title": "Perspective Grid",
+      "description": "Signal floor grid tilted toward a glowing horizon, scrolling toward the viewer. Pure CSS; static under reduced motion. Requires @cybr/tokens and @cybr/effects.",
+      "registryDependencies": ["utils", "@cybr/tokens", "@cybr/effects"],
+      "files": [
+        {
+          "path": "registry/ui/perspective-grid.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "beton-brut",
+      "type": "registry:ui",
+      "title": "Béton Brut",
+      "description": "Raw-concrete background: SVG noise grain and blotches on --dim, with formwork seams and tie holes. Static, CSS and data-URI SVG. Requires @cybr/tokens.",
+      "registryDependencies": ["utils", "@cybr/tokens"],
+      "files": [
+        {
+          "path": "registry/ui/beton-brut.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "crt-overlay",
+      "type": "registry:ui",
+      "title": "CRT Overlay",
+      "description": "Scanlines, a vignette and a sub-3Hz flicker laid over its children like an old monitor. Pure CSS; the flicker is off under reduced motion. Requires @cybr/tokens and @cybr/effects.",
+      "registryDependencies": ["utils", "@cybr/tokens", "@cybr/effects"],
+      "files": [
+        {
+          "path": "registry/ui/crt-overlay.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "data-rain",
+      "type": "registry:ui",
+      "title": "Data Rain",
+      "description": "Falling --label glyph columns with one --signal column, fading into --ground-void. Pure CSS; static under reduced motion. Requires @cybr/tokens and @cybr/effects.",
+      "registryDependencies": ["utils", "@cybr/tokens", "@cybr/effects"],
+      "files": [
+        {
+          "path": "registry/ui/data-rain.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "exposed-wiring",
+      "type": "registry:ui",
+      "title": "Exposed Wiring",
+      "description": "SVG circuit traces, pads and an IC block, with a --signal pulse running along one trace. Static under reduced motion. Requires @cybr/tokens and @cybr/effects.",
+      "registryDependencies": ["utils", "@cybr/tokens", "@cybr/effects"],
+      "files": [
+        {
+          "path": "registry/ui/exposed-wiring.tsx",
           "type": "registry:ui"
         }
       ]

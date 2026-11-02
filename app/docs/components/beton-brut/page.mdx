@@ -1,0 +1,72 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { BetonBrut } from "@/registry/ui/beton-brut";
+
+export const item = getRegistryItem("beton-brut");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="beton-brut" />
+
+<InstallCommand item="beton-brut" />
+
+<ComponentPreview item="beton-brut">
+  <BetonBrut className="h-90 w-full font-mono">
+    <div className="absolute top-4.5 left-5 border-(length:--border-hair) border-line bg-ground-deep px-2.5 py-1.5 text-xs tracking-label text-label">
+      <span className="text-signal">03</span> / BÉTON BRUT
+    </div>
+    <div className="absolute bottom-4 left-5 bg-ground-deep px-2 py-1 text-caption tracking-label text-label">
+      SVG NOISE · FORMWORK SEAMS · TIE HOLES
+    </div>
+  </BetonBrut>
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    { name: "formwork", type: "boolean", default: "true", description: "Draw 2px --surface formwork seams (424×120 panels) and --bg tie holes. Off leaves bare concrete." },
+    {
+      name: "...props",
+      type: 'ComponentProps<"div">',
+      description: "Every other native <div> attribute is forwarded; className is merged last with cn(). Give the root a height (or content) and any layout classes; they apply to the children directly.",
+    },
+  ]}
+/>
+
+## Usage
+
+Needs the stylesheet from `@cybr/tokens`. After the install, import it in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+```
+
+```tsx
+import { BetonBrut } from "@/components/ui/beton-brut";
+
+export function Bunker() {
+  return (
+    <BetonBrut className="min-h-96 p-10">
+      <p className="max-w-prose bg-ground-deep p-4 font-mono text-ink">Poured in place. No cladding.</p>
+    </BetonBrut>
+  );
+}
+```
+
+## States
+
+- **Default:** grain and blotches on `--dim`, with formwork seams and tie holes.
+- **Bare:** `formwork={false}` leaves only the concrete texture.
+- **Reduced motion:** nothing animates, so there is no change.
+- Both noise layers are data-URI SVGs, so several instances on one page never share SVG ids.
+
+## Accessibility
+
+- The texture is one `aria-hidden` layer behind the children and never takes pointer events.
+- `--dim` is a mid grey and the noise varies it. Body text straight on the concrete needs `--ink` (about 4.7:1 on plain `--dim`; re-check if the palette changes). For small text, set it on a `--ground-deep` panel as in the example.

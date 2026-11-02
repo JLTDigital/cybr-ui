@@ -1,0 +1,73 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { ExposedWiring } from "@/registry/ui/exposed-wiring";
+
+export const item = getRegistryItem("exposed-wiring");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="exposed-wiring" />
+
+<InstallCommand item="exposed-wiring" />
+
+<ComponentPreview item="exposed-wiring">
+  <ExposedWiring className="h-90 w-full font-mono">
+    <div className="absolute top-4.5 left-5 border-(length:--border-hair) border-line bg-ground-deep px-2.5 py-1.5 text-xs tracking-label text-label">
+      <span className="text-signal">06</span> / EXPOSED WIRING
+    </div>
+    <div className="absolute bottom-4 left-5 bg-ground-deep px-2 py-1 text-caption tracking-label text-label">
+      SVG TRACES · SIGNAL PULSE ON ONE PATH
+    </div>
+  </ExposedWiring>
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    {
+      name: "...props",
+      type: 'ComponentProps<"div">',
+      description: "Every native <div> attribute is forwarded; className is merged last with cn(). Give the root a height (or content) and any layout classes; they apply to the children directly.",
+    },
+  ]}
+/>
+
+## Usage
+
+Needs the stylesheets from `@cybr/tokens` and `@cybr/effects`. After the install, import them in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+@import "../styles/cybr-effects.css";
+```
+
+```tsx
+import { ExposedWiring } from "@/components/ui/exposed-wiring";
+
+export function Hardware() {
+  return (
+    <ExposedWiring className="min-h-96 p-10">
+      <h2 className="font-display text-display-md text-ink uppercase">Under the panel</h2>
+    </ExposedWiring>
+  );
+}
+```
+
+## States
+
+- **Running:** a 40px `--signal` dash runs along one trace every 2.4s.
+- **Reduced motion:** the dash rests at the start of its trace.
+- The artwork covers the root and is cropped, never stretched, at any aspect ratio.
+
+## Accessibility
+
+- The SVG is `aria-hidden` (its `IC-07` label included) and never takes pointer events.
+- The pulse is a smooth slide with no flashing.
+- **The motion cannot be paused.** It stops only under `prefers-reduced-motion`. Beside other content for more than 5 seconds, that falls short of WCAG 2.2.2 (Pause, Stop, Hide).
+- Traces are `--dim` on `--bg`, low contrast by design, so `--ink` text on top stays readable.

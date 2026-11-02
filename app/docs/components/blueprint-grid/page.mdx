@@ -1,0 +1,74 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { BlueprintGrid } from "@/registry/ui/blueprint-grid";
+
+export const item = getRegistryItem("blueprint-grid");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="blueprint-grid" />
+
+<InstallCommand item="blueprint-grid" />
+
+<ComponentPreview item="blueprint-grid">
+  <BlueprintGrid className="h-90 w-full font-mono">
+    <div className="absolute top-4.5 left-5 border-(length:--border-hair) border-line bg-ground-deep px-2.5 py-1.5 text-xs tracking-label text-label">
+      <span className="text-signal">01</span> / BLUEPRINT GRID
+    </div>
+    <div className="absolute bottom-4 left-5 bg-ground-deep px-2 py-1 text-caption tracking-label text-label">
+      24PX MINOR · 120PX MAJOR · CROSSHAIRS
+    </div>
+  </BlueprintGrid>
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    { name: "minor", type: "number", default: "24", description: "Minor grid spacing in px. Faint --label lines (12%)." },
+    { name: "major", type: "number", default: "120", description: "Major grid spacing in px. Stronger --label lines (35%)." },
+    { name: "crosshairs", type: "boolean", default: "true", description: "Draw small --ink + marks where the major lines meet." },
+    {
+      name: "...props",
+      type: 'ComponentProps<"div">',
+      description: "Every other native <div> attribute is forwarded; className is merged last with cn(). Give the root a height (or content) and any layout classes; they apply to the children directly.",
+    },
+  ]}
+/>
+
+## Usage
+
+Needs the stylesheet from `@cybr/tokens`. After the install, import it in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+```
+
+```tsx
+import { BlueprintGrid } from "@/components/ui/blueprint-grid";
+
+export function Hero() {
+  return (
+    <BlueprintGrid className="flex min-h-96 items-center justify-center">
+      <h1 className="font-display text-display-lg text-ink uppercase">Drafted</h1>
+    </BlueprintGrid>
+  );
+}
+```
+
+## States
+
+- **Default:** minor and major grids on `--ground-deep`, with crosshairs on the major intersections.
+- **No crosshairs:** `crosshairs={false}` leaves just the two grids.
+- **Reduced motion:** nothing animates, so there is no change.
+- The artboard's navy ground maps to `--ground-deep`; colours follow the tokens, not the mockup.
+
+## Accessibility
+
+- The grid is one `aria-hidden` layer behind the children and never takes pointer events.
+- Grid lines are faint `--label` mixes, so text on top keeps the contrast of `--ground-deep`. Use `--ink` or `--label` for text.
