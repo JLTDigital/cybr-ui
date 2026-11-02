@@ -1,0 +1,116 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { Replay } from "@/app/docs/_components/replay";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { TelemetryCounter } from "@/registry/ui/telemetry-counter";
+
+export const item = getRegistryItem("telemetry-counter");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="telemetry-counter" />
+
+<InstallCommand item="telemetry-counter" />
+
+<ComponentPreview item="telemetry-counter">
+  <Replay>
+    <dl className="mx-auto flex w-full max-w-sm flex-col">
+      <div className="flex items-baseline justify-between border-b-(length:--border-hair) border-line py-1.5">
+        <dt className="text-[0.6875rem] tracking-label text-label">REQ / S</dt>
+        <dd><TelemetryCounter className="text-[1.875rem]" value={1284} /></dd>
+      </div>
+      <div className="flex items-baseline justify-between border-b-(length:--border-hair) border-line py-1.5">
+        <dt className="text-[0.6875rem] tracking-label text-label">LATENCY MS</dt>
+        <dd><TelemetryCounter className="text-[1.875rem]" value={12.4} decimals={1} /></dd>
+      </div>
+      <div className="flex items-baseline justify-between border-b-(length:--border-hair) border-line py-1.5">
+        <dt className="text-[0.6875rem] tracking-label text-label">NODES ONLINE</dt>
+        <dd><TelemetryCounter className="text-[1.875rem]" value={64} minDigits={3} /></dd>
+      </div>
+    </dl>
+  </Replay>
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    {
+      name: "value",
+      type: 'number',
+      description: "The final value. The counter animates from 0 to here.",
+    },
+    {
+      name: "decimals",
+      type: 'number',
+      default: '0',
+      description: "Fraction digits, fixed for every frame so the width does not jump.",
+    },
+    {
+      name: "minDigits",
+      type: 'number',
+      default: '1',
+      description: "Minimum integer digits, zero-padded (3 shows 64 as 064).",
+    },
+    {
+      name: "locale",
+      type: 'string',
+      default: '"en-US"',
+      description: "Intl.NumberFormat locale for grouping and the decimal mark. A fixed default keeps server and client output identical.",
+    },
+    {
+      name: "duration",
+      type: 'number',
+      default: '2250',
+      description: "Count length in ms, with an ease-out cubic curve.",
+    },
+    {
+      name: "className",
+      type: 'string',
+      description: "Extra classes, merged after the defaults with cn().",
+    },
+    {
+      name: "...props",
+      type: 'Omit<ComponentProps<"span">, "children">',
+      description: "Every other native <span> attribute and ref is forwarded.",
+    },
+  ]}
+/>
+
+## Usage
+
+Needs the stylesheet from `@cybr/tokens`, and `@cybr/use-reduced-motion` arrives with it. After the install, import the tokens in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+```
+
+```tsx
+import { TelemetryCounter } from "@/components/ui/telemetry-counter";
+
+export function Throughput() {
+  return <TelemetryCounter className="text-3xl" value={1284} />;
+}
+```
+
+## Behaviour
+
+- **Trigger:** starts the first time it scrolls into view, then never again.
+- **Timing:** counts from 0 to `value` over `duration` (2250ms by default), easing out, and lands exactly on `value`.
+- **Waiting:** shows 0, formatted, until it is in view.
+- **Finished:** shows `value`. A later change to `value` shows the new value at once.
+- **Static:** Before hydration, without JavaScript and under `prefers-reduced-motion`, it renders the final value. On the client it can show the final value for one frame before resetting to 0.
+- **Not a number:** a non-finite `value` (`NaN`, `Infinity`) is formatted as-is and never animates.
+- **Type:** display font with tabular figures, so digits do not shift while counting. Set the size with `className`.
+
+## Accessibility
+
+- The final value sits in a visually hidden copy; the counting digits are `aria-hidden`. Screen readers read the real number once.
+- The count runs once and changes digits, not colours, so it does not flash (WCAG 2.3.1).
+- Under `prefers-reduced-motion` it shows the final value with no count.
+- It is a plain number. Give it a visible label, as in the `dl` above, so the figure has meaning.
+- It inherits colour, so keep the text at 4.5:1 or above against its background.

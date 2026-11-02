@@ -1,0 +1,81 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { GlitchHeading } from "@/registry/ui/glitch-heading";
+
+export const item = getRegistryItem("glitch-heading");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="glitch-heading" />
+
+<InstallCommand item="glitch-heading" />
+
+<ComponentPreview item="glitch-heading">
+  <GlitchHeading className="text-[3.125rem]">Signal lost</GlitchHeading>
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    {
+      name: "as",
+      type: '"h1" | "h2" | "h3" | "h4" | "h5" | "h6"',
+      default: '"h2"',
+      description: "Heading level. Pick the one that fits your document outline; the look does not change.",
+    },
+    {
+      name: "children",
+      type: 'ReactNode',
+      description: "Heading text. It is rendered once visibly and twice more as aria-hidden slice copies, so keep it to plain text or inline elements.",
+    },
+    {
+      name: "className",
+      type: 'string',
+      description: "Extra classes, merged after the defaults with cn().",
+    },
+    {
+      name: "...props",
+      type: 'ComponentProps<"h2">',
+      description: "Every other native heading attribute and ref is forwarded.",
+    },
+  ]}
+/>
+
+## Usage
+
+Needs both stylesheets from `@cybr/tokens` and `@cybr/effects`. After the install, import them in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+@import "../styles/cybr-effects.css";
+```
+
+```tsx
+import { GlitchHeading } from "@/components/ui/glitch-heading";
+
+export function Outage() {
+  return <GlitchHeading as="h1">Signal lost</GlitchHeading>;
+}
+```
+
+## Behaviour
+
+- **Trigger:** always on. It is a CSS animation, so it needs no JavaScript and is server-safe.
+- **Timing:** a 3.2s cycle. For about 300ms near the end of each cycle, a `--signal` copy and a `--neon-2` copy each jump through three clipped slices offset up to 7px sideways. The rest of the cycle shows the plain heading.
+- **Type:** display font, uppercase, `text-display-md`, line-height 0.9, `--ink`. Override the size with `className`.
+- **Static:** under `prefers-reduced-motion` the slice copies never render.
+
+## Accessibility
+
+- The slice copies are `aria-hidden` spans, not `::before`/`::after` content, so the heading text is read once.
+- `as` sets the real heading level; the default is `h2`.
+- Each burst is about 300ms once every 3.2s, so no second has more than three flashes (WCAG 2.3.1). It is never continuous.
+- Use at most one glitch element per viewport. This page shows a single instance.
+- Under `prefers-reduced-motion` it is a plain static heading.
+- `--ink` on `--bg` is 14.63:1. If you override colours with `className`, keep text at 4.5:1 or above.

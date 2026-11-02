@@ -1,0 +1,93 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { Replay } from "@/app/docs/_components/replay";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { SteppedWipeReveal } from "@/registry/ui/stepped-wipe-reveal";
+
+export const item = getRegistryItem("stepped-wipe-reveal");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="stepped-wipe-reveal" />
+
+<InstallCommand item="stepped-wipe-reveal" />
+
+<ComponentPreview item="stepped-wipe-reveal">
+  <Replay>
+    <p className="text-center font-display text-[2.75rem] leading-[0.92] uppercase text-ink">
+      <SteppedWipeReveal>Raw.</SteppedWipeReveal>
+      <SteppedWipeReveal delay={300}>Loud.</SteppedWipeReveal>
+      <SteppedWipeReveal delay={600} className="text-signal">Lit.</SteppedWipeReveal>
+    </p>
+  </Replay>
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    {
+      name: "delay",
+      type: 'number',
+      default: '0',
+      description: "Milliseconds to wait, after it comes into view, before the wipe starts. Use 300ms steps to stagger lines.",
+    },
+    {
+      name: "children",
+      type: 'ReactNode',
+      description: "The content to reveal. It is always in the DOM.",
+    },
+    {
+      name: "className",
+      type: 'string',
+      description: "Extra classes, merged after the defaults with cn().",
+    },
+    {
+      name: "...props",
+      type: 'ComponentProps<"span">',
+      description: "Every other native <span> attribute and ref is forwarded.",
+    },
+  ]}
+/>
+
+## Usage
+
+Needs both stylesheets from `@cybr/tokens` and `@cybr/effects`, and `@cybr/use-reduced-motion` arrives with them. After the install, import them in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+@import "../styles/cybr-effects.css";
+```
+
+```tsx
+import { SteppedWipeReveal } from "@/components/ui/stepped-wipe-reveal";
+
+export function Slogan() {
+  return (
+    <h2 className="font-display text-5xl uppercase">
+      <SteppedWipeReveal>Raw.</SteppedWipeReveal>
+      <SteppedWipeReveal delay={300}>Loud.</SteppedWipeReveal>
+    </h2>
+  );
+}
+```
+
+## Behaviour
+
+- **Trigger:** wipes in once, the first time it scrolls into view.
+- **Timing:** a left-to-right `clip-path` wipe in 12 hard steps over 1080ms, after `delay`.
+- **Waiting:** clipped away until it is in view and its delay has passed.
+- **Finished:** fully visible, and stays that way.
+- **Static:** Before hydration, without JavaScript and under `prefers-reduced-motion`, it renders the content fully visible. On the client a line already in view can show for one frame before it clips and wipes.
+- **Layout:** renders a block `span`, so each reveal is its own line. Typography comes from the parent or `className`.
+
+## Accessibility
+
+- The content is always in the DOM and only visually clipped, so screen readers read it straight away, without waiting for the wipe.
+- The wipe runs once in 12 steps and never repeats, so it does not flash (WCAG 2.3.1).
+- Under `prefers-reduced-motion` nothing is clipped and no wipe runs.
+- It inherits colour. `--signal` text needs `--bg` or a large size on `--surface`, as in the preview's “Lit.”.

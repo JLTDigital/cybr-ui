@@ -1,0 +1,83 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { Replay } from "@/app/docs/_components/replay";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { DecryptText } from "@/registry/ui/decrypt-text";
+
+export const item = getRegistryItem("decrypt-text");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="decrypt-text" />
+
+<InstallCommand item="decrypt-text" />
+
+<ComponentPreview item="decrypt-text">
+  <Replay>
+    <p className="text-center font-display text-[4rem] leading-none tracking-[0.02em] text-ink">
+      <DecryptText text="ACCESS GRANTED" />
+    </p>
+  </Replay>
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    {
+      name: "text",
+      type: 'string',
+      description: "The real string. Shown scrambled, then resolved, and always exposed to screen readers as-is.",
+    },
+    {
+      name: "className",
+      type: 'string',
+      description: "Extra classes, merged after the defaults with cn().",
+    },
+    {
+      name: "...props",
+      type: 'Omit<ComponentProps<"span">, "children">',
+      description: "Every other native <span> attribute and ref is forwarded.",
+    },
+  ]}
+/>
+
+## Usage
+
+Needs the stylesheet from `@cybr/tokens`, and `@cybr/use-reduced-motion` arrives with it. After the install, import the tokens in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+```
+
+```tsx
+import { DecryptText } from "@/components/ui/decrypt-text";
+
+export function Banner() {
+  return (
+    <h1 className="font-display text-6xl uppercase">
+      <DecryptText text="ACCESS GRANTED" />
+    </h1>
+  );
+}
+```
+
+## Behaviour
+
+- **Trigger:** runs once when it mounts. Change `text` to run it again.
+- **Timing:** every 50ms each unresolved character shows a glyph from `#%&@$*!<>/\|=+01ΞΣ`. One more character resolves every 125ms, left to right, so 14 characters take about 1.75s. Spaces never scramble.
+- **Finished:** the real string, static.
+- **Static:** Before hydration, without JavaScript and under `prefers-reduced-motion`, it renders the real string with no scramble. On the client it can show the real string for one tick before the scramble starts.
+- **Typography:** inherits font, size and colour from its parent, so it works inside any heading or label.
+
+## Accessibility
+
+- The real string sits in a visually hidden copy; the scrambling copy is `aria-hidden`. Screen readers read `text` once and never hear glyphs.
+- The scramble runs once, for under two seconds, and swaps glyph shapes rather than colours, so it does not produce repeated flashes (WCAG 2.3.1).
+- Under `prefers-reduced-motion` no scramble runs.
+- Glyph widths vary in proportional fonts, so the line can shift slightly while it resolves. Use a monospace font if that matters to your layout.
+- It inherits colour, so keep the text at 4.5:1 or above against its background.

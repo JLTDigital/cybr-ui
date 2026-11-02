@@ -30,6 +30,18 @@
       ]
     },
     {
+      "name": "use-reduced-motion",
+      "type": "registry:lib",
+      "title": "useReducedMotion",
+      "description": "React hook that reports prefers-reduced-motion. Static-first: returns true on the server and during hydration, so JS animation never starts before the real preference is known.",
+      "files": [
+        {
+          "path": "lib/use-reduced-motion.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
       "name": "hard-offset-button",
       "type": "registry:ui",
       "title": "Hard-Offset Button",
@@ -90,6 +102,71 @@
       "files": [
         {
           "path": "registry/ui/hazard-button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "decrypt-text",
+      "type": "registry:ui",
+      "title": "Decrypt Text",
+      "description": "Random glyphs that resolve left to right into the real string once on mount; screen readers get the real string. Requires @cybr/tokens.",
+      "registryDependencies": ["utils", "@cybr/tokens", "@cybr/use-reduced-motion"],
+      "files": [
+        {
+          "path": "registry/ui/decrypt-text.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "typewriter-terminal",
+      "type": "registry:ui",
+      "title": "Typewriter Terminal",
+      "description": "Terminal panel that types its lines out once on mount, with optional prompt lines and a blinking block cursor. Requires @cybr/tokens and @cybr/effects.",
+      "registryDependencies": ["utils", "@cybr/tokens", "@cybr/effects", "@cybr/use-reduced-motion"],
+      "files": [
+        {
+          "path": "registry/ui/typewriter-terminal.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "glitch-heading",
+      "type": "registry:ui",
+      "title": "Glitch Heading",
+      "description": "Display heading that tears into signal and neon slices in a short burst every 3.2s, never continuously. Requires @cybr/tokens and @cybr/effects.",
+      "registryDependencies": ["utils", "@cybr/tokens", "@cybr/effects"],
+      "files": [
+        {
+          "path": "registry/ui/glitch-heading.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "telemetry-counter",
+      "type": "registry:ui",
+      "title": "Telemetry Counter",
+      "description": "Tabular-figure number that counts up from 0 the first time it scrolls into view. Requires @cybr/tokens.",
+      "registryDependencies": ["utils", "@cybr/tokens", "@cybr/use-reduced-motion"],
+      "files": [
+        {
+          "path": "registry/ui/telemetry-counter.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "stepped-wipe-reveal",
+      "type": "registry:ui",
+      "title": "Stepped Wipe Reveal",
+      "description": "Block line that wipes in left to right on 12 hard steps the first time it scrolls into view, with an optional stagger delay. Requires @cybr/tokens and @cybr/effects.",
+      "registryDependencies": ["utils", "@cybr/tokens", "@cybr/effects", "@cybr/use-reduced-motion"],
+      "files": [
+        {
+          "path": "registry/ui/stepped-wipe-reveal.tsx",
           "type": "registry:ui"
         }
       ]

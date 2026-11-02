@@ -10,7 +10,7 @@
 - [x] 3. **First component end-to-end (Hard-Offset Button)** - Build it, add it to `registry.json`, run `shadcn build`, and confirm `npx shadcn add` installs it into a clean Next.js app
 - [x] 4. **Docs component page template** - Live preview, props table, code tab, copy-install and copy-source buttons, and accessibility notes, reused for every component
 - [x] 5. **Buttons set** - Glitch, HUD Bracket, Terminal and Hazard buttons, plus documented idle/hover/pressed/disabled states
-- [ ] 6. **Text & Motion set** - Decrypt Text, Typewriter Terminal, Glitch Heading, Telemetry Counter (counts on scroll into view) and Stepped Wipe Reveal
+- [x] 6. **Text & Motion set** - Decrypt Text, Typewriter Terminal, Glitch Heading, Telemetry Counter (counts on scroll into view) and Stepped Wipe Reveal
 - [ ] 7. **Layout & Cards set** - Brutal Bento Grid, Spec Card, Access/ID Card, Hardware Panel, HUD Image Frame, Neon Edge Card, Classified Card and Stat Band
 - [ ] 8. **Accessible primitives decision + Tooltip & Marquee set** - Pick Radix or Base UI, then HUD Tooltip, Classified FAQ Accordion, Ticker Marquee, Warning Tape and Logo Wall
 - [ ] 9. **Backgrounds set** - Blueprint Grid, Perspective Grid, Béton Brut, CRT Overlay, Data Rain and Exposed Wiring, all in CSS/SVG

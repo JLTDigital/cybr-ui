@@ -12,6 +12,9 @@
  *   glitch-slice-b  transform animation      host is an absolutely positioned label copy
  *   cursor-blink    opacity animation        no host requirement
  *   hazard-march    background-position anim pair with hazard-stripes and a fixed background-size
+ *   glitch-heading-a  transform + clip-path anim  host is an absolutely positioned heading copy
+ *   glitch-heading-b  transform + clip-path anim  host is an absolutely positioned heading copy
+ *   wipe-reveal     clip-path animation      no host requirement; stays clipped through its delay
  * hud-corners, crosshair and hazard-stripes all set background-image, so use at
  * most one of them per element. Overlays are decorative and never take pointer
  * events. Every animation only runs when the user has not asked for reduced motion.
@@ -181,5 +184,82 @@
 @keyframes hazard-march {
   to {
     background-position: 34px 0;
+  }
+}
+
+/*
+ * Heading burst: each copy jumps through three clipped slices in ~300ms, once
+ * every 3.2s, and is clipped away the rest of the cycle. That is at most three
+ * flashes in any one second (WCAG 2.3.1).
+ */
+@utility glitch-heading-a {
+  clip-path: inset(0 0 100% 0);
+  @media (prefers-reduced-motion: no-preference) {
+    animation: glitch-heading-a 3.2s steps(1, end) infinite;
+  }
+}
+
+@utility glitch-heading-b {
+  clip-path: inset(0 0 100% 0);
+  @media (prefers-reduced-motion: no-preference) {
+    animation: glitch-heading-b 3.2s steps(1, end) infinite;
+  }
+}
+
+@keyframes glitch-heading-a {
+  0%,
+  84%,
+  100% {
+    transform: none;
+    clip-path: inset(0 0 100% 0);
+  }
+  86% {
+    transform: translate(-7px, 0);
+    clip-path: inset(8% 0 62% 0);
+  }
+  89% {
+    transform: translate(6px, 0);
+    clip-path: inset(52% 0 22% 0);
+  }
+  92% {
+    transform: translate(-3px, 0);
+    clip-path: inset(30% 0 48% 0);
+  }
+}
+
+@keyframes glitch-heading-b {
+  0%,
+  85%,
+  100% {
+    transform: none;
+    clip-path: inset(0 0 100% 0);
+  }
+  87% {
+    transform: translate(7px, 0);
+    clip-path: inset(64% 0 6% 0);
+  }
+  90% {
+    transform: translate(-5px, 0);
+    clip-path: inset(18% 0 58% 0);
+  }
+  93% {
+    transform: translate(4px, 0);
+    clip-path: inset(72% 0 4% 0);
+  }
+}
+
+/* A one-shot left-to-right wipe in 12 hard steps. Fill mode keeps it clipped during its delay. */
+@utility wipe-reveal {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: wipe-reveal 1080ms steps(12, end) both;
+  }
+}
+
+@keyframes wipe-reveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
   }
 }

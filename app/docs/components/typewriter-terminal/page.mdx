@@ -1,0 +1,105 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { Replay } from "@/app/docs/_components/replay";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { TypewriterTerminal } from "@/registry/ui/typewriter-terminal";
+
+export const item = getRegistryItem("typewriter-terminal");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="typewriter-terminal" />
+
+<InstallCommand item="typewriter-terminal" />
+
+<ComponentPreview item="typewriter-terminal">
+  <Replay>
+    <TypewriterTerminal
+      className="mx-auto max-w-xl"
+      lines={[
+        { text: "boot --style=brutal", prompt: true },
+        { text: "mounting /dev/concrete ...... ok" },
+        { text: "loading neon.drv ............ ok" },
+        { text: "_ready", prompt: true },
+      ]}
+    />
+  </Replay>
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    {
+      name: "lines",
+      type: '{ text: string; prompt?: boolean }[]',
+      description: "Lines in order. Prompt lines get promptSymbol in front and render in --signal; other lines render in --ink.",
+    },
+    {
+      name: "promptSymbol",
+      type: 'string',
+      default: '"> "',
+      description: "Prefix for prompt lines. It is typed out as part of the line.",
+    },
+    {
+      name: "charsPerSecond",
+      type: 'number',
+      default: '40',
+      description: "Typing speed across all lines. Values that are not finite or not above 0 fall back to 40.",
+    },
+    {
+      name: "className",
+      type: 'string',
+      description: "Extra classes, merged after the defaults with cn().",
+    },
+    {
+      name: "...props",
+      type: 'Omit<ComponentProps<"div">, "children">',
+      description: "Every other native <div> attribute and ref is forwarded.",
+    },
+  ]}
+/>
+
+## Usage
+
+Needs both stylesheets from `@cybr/tokens` and `@cybr/effects`, and `@cybr/use-reduced-motion` arrives with them. After the install, import them in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+@import "../styles/cybr-effects.css";
+```
+
+```tsx
+import { TypewriterTerminal } from "@/components/ui/typewriter-terminal";
+
+export function Boot() {
+  return (
+    <TypewriterTerminal
+      lines={[
+        { text: "boot --style=brutal", prompt: true },
+        { text: "mounting /dev/concrete ...... ok" },
+      ]}
+    />
+  );
+}
+```
+
+## Behaviour
+
+- **Trigger:** types once when it mounts. Changing the lines or speed types them again.
+- **Timing:** advances every 50ms at `charsPerSecond` (40 by default, so 2 characters a tick), line by line.
+- **Cursor:** a 10×18px `--signal` block that blinks once a second after the line being typed, then stays on the last line.
+- **Finished:** every line shown, cursor blinking on the last line.
+- **Static:** Before hydration, without JavaScript and under `prefers-reduced-motion`, it renders every line in full with the cursor on the last line. On the client it can show the full text for one tick before typing starts.
+- **Empty:** an empty `lines` array renders the panel with one empty line and the cursor.
+
+## Accessibility
+
+- A visually hidden copy holds every full line, prompt symbols included. The typed view and the cursor are `aria-hidden`, so screen readers read the whole transcript once instead of partial lines.
+- Typing runs once. The cursor blinks at 1Hz over a small area, under the 3-flashes-per-second limit (WCAG 2.3.1).
+- Under `prefers-reduced-motion` nothing types and the cursor is a solid block.
+- `--ink` on `--ground-void` is 18.09:1 and `--signal` on `--ground-void` is 5.74:1. If you override colours with `className`, keep text at 4.5:1 or above.
