@@ -91,17 +91,24 @@ Package manager: npm (`package-lock.json`).
 - Registry build: `npm run registry:build` (`shadcn build`, writes `public/r/`)
 - Production server: `npm run start` (after `npm run build`)
 - Lint: `npm run lint`
-- Typecheck: `npx tsc --noEmit` (no script; `npm run build` also typechecks)
+- Typecheck: `npm run typecheck` (`tsc --noEmit`)
+- Verify: `npm run verify` (lint, typecheck, then `npm run build`)
+- Browser tests: `npm run test:browser` (Playwright, Chromium; run
+  `npm run build` first and `npx playwright install chromium` once). Starts
+  `next start` on port 3100, so it never reuses a `next dev` server on 3000.
 
-No test command is configured, so tests are not a gate yet. No combined Verify
-command exists yet.
+No unit test command is configured, so unit tests are not a gate yet. Run
+`/tests` to add a unit test runner and update this section.
 
-Testing is opt-in. Run `/tests` to add a unit test runner and update this
-section with the real test commands.
+Browser tests live in `e2e/`: smoke, visual snapshots, reduced-motion and
+keyboard checks. Visual snapshots are Linux-only and are skipped on other
+platforms, so locally they report as skipped. CI (`.github/workflows/ci.yml`)
+runs Verify then Browser tests on every pull request and push to `main`.
 
-Browser testing is also opt-in. Run `/tests browser` to add or normalize a
-browser harness and document its exact command as `Browser tests`. Check and
-Continuous Mode can then reuse it without installing tooling mid-feature.
+To refresh visual baselines after an intended UI change, run the "Update
+snapshots" workflow on GitHub (Actions tab, on your branch), download its
+`visual-baselines` artifact, and commit the files into
+`e2e/visual.spec.ts-snapshots/`.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

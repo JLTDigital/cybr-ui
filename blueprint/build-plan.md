@@ -18,7 +18,7 @@
 - [x] 11. **Interactive set** - Command Palette (⌘K), Pixelated Image Trail and Data-Readout Carousel
 - [x] 12. **Theme presets & switching** - Lock the final palette, add 1–2 alternate presets, and check every component swaps cleanly and passes contrast
 - [x] 13. **Docs site built with the library** - Landing page, component index and search, using its own components as the showcase
-- [ ] 14. **Quality gates in CI** - Lint, type-check, registry build, Playwright visual snapshots and reduced-motion and keyboard checks on every PR
+- [x] 14. **Quality gates in CI** - Lint, type-check, registry build, Playwright visual snapshots and reduced-motion and keyboard checks on every PR
 - [ ] 15. **Launch** - Choose the name and domain, set the licence, deploy to Vercel, and publish the README and install docs
 
 ## Later (post-MVP, not in v1)

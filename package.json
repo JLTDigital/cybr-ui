@@ -7,7 +7,10 @@
     "build": "npm run registry:build && next build",
     "start": "next start",
     "lint": "eslint",
-    "registry:build": "shadcn build"
+    "typecheck": "tsc --noEmit",
+    "registry:build": "shadcn build",
+    "verify": "npm run lint && npm run typecheck && npm run build",
+    "test:browser": "playwright test"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
@@ -23,6 +26,7 @@
     "tailwind-merge": "^3.7.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.1",
     "@tailwindcss/turbopack": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
