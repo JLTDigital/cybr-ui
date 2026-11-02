@@ -1,0 +1,17 @@
+/* Docs-only: maps Shiki's css-variables theme onto the token palette. */
+.shiki {
+  --shiki-foreground: var(--ink);
+  --shiki-background: var(--ground-void);
+  --shiki-token-constant: var(--neon-2);
+  --shiki-token-string: var(--neon-2);
+  --shiki-token-string-expression: var(--neon-2);
+  --shiki-token-comment: var(--label);
+  --shiki-token-keyword: var(--signal);
+  --shiki-token-parameter: var(--ink);
+  --shiki-token-function: var(--ink);
+  --shiki-token-punctuation: var(--label);
+  --shiki-token-link: var(--signal);
+  --shiki-token-inserted: var(--neon-2);
+  --shiki-token-deleted: var(--signal);
+  --shiki-token-changed: var(--label);
+}

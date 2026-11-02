@@ -8,7 +8,7 @@
 - [x] 1. **Design tokens & fonts** - Provisional palette, type scale, borders, hard-shadow offsets and motion timings as CSS variables + Tailwind v4 theme, with Archivo Black + JetBrains Mono via `next/font`
 - [x] 2. **Shared effects & motion helpers** - Reusable scanline, grain, HUD-corner, crosshair, hazard-stripe and glitch utilities, plus `cn()` and a `useReducedMotion` fallback
 - [x] 3. **First component end-to-end (Hard-Offset Button)** - Build it, add it to `registry.json`, run `shadcn build`, and confirm `npx shadcn add` installs it into a clean Next.js app
-- [ ] 4. **Docs component page template** - Live preview, props table, code tab, copy-install and copy-source buttons, and accessibility notes, reused for every component
+- [x] 4. **Docs component page template** - Live preview, props table, code tab, copy-install and copy-source buttons, and accessibility notes, reused for every component
 - [ ] 5. **Buttons set** - Glitch, HUD Bracket, Terminal and Hazard buttons, plus documented idle/hover/pressed/disabled states
 - [ ] 6. **Text & Motion set** - Decrypt Text, Typewriter Terminal, Glitch Heading, Telemetry Counter (counts on scroll into view) and Stepped Wipe Reveal
 - [ ] 7. **Layout & Cards set** - Brutal Bento Grid, Spec Card, Access/ID Card, Hardware Panel, HUD Image Frame, Neon Edge Card, Classified Card and Stat Band

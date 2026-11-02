@@ -1,5 +1,7 @@
 // Temporary token specimen; Feature 13 replaces it with the real landing page.
 
+import Link from "next/link";
+
 import { MotionStatus } from "@/app/_components/motion-status";
 import { cn } from "@/lib/utils";
 import { HardOffsetButton } from "@/registry/ui/hard-offset-button";
@@ -199,6 +201,12 @@ export default function Home() {
 
       <section className="flex flex-col gap-6">
         <SectionLabel index="08" title="Button" />
+        <Link
+          href="/docs/components/hard-offset-button"
+          className="self-start text-xs tracking-button uppercase text-signal underline underline-offset-4 focus-visible:outline-(length:--focus-width) focus-visible:outline-offset-2 focus-visible:outline-solid focus-visible:outline-signal"
+        >
+          Hard-Offset Button docs →
+        </Link>
         <div className="flex flex-wrap items-end gap-12">
           <div className="flex flex-col items-center gap-4">
             <HardOffsetButton>Deploy now</HardOffsetButton>

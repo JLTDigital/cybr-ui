@@ -1,0 +1,70 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { HardOffsetButton } from "@/registry/ui/hard-offset-button";
+
+export const item = getRegistryItem("hard-offset-button");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="hard-offset-button" />
+
+<InstallCommand item="hard-offset-button" />
+
+<ComponentPreview item="hard-offset-button">
+  <div className="flex flex-wrap items-center justify-center gap-12">
+    <HardOffsetButton>Deploy now</HardOffsetButton>
+    <HardOffsetButton disabled>Offline</HardOffsetButton>
+  </div>
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    {
+      name: "type",
+      type: '"button" | "submit" | "reset"',
+      default: '"button"',
+      description: "Native button type. Defaults to button so it never submits a form by accident.",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "Extra classes, merged after the defaults with cn().",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      default: "false",
+      description: "Native disabled. Drops the shadow and shows the dashed offline style.",
+    },
+    {
+      name: "...props",
+      type: 'ComponentProps<"button">',
+      description: "Every other native <button> attribute, ref and event handler is forwarded.",
+    },
+  ]}
+/>
+
+## Usage
+
+```tsx
+import { HardOffsetButton } from "@/components/ui/hard-offset-button";
+
+export function Cta() {
+  return <HardOffsetButton onClick={() => console.log("deploy")}>Deploy now</HardOffsetButton>;
+}
+```
+
+## Accessibility
+
+- Renders a native `<button>`, so keyboard activation, focus and the button role come for free.
+- `type` defaults to `button`, so it never submits a surrounding form unless you pass `type="submit"`.
+- Keyboard focus shows a bold `--signal` outline offset from the shadow.
+- `disabled` uses the native attribute: it leaves the tab order and is announced as unavailable.
+- Under `prefers-reduced-motion` the hover and press offset still apply, but without a transition.
+- Label text is `--ground-deep` on `--signal`. If you override colours with `className`, keep text contrast at 4.5:1 or above.
