@@ -1,0 +1,86 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { HudBracketButton } from "@/registry/ui/hud-bracket-button";
+
+export const item = getRegistryItem("hud-bracket-button");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="hud-bracket-button" />
+
+<InstallCommand item="hud-bracket-button" />
+
+<ComponentPreview item="hud-bracket-button">
+  <div className="flex flex-wrap items-center justify-center gap-12">
+    <HudBracketButton>Target</HudBracketButton>
+    <HudBracketButton disabled>Offline</HudBracketButton>
+  </div>
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    {
+      name: "type",
+      type: '"button" | "submit" | "reset"',
+      default: '"button"',
+      description: "Native button type. Defaults to button so it never submits a form by accident.",
+    },
+    {
+      name: "children",
+      type: "ReactNode",
+      description: "Label text.",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "Extra classes, merged after the defaults with cn().",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      default: "false",
+      description: "Native disabled. Shows the dashed offline style; brackets turn --dim and stay put.",
+    },
+    {
+      name: "...props",
+      type: 'ComponentProps<"button">',
+      description: "Every other native <button> attribute, ref and event handler is forwarded.",
+    },
+  ]}
+/>
+
+## Usage
+
+Needs the stylesheet from `@cybr/tokens`. After the install, import it in `app/globals.css` after `@import "tailwindcss";`.
+
+```tsx
+import { HudBracketButton } from "@/components/ui/hud-bracket-button";
+
+export function Action() {
+  return <HudBracketButton onClick={() => console.log("lock")}>Target</HudBracketButton>;
+}
+```
+
+## States
+
+- **Idle:** `--ground-deep` fill, `--ink` label, 1px `--line` border, four 12px `--signal` corner brackets sitting 6px outside the box.
+- **Hover:** label turns `--signal` and the brackets snap out a further 5px on `steps(3)` over 120ms.
+- **Pressed:** the button presses in 3px (`--offset-hard-hover`) on both axes, without a transition.
+- **Disabled:** `--surface` fill, `--label` text, 2px dashed `--dim` border; brackets turn `--dim` and do not move.
+- **Focus-visible:** 3px solid `--signal` outline, offset 6px.
+
+## Accessibility
+
+- Renders a native `<button>`, so keyboard activation, focus and the button role come for free.
+- `type` defaults to `button`, so it never submits a surrounding form unless you pass `type="submit"`.
+- Keyboard focus shows a bold `--signal` outline offset from the button.
+- `disabled` uses the native attribute: it leaves the tab order and is announced as unavailable. Hover and press effects are switched off while disabled.
+- The four brackets are `aria-hidden` decoration; the accessible name is the label.
+- Under `prefers-reduced-motion` the brackets still move on hover, but jump instead of stepping.
+- Label text is `--ink` (and `--signal` on hover) on `--ground-deep`. If you override colours with `className`, keep text contrast at 4.5:1 or above.

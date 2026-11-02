@@ -8,9 +8,13 @@
  *   crosshair       background-image         no host requirement
  *   hazard-stripes  background-image         no host requirement
  *   glitch          text-shadow + animation  no host requirement
+ *   glitch-slice-a  transform animation      host is an absolutely positioned label copy
+ *   glitch-slice-b  transform animation      host is an absolutely positioned label copy
+ *   cursor-blink    opacity animation        no host requirement
+ *   hazard-march    background-position anim pair with hazard-stripes and a fixed background-size
  * hud-corners, crosshair and hazard-stripes all set background-image, so use at
  * most one of them per element. Overlays are decorative and never take pointer
- * events. Glitch only animates when the user has not asked for reduced motion.
+ * events. Every animation only runs when the user has not asked for reduced motion.
  */
 
 @utility scanlines {
@@ -99,5 +103,83 @@
   }
   6% {
     text-shadow: -1px 0 var(--signal), 1px 0 var(--neon-2);
+  }
+}
+
+/*
+ * Slice jitter for two clipped label copies. Like glitch, it is a ~400ms burst
+ * every 3s (13% of the cycle), so it stays under 3 flashes per second.
+ */
+@utility glitch-slice-a {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: glitch-slice-a 3s steps(1, end) infinite;
+  }
+}
+
+@utility glitch-slice-b {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: glitch-slice-b 3s steps(1, end) infinite;
+  }
+}
+
+@keyframes glitch-slice-a {
+  0% {
+    transform: translate(-4px, 0);
+  }
+  4.4% {
+    transform: translate(3px, -1px);
+  }
+  8.8% {
+    transform: translate(-1px, 1px);
+  }
+  13.3%,
+  100% {
+    transform: none;
+  }
+}
+
+@keyframes glitch-slice-b {
+  0% {
+    transform: translate(4px, 0);
+  }
+  4.4% {
+    transform: translate(-3px, 1px);
+  }
+  8.8% {
+    transform: translate(1px, -1px);
+  }
+  13.3%,
+  100% {
+    transform: none;
+  }
+}
+
+/* A small block cursor blinking at 1Hz, well under 3 flashes per second. */
+@utility cursor-blink {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: cursor-blink 1s steps(1, end) infinite;
+  }
+}
+
+@keyframes cursor-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/*
+ * Marches hazard-stripes sideways by one stripe period. Give the host
+ * background-size: 34px 34px (24px stripe period at 45deg). Each point swaps
+ * colour about 1.7 times a second over a small area, under the 3/s limit.
+ */
+@utility hazard-march {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: hazard-march 0.6s linear infinite;
+  }
+}
+
+@keyframes hazard-march {
+  to {
+    background-position: 34px 0;
   }
 }

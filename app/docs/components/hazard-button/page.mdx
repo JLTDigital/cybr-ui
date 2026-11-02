@@ -1,0 +1,92 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { HazardButton } from "@/registry/ui/hazard-button";
+
+export const item = getRegistryItem("hazard-button");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="hazard-button" />
+
+<InstallCommand item="hazard-button" />
+
+<ComponentPreview item="hazard-button">
+  <div className="flex flex-wrap items-center justify-center gap-12">
+    <HazardButton>Purge cache</HazardButton>
+    <HazardButton disabled>Offline</HazardButton>
+  </div>
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    {
+      name: "type",
+      type: '"button" | "submit" | "reset"',
+      default: '"button"',
+      description: "Native button type. Defaults to button so it never submits a form by accident.",
+    },
+    {
+      name: "children",
+      type: "ReactNode",
+      description: "Label text, shown on the dark inner plate.",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "Extra classes, merged after the defaults with cn().",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      default: "false",
+      description: "Native disabled. Replaces the stripes with the dashed offline style.",
+    },
+    {
+      name: "...props",
+      type: 'ComponentProps<"button">',
+      description: "Every other native <button> attribute, ref and event handler is forwarded.",
+    },
+  ]}
+/>
+
+## Usage
+
+Needs both stylesheets from `@cybr/tokens` and `@cybr/effects`. After the install, import them in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+@import "../styles/cybr-effects.css";
+```
+
+```tsx
+import { HazardButton } from "@/components/ui/hazard-button";
+
+export function Action() {
+  return <HazardButton onClick={() => confirmPurge()}>Purge cache</HazardButton>;
+}
+```
+
+## States
+
+- **Idle:** a 6px frame of -45° `--signal` / `--ground-deep` hazard stripes around a `--ground-deep` plate with an `--ink` label.
+- **Hover:** the stripes march sideways, one stripe period every 0.6s.
+- **Pressed:** the button presses in 3px (`--offset-hard-hover`) on both axes, without a transition.
+- **Disabled:** stripes are replaced by a `--surface` fill and a 2px dashed `--dim` border; the plate turns `--surface` with `--label` text.
+- **Focus-visible:** 3px solid `--signal` outline, offset 6px.
+
+## Accessibility
+
+- Renders a native `<button>`, so keyboard activation, focus and the button role come for free.
+- `type` defaults to `button`, so it never submits a surrounding form unless you pass `type="submit"`.
+- Keyboard focus shows a bold `--signal` outline offset from the button.
+- `disabled` uses the native attribute: it leaves the tab order and is announced as unavailable. Hover and press effects are switched off while disabled.
+- The stripes signal danger visually only. The label must say what the action does, and destructive actions still need a confirmation step in your own flow.
+- The marching stripes cover a small area and swap colour about 1.7 times a second, under the 3-flashes-per-second limit (WCAG 2.3.1). Under `prefers-reduced-motion` they stay still.
+- Label text is `--ink` on `--ground-deep` (16.7:1). If you override colours with `className`, keep text contrast at 4.5:1 or above.

@@ -1,0 +1,92 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { TerminalButton } from "@/registry/ui/terminal-button";
+
+export const item = getRegistryItem("terminal-button");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="terminal-button" />
+
+<InstallCommand item="terminal-button" />
+
+<ComponentPreview item="terminal-button">
+  <div className="flex flex-wrap items-center justify-center gap-12">
+    <TerminalButton>execute</TerminalButton>
+    <TerminalButton disabled>Offline</TerminalButton>
+  </div>
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    {
+      name: "type",
+      type: '"button" | "submit" | "reset"',
+      default: '"button"',
+      description: "Native button type. Defaults to button so it never submits a form by accident.",
+    },
+    {
+      name: "children",
+      type: "ReactNode",
+      description: 'Label text, shown after a "> " prompt and before the block cursor. Not uppercased.',
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "Extra classes, merged after the defaults with cn().",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      default: "false",
+      description: "Native disabled. Shows the dashed offline style with a solid, non-blinking cursor.",
+    },
+    {
+      name: "...props",
+      type: 'ComponentProps<"button">',
+      description: "Every other native <button> attribute, ref and event handler is forwarded.",
+    },
+  ]}
+/>
+
+## Usage
+
+Needs both stylesheets from `@cybr/tokens` and `@cybr/effects`. After the install, import them in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+@import "../styles/cybr-effects.css";
+```
+
+```tsx
+import { TerminalButton } from "@/components/ui/terminal-button";
+
+export function Action() {
+  return <TerminalButton onClick={() => console.log("run")}>execute</TerminalButton>;
+}
+```
+
+## States
+
+- **Idle:** `--ground-void` fill, `--signal` label after a `> ` prompt, 1px `--line` border, and a block cursor blinking once a second.
+- **Hover:** inverts to a `--signal` fill with `--ground-void` text and a `--signal` border.
+- **Pressed:** the button presses in 3px (`--offset-hard-hover`) on both axes, without a transition.
+- **Disabled:** `--surface` fill, `--label` text, 2px dashed `--dim` border; the cursor stays solid.
+- **Focus-visible:** 3px solid `--signal` outline, offset 6px.
+
+## Accessibility
+
+- Renders a native `<button>`, so keyboard activation, focus and the button role come for free.
+- `type` defaults to `button`, so it never submits a surrounding form unless you pass `type="submit"`.
+- Keyboard focus shows a bold `--signal` outline offset from the button.
+- `disabled` uses the native attribute: it leaves the tab order and is announced as unavailable. Hover and press effects are switched off while disabled.
+- The `> ` prompt and the cursor are `aria-hidden`, so the accessible name is the label alone.
+- The cursor blinks at 1Hz over a small area, under the 3-flashes-per-second limit (WCAG 2.3.1). Under `prefers-reduced-motion` it is a solid block.
+- `--signal` on `--ground-void` is 5.74:1 in both directions (idle and hover). If you override colours with `className`, keep text contrast at 4.5:1 or above.

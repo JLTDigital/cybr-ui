@@ -60,6 +60,14 @@ export function Cta() {
 }
 ```
 
+## States
+
+- **Idle:** `--signal` fill, `--ground-deep` label, 3px solid `--ink` border and a 6px solid `--ink` offset shadow.
+- **Hover:** steps 3px toward the shadow, which shrinks to 3px (`steps(2)`, 90ms).
+- **Pressed:** steps the full 6px so it sits flush, with no shadow.
+- **Disabled:** `--surface` fill, `--label` text, 2px dashed `--dim` border, no shadow and no movement.
+- **Focus-visible:** 3px solid `--signal` outline, offset 6px.
+
 ## Accessibility
 
 - Renders a native `<button>`, so keyboard activation, focus and the button role come for free.

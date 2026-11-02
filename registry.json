@@ -17,6 +17,19 @@
       ]
     },
     {
+      "name": "effects",
+      "type": "registry:file",
+      "title": "CYBR//UI effects",
+      "description": "Opt-in effect utilities (scanlines, grain, HUD corners, crosshair, hazard stripes, glitch, cursor blink, hazard march). Add @import \"../styles/cybr-effects.css\"; after the cybr-tokens import in app/globals.css. Every animation is off under prefers-reduced-motion.",
+      "files": [
+        {
+          "path": "styles/effects.css",
+          "type": "registry:file",
+          "target": "styles/cybr-effects.css"
+        }
+      ]
+    },
+    {
       "name": "hard-offset-button",
       "type": "registry:ui",
       "title": "Hard-Offset Button",
@@ -25,6 +38,58 @@
       "files": [
         {
           "path": "registry/ui/hard-offset-button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "glitch-button",
+      "type": "registry:ui",
+      "title": "Glitch Button",
+      "description": "Outlined button whose label splits into RGB slices on hover, in short bursts. Requires @cybr/tokens and @cybr/effects.",
+      "registryDependencies": ["utils", "@cybr/tokens", "@cybr/effects"],
+      "files": [
+        {
+          "path": "registry/ui/glitch-button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "hud-bracket-button",
+      "type": "registry:ui",
+      "title": "HUD Bracket Button",
+      "description": "Dark button framed by HUD corner brackets that snap out 5px on hover. Requires @cybr/tokens.",
+      "registryDependencies": ["utils", "@cybr/tokens"],
+      "files": [
+        {
+          "path": "registry/ui/hud-bracket-button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "terminal-button",
+      "type": "registry:ui",
+      "title": "Terminal Button",
+      "description": "Terminal prompt button with a blinking block cursor that inverts to a signal fill on hover. Requires @cybr/tokens and @cybr/effects.",
+      "registryDependencies": ["utils", "@cybr/tokens", "@cybr/effects"],
+      "files": [
+        {
+          "path": "registry/ui/terminal-button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "hazard-button",
+      "type": "registry:ui",
+      "title": "Hazard Button",
+      "description": "Destructive-action button framed in hazard stripes that march on hover. Requires @cybr/tokens and @cybr/effects.",
+      "registryDependencies": ["utils", "@cybr/tokens", "@cybr/effects"],
+      "files": [
+        {
+          "path": "registry/ui/hazard-button.tsx",
           "type": "registry:ui"
         }
       ]

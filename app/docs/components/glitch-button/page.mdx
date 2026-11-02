@@ -1,0 +1,93 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { GlitchButton } from "@/registry/ui/glitch-button";
+
+export const item = getRegistryItem("glitch-button");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="glitch-button" />
+
+<InstallCommand item="glitch-button" />
+
+<ComponentPreview item="glitch-button">
+  <div className="flex flex-wrap items-center justify-center gap-12">
+    <GlitchButton>Jack in</GlitchButton>
+    <GlitchButton disabled>Offline</GlitchButton>
+  </div>
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    {
+      name: "type",
+      type: '"button" | "submit" | "reset"',
+      default: '"button"',
+      description: "Native button type. Defaults to button so it never submits a form by accident.",
+    },
+    {
+      name: "children",
+      type: "ReactNode",
+      description: "Label text. It is rendered once visibly and twice more as aria-hidden slice copies, so keep it to plain text or inline elements.",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "Extra classes, merged after the defaults with cn().",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      default: "false",
+      description: "Native disabled. Shows the dashed offline style and never glitches.",
+    },
+    {
+      name: "...props",
+      type: 'ComponentProps<"button">',
+      description: "Every other native <button> attribute, ref and event handler is forwarded.",
+    },
+  ]}
+/>
+
+## Usage
+
+Needs both stylesheets from `@cybr/tokens` and `@cybr/effects`. After the install, import them in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+@import "../styles/cybr-effects.css";
+```
+
+```tsx
+import { GlitchButton } from "@/components/ui/glitch-button";
+
+export function Action() {
+  return <GlitchButton onClick={() => console.log("connect")}>Jack in</GlitchButton>;
+}
+```
+
+## States
+
+- **Idle:** transparent fill, `--ink` label and 2px solid `--ink` border.
+- **Hover:** border turns `--signal`. Two clipped label copies (top in `--signal`, bottom in `--neon-2`) jitter on `steps(3)` in a ~400ms burst every 3s.
+- **Pressed:** the button presses in 3px (`--offset-hard-hover`) on both axes, without a transition.
+- **Disabled:** `--surface` fill, `--label` text, 2px dashed `--dim` border, no glitch.
+- **Focus-visible:** 3px solid `--signal` outline, offset 6px.
+
+## Accessibility
+
+- Renders a native `<button>`, so keyboard activation, focus and the button role come for free.
+- `type` defaults to `button`, so it never submits a surrounding form unless you pass `type="submit"`.
+- Keyboard focus shows a bold `--signal` outline offset from the button.
+- `disabled` uses the native attribute: it leaves the tab order and is announced as unavailable. Hover and press effects are switched off while disabled.
+- The slice copies are `aria-hidden` spans, not `::before`/`::after` content, so the accessible name is the label once.
+- The glitch runs only on hover and only as a ~400ms burst every 3s, under the 3-flashes-per-second limit (WCAG 2.3.1). It is idle by default, so it never adds a second always-on glitch to a viewport.
+- Under `prefers-reduced-motion` the slices never render; hover only changes the border colour.
+- Label text is `--ink` on whatever sits behind the button. Keep that background dark enough for 4.5:1.
