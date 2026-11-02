@@ -3,6 +3,7 @@
 import { useId, useSyncExternalStore } from "react";
 
 import { ALTERNATE_THEME_IDS, THEME_STORAGE_KEY, THEMES, type ThemeId } from "@/app/_lib/themes";
+import { cn } from "@/lib/utils";
 
 function subscribe(onChange: () => void) {
   const observer = new MutationObserver(onChange);
@@ -31,13 +32,15 @@ function applyTheme(theme: ThemeId) {
   } catch {}
 }
 
-export function ThemeSwitcher() {
+// `labelClassName` lets a cramped host hide the visible label; keep it in the
+// accessibility tree (sr-only) so the select stays named.
+export function ThemeSwitcher({ labelClassName }: { labelClassName?: string }) {
   const id = useId();
   const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   return (
     <div className="flex items-center gap-2">
-      <label htmlFor={id} className="text-micro tracking-label uppercase text-label">
+      <label htmlFor={id} className={cn("text-micro tracking-label uppercase text-label", labelClassName)}>
         Theme
       </label>
       <select

@@ -1,225 +1,129 @@
-// Temporary token specimen; Feature 13 replaces it with the real landing page.
-
-import Link from "next/link";
-
-import { MotionStatus } from "@/app/_components/motion-status";
-import { ThemeSwitcher } from "@/app/_components/theme-switcher";
-import { cn } from "@/lib/utils";
+import { THEMES } from "@/app/_lib/themes";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { CATALOG, CATALOG_ITEMS } from "@/app/docs/_lib/catalog";
+import { BentoGrid, BentoGridItem } from "@/registry/ui/bento-grid";
+import { BlueprintGrid } from "@/registry/ui/blueprint-grid";
+import { GlitchHeading } from "@/registry/ui/glitch-heading";
 import { HardOffsetButton } from "@/registry/ui/hard-offset-button";
+import { NeonEdgeCard } from "@/registry/ui/neon-edge-card";
+import { SegmentedProgress } from "@/registry/ui/segmented-progress";
+import { StatBand } from "@/registry/ui/stat-band";
+import { TelemetryCounter } from "@/registry/ui/telemetry-counter";
+import { TerminalButton } from "@/registry/ui/terminal-button";
 
-const colors = [
-  { token: "--bg", swatch: "bg-bg", use: "Base canvas" },
-  { token: "--surface", swatch: "bg-surface", use: "Panels, cards" },
-  { token: "--line", swatch: "bg-line", use: "Borders, decoration only" },
-  { token: "--dim", swatch: "bg-dim", use: "Large secondary UI only" },
-  { token: "--signal", swatch: "bg-signal", use: "The one accent" },
-  { token: "--ink", swatch: "bg-ink", use: "Body text" },
-  { token: "--label", swatch: "bg-label", use: "Small mono labels" },
-  { token: "--ground-deep", swatch: "bg-ground-deep", use: "Insets, text on accent" },
-  { token: "--ground-void", swatch: "bg-ground-void", use: "Terminals, frames" },
-  { token: "--neon-2", swatch: "bg-neon-2", use: "Second accent (glitch split, code)" },
-];
+const focus =
+  "focus-visible:outline-(length:--focus-width) focus-visible:outline-offset-2 focus-visible:outline-solid focus-visible:outline-signal";
 
-const displaySizes = [
-  { name: "display-xl", className: "text-display-xl" },
-  { name: "display-lg", className: "text-display-lg" },
-  { name: "display-md", className: "text-display-md" },
-];
-
-const monoSizes = [
-  { name: "micro / 10px", className: "text-micro" },
-  { name: "caption / 11px", className: "text-caption" },
-  { name: "xs / 12px", className: "text-xs" },
-  { name: "sm / 14px", className: "text-sm" },
-  { name: "base / 16px", className: "text-base" },
-];
-
-const borders = [
-  { token: "--border-hair", className: "border-(length:--border-hair)" },
-  { token: "--border-base", className: "border-(length:--border-base)" },
-  { token: "--border-heavy", className: "border-(length:--border-heavy)" },
-  { token: "--border-max", className: "border-(length:--border-max)" },
-];
-
-const shadows = [
-  { name: "idle / shadow-hard", className: "shadow-hard" },
-  {
-    name: "hover / shadow-hard-hover",
-    className: "shadow-hard-hover translate-x-(--offset-hard-hover) translate-y-(--offset-hard-hover)",
-  },
-  {
-    name: "pressed / no shadow",
-    className: "shadow-none translate-x-(--offset-hard) translate-y-(--offset-hard)",
-  },
-];
-
-const motion = [
-  "--duration-snap 90ms",
-  "--duration-fast 120ms",
-  "--duration-base 200ms",
-  "--duration-slow 300ms",
-  "ease-step-2 steps(2)",
-  "ease-step-3 steps(3)",
-  "ease-step-12 steps(12)",
-];
-
-const effects = [
-  { name: "scanlines", className: "relative scanlines" },
-  { name: "grain", className: "relative grain" },
-  { name: "hud-corners", className: "hud-corners" },
-  { name: "crosshair", className: "crosshair" },
-  { name: "hazard-stripes", className: "hazard-stripes" },
-  { name: "scanlines + grain + hud-corners", className: "relative scanlines grain hud-corners" },
-];
-
-// Shows that cn() keeps a custom font size beside a colour and lets the last colour win.
-const merges = [
-  { call: 'cn("text-display-md text-signal")', className: cn("text-display-md text-signal") },
-  { call: 'cn("text-ink", "text-signal")', className: cn("text-ink", "text-signal") },
-];
-
-function SectionLabel({ index, title }: { index: string; title: string }) {
+function SectionLabel({ id, index, title }: { id: string; index: string; title: string }) {
   return (
-    <h2 className="text-xs tracking-label uppercase text-label">
+    <h2 id={id} className="text-xs tracking-label uppercase text-label">
       <span className="text-signal">{index}</span> / {title}
     </h2>
   );
 }
 
+function DocsLink({ href, children }: { href: string; children: string }) {
+  return (
+    <a
+      href={href}
+      className={`mt-auto self-start text-caption tracking-label uppercase text-signal underline underline-offset-4 ${focus}`}
+    >
+      {children} →
+    </a>
+  );
+}
+
 export default function Home() {
   return (
-    <main className="flex flex-col gap-16 px-6 py-12 sm:px-10">
-      <header className="flex flex-col gap-4 border-b-(length:--border-base) border-line pb-10">
-        <p className="text-xs tracking-label uppercase text-label">
-          CYBR//UI · TOKENS · REV 0.1 · SYS:OK
-        </p>
-        <ThemeSwitcher />
-        <h1 className="font-display text-display-xl uppercase">
-          Tokens<span className="text-signal">_</span>
-        </h1>
-      </header>
-
-      <section className="flex flex-col gap-6">
-        <SectionLabel index="01" title="Colour" />
-        <ul className="grid grid-cols-2 gap-px bg-line sm:grid-cols-5">
-          {colors.map(({ token, swatch, use }) => (
-            <li key={token} className="flex flex-col gap-3 bg-bg p-4">
-              <div className={`h-16 border-(length:--border-hair) border-line ${swatch}`} />
-              <span className="text-xs text-ink">{token}</span>
-              <span className="text-caption text-label">{use}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section className="flex flex-col gap-6">
-        <SectionLabel index="02" title="Display" />
-        {displaySizes.map(({ name, className }) => (
-          <div key={name} className="flex flex-col gap-2">
-            <span className="text-caption tracking-label uppercase text-label">{name}</span>
-            <p className={`font-display uppercase ${className}`}>
-              Signal<span className="text-signal">_</span>
-            </p>
-          </div>
-        ))}
-      </section>
-
-      <section className="flex flex-col gap-6">
-        <SectionLabel index="03" title="Mono" />
-        {monoSizes.map(({ name, className }) => (
-          <p key={name} className={`tracking-button uppercase ${className}`}>
-            {name} · Unit / D-01 · Rev 2.6
+    <main id="main" className="flex flex-col">
+      <BlueprintGrid className="border-b-(length:--border-base) border-line">
+        <div className="flex flex-col gap-8 px-6 py-20 sm:px-10 sm:py-28">
+          <p className="m-0 text-xs tracking-label uppercase text-label">
+            CYBR//UI · SHADCN REGISTRY · REV 0.1 · SYS:OK
           </p>
-        ))}
-      </section>
-
-      <section className="flex flex-col gap-6">
-        <SectionLabel index="04" title="Borders" />
-        <div className="flex flex-wrap gap-6">
-          {borders.map(({ token, className }) => (
-            <div key={token} className={`border-ink px-6 py-4 text-xs ${className}`}>
-              {token}
-            </div>
-          ))}
+          <GlitchHeading as="h1" className="text-display-lg sm:text-display-xl">
+            Cyberpunk
+            <br />
+            Brutalism<span className="text-signal">_</span>
+          </GlitchHeading>
+          <p className="m-0 max-w-xl text-base leading-relaxed text-ink">
+            Animated React components for Next.js and Tailwind. Hard edges, offset shadows, mechanical motion. Copy
+            the source or install one at a time with the shadcn CLI.
+          </p>
+          <a
+            href="/docs/components"
+            className={`self-start border-(length:--border-heavy) border-ink bg-signal px-6 py-4 text-sm font-bold tracking-button uppercase text-ground-deep shadow-hard transition-[translate,box-shadow] duration-(--duration-fast) ease-step-2 hover:translate-x-(--offset-hard-hover) hover:translate-y-(--offset-hard-hover) hover:shadow-hard-hover motion-reduce:transition-none ${focus}`}
+          >
+            Browse components →
+          </a>
         </div>
-      </section>
+      </BlueprintGrid>
 
-      <section className="flex flex-col gap-6">
-        <SectionLabel index="05" title="Hard shadow" />
-        <div className="flex flex-wrap gap-10">
-          {shadows.map(({ name, className }) => (
-            <div
-              key={name}
-              className={`border-(length:--border-heavy) border-ink bg-signal px-6 py-4 text-xs tracking-button uppercase text-ground-deep ${className}`}
-            >
-              {name}
-            </div>
-          ))}
+      <StatBand
+        stats={[
+          { value: CATALOG_ITEMS.length, label: "COMPONENTS" },
+          { value: CATALOG.length, label: "SETS" },
+          { value: THEMES.length, label: "THEME PRESETS" },
+        ]}
+      />
+
+      <div className="flex flex-col gap-20 px-6 py-16 sm:px-10">
+        <div id="install" className="flex scroll-mt-6 flex-col gap-4">
+          <InstallCommand item="all" />
+          <p className="m-0 max-w-prose text-caption leading-relaxed text-label">
+            Installs all {CATALOG_ITEMS.length} components with the tokens, effects and helpers they need. To add
+            one at a time, pick it from the{" "}
+            <a href="/docs/components" className={`text-signal underline underline-offset-4 ${focus}`}>
+              component index
+            </a>{" "}
+            and use the install command on its page.
+          </p>
         </div>
-      </section>
 
-      <section className="flex flex-col gap-6">
-        <SectionLabel index="06" title="Motion" />
-        <ul className="flex flex-col gap-2 text-sm">
-          {motion.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
-      </section>
+        <section aria-labelledby="sets-heading" className="flex flex-col gap-6">
+          <SectionLabel id="sets-heading" index="01" title="Sets" />
+          <ul className="m-0 grid list-none grid-cols-1 gap-4 p-0 sm:grid-cols-2 lg:grid-cols-4">
+            {CATALOG.map((set) => (
+              <li key={set.id} className="flex">
+                <NeonEdgeCard
+                  href={`/docs/components#${set.id}`}
+                  eyebrow={`${set.code} · ${set.items.length} UNITS`}
+                  title={set.label}
+                  cta="VIEW SET →"
+                  className="w-full"
+                />
+              </li>
+            ))}
+          </ul>
+        </section>
 
-      <section className="flex flex-col gap-6">
-        <SectionLabel index="07" title="Effects" />
-        <MotionStatus />
-        <ul className="grid grid-cols-1 gap-px bg-line sm:grid-cols-3">
-          {effects.map(({ name, className }) => (
-            <li key={name} className="flex flex-col gap-3 bg-bg p-4">
-              <div
-                className={cn(
-                  "flex h-32 items-end border-(length:--border-hair) border-line bg-surface p-3 text-xs uppercase text-ink",
-                  className,
-                )}
-              >
-                <span className="bg-bg px-1">UNIT / D-01</span>
+        <section aria-labelledby="specimens-heading" className="flex flex-col gap-6">
+          <SectionLabel id="specimens-heading" index="02" title="Live specimens" />
+          <BentoGrid>
+            <BentoGridItem span={2}>
+              <span className="text-caption tracking-label uppercase text-label">BTN-01 · BTN-04</span>
+              <div className="flex flex-wrap items-center gap-8 py-4">
+                <HardOffsetButton>Deploy now</HardOffsetButton>
+                <TerminalButton>run --build</TerminalButton>
               </div>
-              <span className="text-caption tracking-label uppercase text-label">{name}</span>
-            </li>
-          ))}
-        </ul>
-        <div className="flex flex-col gap-2">
-          <span className="text-caption tracking-label uppercase text-label">glitch</span>
-          <p className="glitch font-display text-display-lg uppercase">Signal lost</p>
-        </div>
-        <ul className="flex flex-col gap-4">
-          {merges.map(({ call, className }) => (
-            <li key={call} className="flex flex-col gap-1">
-              <span className="text-caption text-label">
-                {call} → {className}
-              </span>
-              <span className={cn("font-display uppercase", className)}>Merged</span>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section className="flex flex-col gap-6">
-        <SectionLabel index="08" title="Button" />
-        <Link
-          href="/docs/components/hard-offset-button"
-          className="self-start text-xs tracking-button uppercase text-signal underline underline-offset-4 focus-visible:outline-(length:--focus-width) focus-visible:outline-offset-2 focus-visible:outline-solid focus-visible:outline-signal"
-        >
-          Hard-Offset Button docs →
-        </Link>
-        <div className="flex flex-wrap items-end gap-12">
-          <div className="flex flex-col items-center gap-4">
-            <HardOffsetButton>Deploy now</HardOffsetButton>
-            <span className="text-micro tracking-button text-label">IDLE</span>
-          </div>
-          <div className="flex flex-col items-center gap-4">
-            <HardOffsetButton disabled>Run</HardOffsetButton>
-            <span className="text-micro tracking-button text-label">OFFLINE</span>
-          </div>
-        </div>
-      </section>
+              <div className="flex flex-wrap gap-6">
+                <DocsLink href="/docs/components/hard-offset-button">Hard-Offset Button</DocsLink>
+                <DocsLink href="/docs/components/terminal-button">Terminal Button</DocsLink>
+              </div>
+            </BentoGridItem>
+            <BentoGridItem>
+              <span className="text-caption tracking-label uppercase text-label">TXT-04 · UPTIME HRS</span>
+              <TelemetryCounter value={8760} className="font-display text-display-md" />
+              <DocsLink href="/docs/components/telemetry-counter">Telemetry Counter</DocsLink>
+            </BentoGridItem>
+            <BentoGridItem>
+              <span className="text-caption tracking-label uppercase text-label">NAV-06</span>
+              <SegmentedProgress value={72} label="UPLINK" phase="SYNCING" />
+              <DocsLink href="/docs/components/segmented-progress">Segmented Progress</DocsLink>
+            </BentoGridItem>
+          </BentoGrid>
+        </section>
+      </div>
     </main>
   );
 }

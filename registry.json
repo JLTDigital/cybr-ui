@@ -566,6 +566,53 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "all",
+      "type": "registry:item",
+      "title": "CYBR//UI (all components)",
+      "description": "Every CYBR//UI component in one install, with the tokens, effects and helpers they need. Theme presets stay opt-in.",
+      "registryDependencies": [
+        "@cybr/hard-offset-button",
+        "@cybr/glitch-button",
+        "@cybr/hud-bracket-button",
+        "@cybr/terminal-button",
+        "@cybr/hazard-button",
+        "@cybr/decrypt-text",
+        "@cybr/typewriter-terminal",
+        "@cybr/glitch-heading",
+        "@cybr/telemetry-counter",
+        "@cybr/stepped-wipe-reveal",
+        "@cybr/bento-grid",
+        "@cybr/stat-band",
+        "@cybr/spec-card",
+        "@cybr/access-card",
+        "@cybr/hardware-panel",
+        "@cybr/hud-image-frame",
+        "@cybr/neon-edge-card",
+        "@cybr/classified-card",
+        "@cybr/hud-tooltip",
+        "@cybr/classified-accordion",
+        "@cybr/ticker-marquee",
+        "@cybr/warning-tape",
+        "@cybr/logo-wall",
+        "@cybr/blueprint-grid",
+        "@cybr/perspective-grid",
+        "@cybr/beton-brut",
+        "@cybr/crt-overlay",
+        "@cybr/data-rain",
+        "@cybr/exposed-wiring",
+        "@cybr/status-bar",
+        "@cybr/terminal-navbar",
+        "@cybr/mega-menu",
+        "@cybr/monolith-footer",
+        "@cybr/boot-sequence-loader",
+        "@cybr/segmented-progress",
+        "@cybr/data-readout-carousel",
+        "@cybr/command-palette",
+        "@cybr/pixelated-image-trail"
+      ],
+      "files": []
     }
   ]
 }
