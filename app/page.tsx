@@ -3,6 +3,7 @@
 import Link from "next/link";
 
 import { MotionStatus } from "@/app/_components/motion-status";
+import { ThemeSwitcher } from "@/app/_components/theme-switcher";
 import { cn } from "@/lib/utils";
 import { HardOffsetButton } from "@/registry/ui/hard-offset-button";
 
@@ -16,7 +17,7 @@ const colors = [
   { token: "--label", swatch: "bg-label", use: "Small mono labels" },
   { token: "--ground-deep", swatch: "bg-ground-deep", use: "Insets, text on accent" },
   { token: "--ground-void", swatch: "bg-ground-void", use: "Terminals, frames" },
-  { token: "--neon-2", swatch: "bg-neon-2", use: "Provisional second accent" },
+  { token: "--neon-2", swatch: "bg-neon-2", use: "Second accent (glitch split, code)" },
 ];
 
 const displaySizes = [
@@ -92,6 +93,7 @@ export default function Home() {
         <p className="text-xs tracking-label uppercase text-label">
           CYBR//UI · TOKENS · REV 0.1 · SYS:OK
         </p>
+        <ThemeSwitcher />
         <h1 className="font-display text-display-xl uppercase">
           Tokens<span className="text-signal">_</span>
         </h1>

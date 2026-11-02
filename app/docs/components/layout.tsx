@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { ThemeSwitcher } from "@/app/_components/theme-switcher";
+
 import "@/app/docs/docs.css";
 
 export default function ComponentDocsLayout({ children }: LayoutProps<"/docs/components">) {
@@ -12,7 +14,10 @@ export default function ComponentDocsLayout({ children }: LayoutProps<"/docs/com
         >
           CYBR<span className="text-signal">{"//"}</span>UI · DOCS
         </Link>
-        <span className="text-micro tracking-label uppercase text-label">COMPONENTS · SYS:OK</span>
+        <div className="flex items-center gap-6">
+          <span className="text-micro tracking-label uppercase text-label">COMPONENTS · SYS:OK</span>
+          <ThemeSwitcher />
+        </div>
       </header>
       <main className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-6 py-12 sm:px-10">
         {children}

@@ -1,0 +1,21 @@
+/*
+ * Ice Neon preset. Import after the tokens file, then set
+ * data-theme="ice-neon" on <html> or any element to scope it to that subtree.
+ *
+ * WCAG 2.x contrast: ink/bg 16.66, label/bg 8.66, signal/bg 11.81 (text),
+ * signal/surface 9.95 (large/UI only), ground-deep on signal 12.49,
+ * dim/bg 3.42 (large/secondary only). --line is decoration only.
+ */
+
+[data-theme="ice-neon"] {
+  --bg: #0f1620;
+  --surface: #1b2633;
+  --line: #2c3b4d;
+  --dim: #5b6d82;
+  --signal: #00e5ff;
+  --ink: #eef6ff;
+  --label: #a3b5c9;
+  --ground-deep: #0a0f16;
+  --ground-void: #05080c;
+  --neon-2: #c6ff00;
+}

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Archivo_Black, JetBrains_Mono } from "next/font/google";
+import { themeInitScript } from "@/app/_lib/themes";
+
 import "./globals.css";
 
 const archivoBlack = Archivo_Black({
@@ -26,7 +28,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       className={`${archivoBlack.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body className="min-h-full flex flex-col bg-bg text-ink font-mono">
         {children}
       </body>

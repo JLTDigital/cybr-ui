@@ -1,4 +1,14 @@
-/* Opt-in design tokens. Import after `@import "tailwindcss"`. Hex values live only here so a palette change is one edit. */
+/*
+ * Opt-in design tokens. Import after `@import "tailwindcss"`. Hex values live only
+ * here and in the preset files, so a palette change is one edit.
+ *
+ * Default preset (locked). WCAG 2.x contrast: ink/bg 14.63, label/bg 7.43,
+ * signal/bg 4.64 (text), signal/surface 3.46 (large/UI only), ground-deep on
+ * signal 5.31, dim/bg 3.29 (large/secondary only). --line is decoration only.
+ *
+ * Alternate presets override only the colour tokens under [data-theme="<id>"].
+ * Import them after this file; equal specificity means source order decides.
+ */
 
 :root {
   --bg: #212529;
@@ -10,7 +20,7 @@
   --label: #adb5bd;
   --ground-deep: #16191c;
   --ground-void: #0e1012;
-  /* Provisional second accent; the mockups use it only in the glitch split. */
+  /* Second accent; used for the glitch split and code highlighting. */
   --neon-2: #00e5ff;
 
   --border-hair: 1px;

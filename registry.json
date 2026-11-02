@@ -17,6 +17,34 @@
       ]
     },
     {
+      "name": "theme-acid-terminal",
+      "type": "registry:file",
+      "title": "CYBR//UI Acid Terminal theme",
+      "description": "Opt-in Acid Terminal colour preset. Add @import \"../styles/cybr-theme-acid-terminal.css\"; after the cybr-tokens import in app/globals.css, then set data-theme=\"acid-terminal\" on <html> or any element to scope it to that subtree.",
+      "registryDependencies": ["@cybr/tokens"],
+      "files": [
+        {
+          "path": "styles/themes/acid-terminal.css",
+          "type": "registry:file",
+          "target": "styles/cybr-theme-acid-terminal.css"
+        }
+      ]
+    },
+    {
+      "name": "theme-ice-neon",
+      "type": "registry:file",
+      "title": "CYBR//UI Ice Neon theme",
+      "description": "Opt-in Ice Neon colour preset. Add @import \"../styles/cybr-theme-ice-neon.css\"; after the cybr-tokens import in app/globals.css, then set data-theme=\"ice-neon\" on <html> or any element to scope it to that subtree.",
+      "registryDependencies": ["@cybr/tokens"],
+      "files": [
+        {
+          "path": "styles/themes/ice-neon.css",
+          "type": "registry:file",
+          "target": "styles/cybr-theme-ice-neon.css"
+        }
+      ]
+    },
+    {
       "name": "effects",
       "type": "registry:file",
       "title": "CYBR//UI effects",
