@@ -1,69 +1,148 @@
-import Image from "next/image";
+// Temporary token specimen; Feature 13 replaces it with the real landing page.
+
+const colors = [
+  { token: "--bg", swatch: "bg-bg", use: "Base canvas" },
+  { token: "--surface", swatch: "bg-surface", use: "Panels, cards" },
+  { token: "--line", swatch: "bg-line", use: "Borders, decoration only" },
+  { token: "--muted", swatch: "bg-muted", use: "Large secondary UI only" },
+  { token: "--signal", swatch: "bg-signal", use: "The one accent" },
+  { token: "--ink", swatch: "bg-ink", use: "Body text" },
+  { token: "--label", swatch: "bg-label", use: "Small mono labels" },
+  { token: "--ground-deep", swatch: "bg-ground-deep", use: "Insets, text on accent" },
+  { token: "--ground-void", swatch: "bg-ground-void", use: "Terminals, frames" },
+  { token: "--neon-2", swatch: "bg-neon-2", use: "Provisional second accent" },
+];
+
+const displaySizes = [
+  { name: "display-xl", className: "text-display-xl" },
+  { name: "display-lg", className: "text-display-lg" },
+  { name: "display-md", className: "text-display-md" },
+];
+
+const monoSizes = [
+  { name: "micro / 10px", className: "text-micro" },
+  { name: "caption / 11px", className: "text-caption" },
+  { name: "xs / 12px", className: "text-xs" },
+  { name: "sm / 14px", className: "text-sm" },
+  { name: "base / 16px", className: "text-base" },
+];
+
+const borders = [
+  { token: "--border-hair", className: "border-(length:--border-hair)" },
+  { token: "--border-base", className: "border-(length:--border-base)" },
+  { token: "--border-heavy", className: "border-(length:--border-heavy)" },
+  { token: "--border-max", className: "border-(length:--border-max)" },
+];
+
+const shadows = [
+  { name: "idle / shadow-hard", className: "shadow-hard" },
+  {
+    name: "hover / shadow-hard-hover",
+    className: "shadow-hard-hover translate-x-(--offset-hard-hover) translate-y-(--offset-hard-hover)",
+  },
+  {
+    name: "pressed / no shadow",
+    className: "shadow-none translate-x-(--offset-hard) translate-y-(--offset-hard)",
+  },
+];
+
+const motion = [
+  "--duration-snap 90ms",
+  "--duration-fast 120ms",
+  "--duration-base 200ms",
+  "--duration-slow 300ms",
+  "ease-step-2 steps(2)",
+  "ease-step-3 steps(3)",
+  "ease-step-12 steps(12)",
+];
+
+function SectionLabel({ index, title }: { index: string; title: string }) {
+  return (
+    <h2 className="text-xs tracking-label uppercase text-label">
+      <span className="text-signal">{index}</span> / {title}
+    </h2>
+  );
+}
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main className="flex flex-col gap-16 px-6 py-12 sm:px-10">
+      <header className="flex flex-col gap-4 border-b-(length:--border-base) border-line pb-10">
+        <p className="text-xs tracking-label uppercase text-label">
+          CYBR//UI · TOKENS · REV 0.1 · SYS:OK
+        </p>
+        <h1 className="font-display text-display-xl uppercase">
+          Tokens<span className="text-signal">_</span>
+        </h1>
+      </header>
+
+      <section className="flex flex-col gap-6">
+        <SectionLabel index="01" title="Colour" />
+        <ul className="grid grid-cols-2 gap-px bg-line sm:grid-cols-5">
+          {colors.map(({ token, swatch, use }) => (
+            <li key={token} className="flex flex-col gap-3 bg-bg p-4">
+              <div className={`h-16 border-(length:--border-hair) border-line ${swatch}`} />
+              <span className="text-xs text-ink">{token}</span>
+              <span className="text-caption text-label">{use}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="flex flex-col gap-6">
+        <SectionLabel index="02" title="Display" />
+        {displaySizes.map(({ name, className }) => (
+          <div key={name} className="flex flex-col gap-2">
+            <span className="text-caption tracking-label uppercase text-label">{name}</span>
+            <p className={`font-display uppercase ${className}`}>
+              Signal<span className="text-signal">_</span>
+            </p>
+          </div>
+        ))}
+      </section>
+
+      <section className="flex flex-col gap-6">
+        <SectionLabel index="03" title="Mono" />
+        {monoSizes.map(({ name, className }) => (
+          <p key={name} className={`tracking-button uppercase ${className}`}>
+            {name} · Unit / D-01 · Rev 2.6
           </p>
+        ))}
+      </section>
+
+      <section className="flex flex-col gap-6">
+        <SectionLabel index="04" title="Borders" />
+        <div className="flex flex-wrap gap-6">
+          {borders.map(({ token, className }) => (
+            <div key={token} className={`border-ink px-6 py-4 text-xs ${className}`}>
+              {token}
+            </div>
+          ))}
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      <section className="flex flex-col gap-6">
+        <SectionLabel index="05" title="Hard shadow" />
+        <div className="flex flex-wrap gap-10">
+          {shadows.map(({ name, className }) => (
+            <div
+              key={name}
+              className={`border-(length:--border-heavy) border-ink bg-signal px-6 py-4 text-xs tracking-button uppercase text-ground-deep ${className}`}
+            >
+              {name}
+            </div>
+          ))}
         </div>
-      </main>
-    </div>
+      </section>
+
+      <section className="flex flex-col gap-6">
+        <SectionLabel index="06" title="Motion" />
+        <ul className="flex flex-col gap-2 text-sm">
+          {motion.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </section>
+    </main>
   );
 }
