@@ -1,0 +1,93 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { HardwarePanel, HardwarePanelStatus } from "@/registry/ui/hardware-panel";
+
+export const item = getRegistryItem("hardware-panel");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="hardware-panel" />
+
+<InstallCommand item="hardware-panel" />
+
+<ComponentPreview item="hardware-panel">
+  <HardwarePanel className="w-full max-w-xs" title="PWR / BUS 04">
+    <HardwarePanelStatus label="MAIN" on />
+    <HardwarePanelStatus label="AUX" on={false} />
+    <HardwarePanelStatus label="UPLINK" on />
+  </HardwarePanel>
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    { name: "title", type: "ReactNode", description: "Panel title, set in the display face." },
+    {
+      name: "titleAs",
+      type: '"h2" | "h3" | "h4"',
+      default: '"h3"',
+      description: "Heading level for the title. Match it to the page outline.",
+    },
+    { name: "children", type: "ReactNode", description: "Panel content, stacked with a 10px gap. Usually HardwarePanelStatus rows." },
+    {
+      name: "...props",
+      type: 'Omit<ComponentProps<"section">, "title">',
+      description: "Every other native <section> attribute is forwarded; className is merged last with cn().",
+    },
+    { name: "HardwarePanelStatus label", type: "ReactNode", description: "Row label, such as MAIN." },
+    { name: "HardwarePanelStatus on", type: "boolean", description: "Lights the LED and sets the default state text." },
+    {
+      name: "HardwarePanelStatus stateLabel",
+      type: "ReactNode",
+      default: '"ON" | "OFF"',
+      description: "State text shown before the LED. Defaults from on.",
+    },
+    {
+      name: "HardwarePanelStatus ...props",
+      type: 'Omit<ComponentProps<"div">, "children">',
+      description: "Every other native <div> attribute is forwarded to the row.",
+    },
+  ]}
+/>
+
+## Usage
+
+Needs the stylesheet from `@cybr/tokens`. After the install, import it in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+```
+
+```tsx
+import { HardwarePanel, HardwarePanelStatus } from "@/components/ui/hardware-panel";
+
+export function Power({ uplink }: { uplink: boolean }) {
+  return (
+    <HardwarePanel title="PWR / BUS 04">
+      <HardwarePanelStatus label="MAIN" on />
+      <HardwarePanelStatus label="UPLINK" on={uplink} />
+    </HardwarePanel>
+  );
+}
+```
+
+## Anatomy
+
+- **Panel:** `--surface` fill with a 2px `--dim` border and extra left padding for the cable channel.
+- **Rivets:** four 9px round `--dim` rivets with an inset `--label` highlight. Rivets are a round decorative motif; nothing interactive is rounded.
+- **Cable channel:** a 12px strip of `--bg` and `--line` bands down the left edge.
+- **Status row:** label on the left; state text and a 10px LED on the right. On is a `--signal` square with a small glow; off is a 2px `--label` outline.
+
+## Accessibility
+
+- Renders a `<section>` with a real heading, so it shows up as a named region in the outline. Set the level with `titleAs`.
+- Every state is spelled out in text. The LED only repeats it, so state never depends on colour.
+- Rivets, the cable channel and LEDs are decorative and hidden from assistive tech.
+- Text is `--ink` on `--surface`. If you override colours with `className`, keep text contrast at 4.5:1 or above.
+- Nothing animates.

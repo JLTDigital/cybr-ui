@@ -1,0 +1,107 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { SpecCard, SpecCardAction } from "@/registry/ui/spec-card";
+
+export const item = getRegistryItem("spec-card");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="spec-card" />
+
+<InstallCommand item="spec-card" />
+
+<ComponentPreview item="spec-card">
+  <SpecCard
+    className="w-full max-w-2xl"
+    meta="UNIT / D-01 · REV 2.6"
+    title="Core module"
+    titleAs="h3"
+    action={<SpecCardAction href="#spec">VIEW SPEC →</SpecCardAction>}
+    specs={[
+      { label: "STATUS", value: "ONLINE", accent: true },
+      { label: "CLASS", value: "[VALUE]" },
+      { label: "SECTOR", value: "[VALUE]" },
+      { label: "BUILD", value: "[VALUE]" },
+    ]}
+  >
+    [Short product or feature description goes here, two lines at most.]
+  </SpecCard>
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    { name: "title", type: "ReactNode", description: "Card title, set in the display face." },
+    {
+      name: "titleAs",
+      type: '"h2" | "h3" | "h4"',
+      default: '"h3"',
+      description: "Heading level for the title. Match it to the page outline.",
+    },
+    { name: "meta", type: "ReactNode", description: "Header text, such as a unit code and revision." },
+    {
+      name: "specs",
+      type: "{ label: ReactNode; value: ReactNode; accent?: boolean }[]",
+      description: "Spec list rows. accent colours the value in --signal. The list is left out when empty.",
+    },
+    { name: "action", type: "ReactNode", description: "Action under the description, usually a SpecCardAction." },
+    { name: "children", type: "ReactNode", description: "The description: plain text or your own paragraphs." },
+    {
+      name: "...props",
+      type: 'Omit<ComponentProps<"article">, "title">',
+      description: "Every other native <article> attribute is forwarded; className is merged last with cn().",
+    },
+    {
+      name: "SpecCardAction ...props",
+      type: 'ComponentProps<"a">',
+      description: "A styled native <a>. Pass href and children; className is merged last.",
+    },
+  ]}
+/>
+
+## Usage
+
+Needs the stylesheet from `@cybr/tokens`. After the install, import it in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+```
+
+```tsx
+import { SpecCard, SpecCardAction } from "@/components/ui/spec-card";
+
+export function Module() {
+  return (
+    <SpecCard
+      meta="UNIT / D-01 · REV 2.6"
+      title="Core module"
+      action={<SpecCardAction href="/modules/core">VIEW SPEC →</SpecCardAction>}
+      specs={[{ label: "STATUS", value: "ONLINE", accent: true }]}
+    >
+      Hardened compute node for the edge.
+    </SpecCard>
+  );
+}
+```
+
+## Anatomy
+
+- **Frame:** 2px `--ink` border, `--ground-deep` fill, and the artboard's 8px solid `--signal` offset shadow. The card keeps 8px of right and bottom margin so a tight parent doesn't clip the shadow.
+- **Header:** mono meta text and a decorative 7-bar barcode over a 2px `--ink` rule.
+- **Body:** title, description and action on the left; the spec list beside them from `sm`, stacked below on small screens.
+- **Action:** `--ink` fill with a 4px `--signal` shadow that halves to 2px as the link moves 2px on hover.
+- The 8px and 4px shadows are the artboard's own values. The `--offset-hard` token (6px, ink) belongs to the Hard-Offset Button.
+
+## Accessibility
+
+- Renders an `<article>` with a real heading; set its level with `titleAs`.
+- The spec list is a `<dl>` with `<dt>`/`<dd>` pairs.
+- The barcode is decorative and hidden from assistive tech.
+- SpecCardAction is a native link with a bold 3px `--signal` focus outline. It renders `<a>`; for client-side routing, wrap the card in your router's link or style your own link with the same classes.
+- Contrast on `--ground-deep`: `--ink` and `--label` text are above the overview figures for `--bg` (14.6:1, 7.43:1), and `--signal` values are above its 4.64:1. The action is `--ground-deep` on `--ink`. If you override colours with `className`, keep text contrast at 4.5:1 or above.

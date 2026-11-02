@@ -170,6 +170,110 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "bento-grid",
+      "type": "registry:ui",
+      "title": "Brutal Bento Grid",
+      "description": "Hairline grid whose 2px gaps over a line-coloured parent become the borders. 1, 2 then 4 columns; cells span 1-4. Requires @cybr/tokens.",
+      "registryDependencies": ["utils", "@cybr/tokens"],
+      "files": [
+        {
+          "path": "registry/ui/bento-grid.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "stat-band",
+      "type": "registry:ui",
+      "title": "Stat Band",
+      "description": "Signal-coloured ribbon of big numbers and mono labels, split by hard ground-deep rules that hold at any wrap. Requires @cybr/tokens.",
+      "registryDependencies": ["utils", "@cybr/tokens"],
+      "files": [
+        {
+          "path": "registry/ui/stat-band.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "spec-card",
+      "type": "registry:ui",
+      "title": "Spec Card",
+      "description": "Product card with a meta header and barcode, a big title, description, action link and spec list on a solid signal offset shadow. Requires @cybr/tokens.",
+      "registryDependencies": ["utils", "@cybr/tokens"],
+      "files": [
+        {
+          "path": "registry/ui/spec-card.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "access-card",
+      "type": "registry:ui",
+      "title": "Access/ID Card",
+      "description": "Ink ID badge with a hazard band, access level chip, photo slot, name, ID line and barcode. Requires @cybr/tokens and @cybr/effects.",
+      "registryDependencies": ["utils", "@cybr/tokens", "@cybr/effects"],
+      "files": [
+        {
+          "path": "registry/ui/access-card.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "hardware-panel",
+      "type": "registry:ui",
+      "title": "Hardware Panel",
+      "description": "Riveted surface panel with a cable channel and status rows that pair ON/OFF text with a signal LED. Requires @cybr/tokens.",
+      "registryDependencies": ["utils", "@cybr/tokens"],
+      "files": [
+        {
+          "path": "registry/ui/hardware-panel.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "hud-image-frame",
+      "type": "registry:ui",
+      "title": "HUD Image Frame",
+      "description": "Void-black media frame with signal corner brackets, a centre reticle, a static scan line, an outlined index numeral and a caption. Requires @cybr/tokens.",
+      "registryDependencies": ["utils", "@cybr/tokens"],
+      "files": [
+        {
+          "path": "registry/ui/hud-image-frame.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "neon-edge-card",
+      "type": "registry:ui",
+      "title": "Neon Edge Card",
+      "description": "Link card whose border lights up in signal with a tight glow on hover and keyboard focus. Requires @cybr/tokens.",
+      "registryDependencies": ["utils", "@cybr/tokens"],
+      "files": [
+        {
+          "path": "registry/ui/neon-edge-card.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "classified-card",
+      "type": "registry:ui",
+      "title": "Classified Card",
+      "description": "Dashed dossier frame with a rotated stamp and inline redaction bars that declassify on click. Visual only: never for real secrets. Requires @cybr/tokens.",
+      "registryDependencies": ["utils", "@cybr/tokens"],
+      "files": [
+        {
+          "path": "registry/ui/classified-card.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }

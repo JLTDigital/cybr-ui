@@ -1,0 +1,96 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { BentoGrid, BentoGridItem } from "@/registry/ui/bento-grid";
+
+export const item = getRegistryItem("bento-grid");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="bento-grid" />
+
+<InstallCommand item="bento-grid" />
+
+<ComponentPreview item="bento-grid">
+  <BentoGrid className="w-full">
+    <BentoGridItem span={2}>
+      <span className="text-caption tracking-label text-label"><span className="text-signal">01</span> / SPAN 2</span>
+      <p className="font-display text-3xl uppercase [line-height:0.95] text-ink">The grid is the border</p>
+    </BentoGridItem>
+    <BentoGridItem>
+      <span className="text-caption tracking-label text-label"><span className="text-signal">02</span> / SPAN 1</span>
+      <p className="text-sm text-ink">2px gaps over a line-coloured parent.</p>
+    </BentoGridItem>
+    <BentoGridItem>
+      <span className="text-caption tracking-label text-label"><span className="text-signal">03</span> / SPAN 1</span>
+      <p className="text-sm text-ink">Nothing floats.</p>
+    </BentoGridItem>
+    <BentoGridItem span={4}>
+      <span className="text-caption tracking-label text-label"><span className="text-signal">04</span> / SPAN 4 · FULL ROW</span>
+    </BentoGridItem>
+  </BentoGrid>
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    {
+      name: "BentoGrid ...props",
+      type: 'ComponentProps<"div">',
+      description: "The grid wrapper. Every native <div> attribute is forwarded; className is merged last with cn().",
+    },
+    {
+      name: "BentoGridItem span",
+      type: "1 | 2 | 3 | 4",
+      default: "1",
+      description: "Columns the cell covers. 2 takes the full row from sm; 3 and 4 take the full row at sm, then 3 or 4 columns from lg.",
+    },
+    {
+      name: "BentoGridItem ...props",
+      type: 'ComponentProps<"div">',
+      description: "Every native <div> attribute is forwarded to the cell; className is merged last with cn().",
+    },
+  ]}
+/>
+
+## Usage
+
+Needs the stylesheet from `@cybr/tokens`. After the install, import it in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+```
+
+```tsx
+import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
+
+export function Overview() {
+  return (
+    <BentoGrid>
+      <BentoGridItem span={2}>Spec card</BentoGridItem>
+      <BentoGridItem>Access card</BentoGridItem>
+      <BentoGridItem>Hardware panel</BentoGridItem>
+      <BentoGridItem span={4}>Stat band</BentoGridItem>
+    </BentoGrid>
+  );
+}
+```
+
+## Anatomy
+
+- **Grid:** a `--line` background showing through 2px (`--border-base`) gaps, so the gaps are the borders. A 2px `--line` border closes all four sides. The artboard is full-bleed and only shows top and bottom; a standalone component draws the full slab.
+- **Columns:** 1 column, 2 from `sm`, 4 from `lg`. These are viewport breakpoints, not container queries, so in a narrow container 4 columns can get tight.
+- **Cells:** `--bg` fill, 28px/32px padding, and a column stack with a 14px gap.
+- **Spans:** a fixed class map, so every span class exists at build time.
+
+## Accessibility
+
+- The grid is plain `<div>` layout with no role. Give cells their own headings or landmarks when the content needs them.
+- Source order is reading order on every breakpoint; spans never reorder content.
+- The gap lines are background colour, not content.
+- Text you put in cells sits on `--bg`: `--ink` is 14.6:1 and `--label` 7.43:1. If you override colours with `className`, keep text contrast at 4.5:1 or above.

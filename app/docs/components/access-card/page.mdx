@@ -1,0 +1,82 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { AccessCard } from "@/registry/ui/access-card";
+
+export const item = getRegistryItem("access-card");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="access-card" />
+
+<InstallCommand item="access-card" />
+
+<ComponentPreview item="access-card">
+  <AccessCard className="w-64" level="03" name="[Operator name]" idLine="ID 0x4F2A-91 · EXP 2099" />
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    { name: "name", type: "ReactNode", description: "Card holder name, set in the display face." },
+    { name: "level", type: "ReactNode", description: "Access level, shown in the dark chip." },
+    { name: "levelLabel", type: "ReactNode", default: '"ACCESS LVL"', description: "Text before the level chip." },
+    { name: "idLine", type: "ReactNode", description: "Small mono line under the name, such as an ID and expiry." },
+    {
+      name: "photo",
+      type: "ReactNode",
+      description: "Image for the photo slot. It fills the slot with object-fit: cover. Without it, the slot shows a crosshair.",
+    },
+    {
+      name: "...props",
+      type: 'Omit<ComponentProps<"div">, "children">',
+      description: "Every other native <div> attribute is forwarded; className is merged last with cn(). Set the width here.",
+    },
+  ]}
+/>
+
+## Usage
+
+Needs both stylesheets from `@cybr/tokens` and `@cybr/effects`. After the install, import them in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+@import "../styles/cybr-effects.css";
+```
+
+```tsx
+import Image from "next/image";
+
+import { AccessCard } from "@/components/ui/access-card";
+
+export function Badge() {
+  return (
+    <AccessCard
+      className="w-64"
+      level="03"
+      name="K. Morrow"
+      idLine="ID 0x4F2A-91 · EXP 2099"
+      photo={<Image src="/morrow.jpg" alt="K. Morrow" width={256} height={96} />}
+    />
+  );
+}
+```
+
+## Anatomy
+
+- **Card:** `--ink` fill, `--ground-deep` text and a 2px `--ink` border. The width comes from you.
+- **Hazard band:** a 14px strip of the shared `hazard-stripes` utility. Its stripes are 12px, a little wider than the artboard's 8px, so a palette swap stays in one place.
+- **Level row:** 10px bold label and a `--ground-deep` chip.
+- **Photo slot:** 96px `--surface` box. Without a photo, a `--dim` crosshair marks it.
+- **Name, ID line, barcode:** display name, small mono ID line, and a decorative 26px barcode.
+
+## Accessibility
+
+- The hazard band, crosshair and barcode are decorative and hidden from assistive tech.
+- Give the photo real `alt` text, usually the person's name.
+- Text is `--ground-deep` on `--ink`, and the level chip is `--ink` on `--ground-deep`. If you override colours with `className`, keep text contrast at 4.5:1 or above.

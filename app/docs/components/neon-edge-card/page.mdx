@@ -1,0 +1,69 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { NeonEdgeCard } from "@/registry/ui/neon-edge-card";
+
+export const item = getRegistryItem("neon-edge-card");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="neon-edge-card" />
+
+<InstallCommand item="neon-edge-card" />
+
+<ComponentPreview item="neon-edge-card">
+  <div className="flex w-full max-w-md flex-col gap-4">
+    <NeonEdgeCard href="#open" eyebrow="HOVER OR TAB TO ME" title="The only glow allowed" cta="OPEN →" />
+  </div>
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    { name: "title", type: "ReactNode", description: "Card title, set in the display face." },
+    { name: "eyebrow", type: "ReactNode", description: "Small mono line at the top." },
+    { name: "cta", type: "ReactNode", description: "Signal-coloured call to action at the bottom." },
+    { name: "href", type: "string", description: "Link target. The whole card is one link." },
+    {
+      name: "...props",
+      type: 'Omit<ComponentProps<"a">, "title" | "children">',
+      description: "Every other native <a> attribute is forwarded; className is merged last with cn().",
+    },
+  ]}
+/>
+
+## Usage
+
+Needs the stylesheet from `@cybr/tokens`. After the install, import it in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+```
+
+```tsx
+import { NeonEdgeCard } from "@/components/ui/neon-edge-card";
+
+export function Next() {
+  return <NeonEdgeCard href="/docs/components" eyebrow="NEXT" title="Component index" cta="OPEN →" />;
+}
+```
+
+## States
+
+- **Idle:** 2px `--line` border on `--ground-deep`.
+- **Hover:** the border turns `--signal` and gains a 1px ring and a tight 24px `--signal` glow, stepping in over 120ms on `steps(3)`.
+- **Focus-visible:** the same glow, plus a 3px solid `--signal` outline offset 6px.
+- **Reduced motion:** the glow snaps on with no transition.
+- The artboard shows the lit state on a static poster. The component has no forced-lit prop; hover or tab to it to see it.
+
+## Accessibility
+
+- The whole card is one native `<a>`, so its accessible name is its full text. Keep the text short.
+- It renders `<a>`. For client-side routing, wrap it in your router's link pattern or copy the classes onto your own link.
+- The glow is a large, low-contrast change and runs once per hover, not repeatedly.
+- `--ink`, `--label` and `--signal` text sit on `--ground-deep`, darker than `--bg`, so they keep at least the overview's figures on `--bg`. If you override colours with `className`, keep text contrast at 4.5:1 or above.

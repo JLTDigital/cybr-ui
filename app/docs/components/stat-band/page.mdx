@@ -1,0 +1,86 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { StatBand } from "@/registry/ui/stat-band";
+
+export const item = getRegistryItem("stat-band");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="stat-band" />
+
+<InstallCommand item="stat-band" />
+
+<ComponentPreview item="stat-band">
+  <StatBand
+    className="w-full"
+    stats={[
+      { value: "030", label: "MVP COMPONENTS" },
+      { value: "06", label: "CATEGORIES" },
+      { value: "0PX", label: "BORDER RADIUS" },
+      { value: "0", label: "BLURRED SHADOWS" },
+    ]}
+  />
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    {
+      name: "stats",
+      type: "{ value: ReactNode; label: ReactNode }[]",
+      description: "One entry per stat, in reading order. Values can be any node, such as a TelemetryCounter.",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "Extra classes, merged after the defaults with cn().",
+    },
+    {
+      name: "...props",
+      type: 'Omit<ComponentProps<"dl">, "children">',
+      description: "Every other native <dl> attribute is forwarded.",
+    },
+  ]}
+/>
+
+## Usage
+
+Needs the stylesheet from `@cybr/tokens`. After the install, import it in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+```
+
+```tsx
+import { StatBand } from "@/components/ui/stat-band";
+import { TelemetryCounter } from "@/components/ui/telemetry-counter";
+
+export function Stats() {
+  return (
+    <StatBand
+      stats={[
+        { value: "030", label: "MVP COMPONENTS" },
+        { value: <TelemetryCounter value={6} minDigits={2} />, label: "CATEGORIES" },
+      ]}
+    />
+  );
+}
+```
+
+## Anatomy
+
+- **Band:** a `--ground-deep` parent with 2px gaps over `--signal` stats. The gaps draw the rules, so they stay correct at any count and any wrap point. Four stats at full width match the artboard.
+- **Stat:** 20px/32px padding, a 48px display value with 0.9 leading, and an 11px bold mono label 6px below it.
+- **Wrapping:** each stat has a 12rem minimum basis and grows to fill its row.
+
+## Accessibility
+
+- Renders a `<dl>`. Each label is the `<dt>` and comes first in the DOM, so screen readers read "MVP COMPONENTS, 030". The value is drawn above the label with `flex-direction: column-reverse` only.
+- Text is `--ground-deep` on `--signal`, the overview's rule for text on the accent. If you override colours with `className`, keep text contrast at 4.5:1 or above.
+- An animated value, such as a TelemetryCounter, keeps its own reduced-motion and screen-reader behaviour.

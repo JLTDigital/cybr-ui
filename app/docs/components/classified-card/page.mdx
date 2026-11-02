@@ -1,0 +1,79 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { ClassifiedCard, Redacted } from "@/registry/ui/classified-card";
+
+export const item = getRegistryItem("classified-card");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="classified-card" />
+
+<InstallCommand item="classified-card" />
+
+<ComponentPreview item="classified-card">
+  <ClassifiedCard className="w-full max-w-sm" hint="CLICK BAR TO DECLASSIFY">
+    Subject entered <Redacted>sector nine at</Redacted> 0300 hrs and <Redacted>disabled the</Redacted> relay.
+  </ClassifiedCard>
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    { name: "stamp", type: "ReactNode", default: '"REDACTED"', description: "Rotated stamp at the top. Pass null to hide it." },
+    { name: "hint", type: "ReactNode", description: "Small line under the body, such as an instruction." },
+    { name: "children", type: "ReactNode", description: "Body text. Wrap words in <Redacted> to black them out." },
+    {
+      name: "...props",
+      type: 'ComponentProps<"div">',
+      description: "Every other native <div> attribute is forwarded; className is merged last with cn().",
+    },
+    { name: "Redacted children", type: "ReactNode", description: "The hidden text." },
+    {
+      name: "Redacted ...props",
+      type: 'Omit<ComponentProps<"button">, "children" | "type">',
+      description: "Forwarded to the bar's <button> while it is concealed. Call preventDefault in onClick to keep it concealed.",
+    },
+  ]}
+/>
+
+## Usage
+
+Needs the stylesheet from `@cybr/tokens`. After the install, import it in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+```
+
+```tsx
+import { ClassifiedCard, Redacted } from "@/components/ui/classified-card";
+
+export function Dossier() {
+  return (
+    <ClassifiedCard hint="CLICK BAR TO DECLASSIFY">
+      Subject entered <Redacted>sector nine at</Redacted> 0300 hrs.
+    </ClassifiedCard>
+  );
+}
+```
+
+## States
+
+- **Concealed:** an `--ink` bar with transparent text, the width of the hidden words.
+- **Focus-visible:** a 3px solid `--signal` outline around the bar.
+- **Declassified:** click, Enter or Space reveals the text for good. There is no re-redact.
+- **Without JavaScript:** the bars stay concealed. That is the intended effect.
+
+## Accessibility
+
+- This is a visual effect, not security. The hidden text is in the page HTML. Never use it for real secrets.
+- Each bar is a native `<button>`. Screen readers hear "Redacted. Activate to declassify." and never the hidden words while concealed.
+- After a reveal, the button is replaced by the text and focus moves onto it, so focus never drops to the page and screen readers read what was uncovered.
+- The stamp is real text, `--signal` on the surrounding background at 11px bold. On `--bg` that is 4.64:1.
+- Body text is `--ink`. If you override colours with `className`, keep text contrast at 4.5:1 or above.
+- Nothing animates.

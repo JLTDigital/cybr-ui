@@ -1,0 +1,77 @@
+import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header";
+import { ComponentPreview } from "@/app/docs/_components/component-preview";
+import { InstallCommand } from "@/app/docs/_components/install-command";
+import { PropsTable } from "@/app/docs/_components/props-table";
+import { getRegistryItem } from "@/app/docs/_lib/registry";
+import { HudImageFrame } from "@/registry/ui/hud-image-frame";
+
+export const item = getRegistryItem("hud-image-frame");
+
+export const metadata = {
+  title: `${item.title} · CYBR//UI`,
+  description: item.description,
+};
+
+<ComponentDocHeader item="hud-image-frame" />
+
+<InstallCommand item="hud-image-frame" />
+
+<ComponentPreview item="hud-image-frame">
+  <HudImageFrame className="w-full max-w-2xl" index="01" caption="[IMAGE] · SCAN 38%" />
+</ComponentPreview>
+
+<PropsTable
+  rows={[
+    {
+      name: "children",
+      type: "ReactNode",
+      description: "Media that fills the frame behind the overlays, such as an <img> or <video>. Images use object-fit: cover.",
+    },
+    { name: "index", type: "ReactNode", description: "Large outlined numeral at the bottom left. Decorative." },
+    { name: "caption", type: "ReactNode", description: "Caption at the bottom right, rendered as the <figcaption>." },
+    { name: "scanLine", type: "boolean", default: "true", description: "Shows the static signal scan line at 38% height." },
+    {
+      name: "...props",
+      type: 'ComponentProps<"figure">',
+      description: "Every other native <figure> attribute is forwarded; className is merged last with cn(). Set height with min-h-*.",
+    },
+  ]}
+/>
+
+## Usage
+
+Needs the stylesheet from `@cybr/tokens`. After the install, import it in `app/globals.css`:
+
+```css
+@import "tailwindcss";
+@import "../styles/cybr-tokens.css";
+```
+
+```tsx
+import Image from "next/image";
+
+import { HudImageFrame } from "@/components/ui/hud-image-frame";
+
+export function Feed() {
+  return (
+    <HudImageFrame index="01" caption="CAM 04 · SECTOR NINE">
+      <Image src="/sector-nine.jpg" alt="Loading bay at night" fill />
+    </HudImageFrame>
+  );
+}
+```
+
+## Anatomy
+
+- **Frame:** `--ground-void` fill, 1px `--line` border, 196px minimum height.
+- **Brackets:** four 22px `--signal` corners, 3px thick, 10px in from the edges.
+- **Reticle:** a 40px `--label` ring with short cross lines through the centre.
+- **Scan line:** a static 2px `--signal` line at 38% height, 55% opacity. Nothing moves.
+- **Index and caption:** an 88px outlined numeral at the bottom left and a mono caption at the bottom right.
+
+## Accessibility
+
+- Renders a `<figure>`; the caption is its `<figcaption>`.
+- Give images real `alt` text. Use `alt=""` only when the caption already says everything.
+- Brackets, reticle, scan line and the index numeral are decorative and hidden from assistive tech. The outlined numeral has no fill, so it makes no contrast claim; don't put meaning in it.
+- The caption is `--label` on `--ground-void`. Over a bright image, check it stays readable.
