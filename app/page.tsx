@@ -2,12 +2,13 @@
 
 import { MotionStatus } from "@/app/_components/motion-status";
 import { cn } from "@/lib/utils";
+import { HardOffsetButton } from "@/registry/ui/hard-offset-button";
 
 const colors = [
   { token: "--bg", swatch: "bg-bg", use: "Base canvas" },
   { token: "--surface", swatch: "bg-surface", use: "Panels, cards" },
   { token: "--line", swatch: "bg-line", use: "Borders, decoration only" },
-  { token: "--muted", swatch: "bg-muted", use: "Large secondary UI only" },
+  { token: "--dim", swatch: "bg-dim", use: "Large secondary UI only" },
   { token: "--signal", swatch: "bg-signal", use: "The one accent" },
   { token: "--ink", swatch: "bg-ink", use: "Body text" },
   { token: "--label", swatch: "bg-label", use: "Small mono labels" },
@@ -194,6 +195,20 @@ export default function Home() {
             </li>
           ))}
         </ul>
+      </section>
+
+      <section className="flex flex-col gap-6">
+        <SectionLabel index="08" title="Button" />
+        <div className="flex flex-wrap items-end gap-12">
+          <div className="flex flex-col items-center gap-4">
+            <HardOffsetButton>Deploy now</HardOffsetButton>
+            <span className="text-micro tracking-button text-label">IDLE</span>
+          </div>
+          <div className="flex flex-col items-center gap-4">
+            <HardOffsetButton disabled>Run</HardOffsetButton>
+            <span className="text-micro tracking-button text-label">OFFLINE</span>
+          </div>
+        </div>
       </section>
     </main>
   );

@@ -87,7 +87,8 @@ Skills: `adopt`, `audit`, `blueprint-doctor`, `blueprint-status`, `brief`,
 Package manager: npm (`package-lock.json`).
 
 - Dev server: `npm run dev` (http://localhost:3000)
-- Build: `npm run build`
+- Build: `npm run build` (runs `npm run registry:build` first)
+- Registry build: `npm run registry:build` (`shadcn build`, writes `public/r/`)
 - Production server: `npm run start` (after `npm run build`)
 - Lint: `npm run lint`
 - Typecheck: `npx tsc --noEmit` (no script; `npm run build` also typechecks)

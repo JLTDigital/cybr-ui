@@ -1,6 +1,6 @@
 # Cyberpunk Brutalism UI Library - Project Overview
 
-<!-- blueprint:source-hash b3145c5b84c1c106239897ef93eac72afbffd02a4db28b4740816e0a3520fd9d -->
+<!-- blueprint:source-hash 82d480f982af468cf6cdcbe346da4a916832c4d82ea74798a836781bb952d1dc -->
 
 > A copy-paste and CLI-installable library of animated React components in one
 > consistent Cyberpunk Brutalism design language, shipped as a shadcn registry
@@ -123,7 +123,7 @@ features depend on.
 ### Theme preset (token file)
 
 - One CSS-variable file per preset; swapping presets swaps variables only
-- Colour tokens: `--bg`, `--surface`, `--line` (decorative only), `--muted`
+- Colour tokens: `--bg`, `--surface`, `--line` (decorative only), `--dim`
   (large/secondary only), `--signal` (the one accent), `--ink` (body),
   `--label` (small mono labels), `--ground-deep` (insets, text on accent),
   `--ground-void` (terminals, frames, CRT/data rain), `--neon-2` (optional,
@@ -171,7 +171,7 @@ one or two neon signals. Mockups canvas is the agreed visual direction.
 
 - Colour: tokens only, never hex. Contrast: `--ink` 14.6:1 and `--label` 7.43:1
   on `--bg`; `--signal` text only on `--bg` (4.64:1), large/UI only on
-  `--surface`; `--muted` not for body text; `--line` decoration only; dark
+  `--surface`; `--dim` not for body text; `--line` decoration only; dark
   `--ground-deep` text on accent. Re-check when the palette changes.
 - Type: display is heavy grotesk, UPPERCASE, leading 0.85-0.95, fluid
   `clamp()`; UI/data is monospace 10-14px. Extreme scale contrast.

@@ -197,10 +197,10 @@ These mockups are the agreed visual direction. When building a component, check 
 | `--bg` | `#212529` | Base canvas |
 | `--surface` | `#343A40` | Panels, cards |
 | `--line` | `#495057` | Borders, grid lines, dividers (decorative only) |
-| `--muted` | `#6C757D` | Secondary UI, large labels |
+| `--dim` | `#6C757D` | Secondary UI, large labels |
 | `--signal` | `#FF4C29` | The one accent: CTAs, active states, key stats |
 | `--ink` | `#F8F9FA` | Body text *(my addition)* |
-| `--label` | `#ADB5BD` | Small monospace labels and captions *(added in the mockups, because `--muted` fails for small text)* |
+| `--label` | `#ADB5BD` | Small monospace labels and captions *(added in the mockups, because `--dim` fails for small text)* |
 | `--ground-deep` | `#16191C` | Inset cards, text on accent backgrounds *(added in the mockups)* |
 | `--ground-void` | `#0E1012` | Terminals, image frames, CRT and data-rain areas *(added in the mockups)* |
 | `--neon-2` | e.g. cyan `#00E5FF` or acid `#C6FF00` | Optional second accent *(my addition, which Draggen's "neon" and "deep blues" guidance suggests)*. The mockups use cyan only in the glitch RGB split. **[DECIDE]** |

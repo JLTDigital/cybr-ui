@@ -4,7 +4,7 @@
   --bg: #212529;
   --surface: #343a40;
   --line: #495057;
-  --muted: #6c757d;
+  --dim: #6c757d;
   --signal: #ff4c29;
   --ink: #f8f9fa;
   --label: #adb5bd;
@@ -35,7 +35,7 @@
   --color-bg: var(--bg);
   --color-surface: var(--surface);
   --color-line: var(--line);
-  --color-muted: var(--muted);
+  --color-dim: var(--dim);
   --color-signal: var(--signal);
   --color-ink: var(--ink);
   --color-label: var(--label);
