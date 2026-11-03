@@ -11,10 +11,17 @@ Docs and live previews: **[cybr-ui.com](https://cybr-ui.com)**
 
 ### 1. Map the `@cybr` namespace
 
-Add the registry to your project's `components.json`:
+Add the registry to your project's `components.json`, inside its existing
+`"registries"` object if there is one:
 
 ```json
 "registries": { "@cybr": "https://cybr-ui.com/r/{name}.json" }
+```
+
+No `components.json` yet? Create one first:
+
+```bash
+npx shadcn@latest init
 ```
 
 ### 2. Add components
@@ -32,6 +39,11 @@ npx shadcn@latest add @cybr/all
 ```
 
 Browse every component at [cybr-ui.com/docs/components](https://cybr-ui.com/docs/components).
+
+**Troubleshooting:** `Unknown registry "@cybr"` means step 1 is missing. Add
+the `registries` entry to the `components.json` of the project you're
+installing into (run `npx shadcn@latest init` first if it has none), then run
+the command again.
 
 ### 3. Import the tokens and effects
 
