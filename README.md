@@ -7,6 +7,8 @@ you install the source into your own project and own it from there.
 
 Docs and live previews: **[cybr-ui.com](https://cybr-ui.com)**
 
+[![The cybr-ui.com landing page: a "Cyberpunk Brutalism" headline over a blueprint grid, with a hard-offset "Browse components" button](.github/assets/screenshot.png)](https://cybr-ui.com)
+
 ## Install
 
 ### 1. Map the `@cybr` namespace
