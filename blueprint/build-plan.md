@@ -19,9 +19,9 @@
 - [x] 12. **Theme presets & switching** - Lock the final palette, add 1–2 alternate presets, and check every component swaps cleanly and passes contrast
 - [x] 13. **Docs site built with the library** - Landing page, component index and search, using its own components as the showcase
 - [x] 14. **Quality gates in CI** - Lint, type-check, registry build, Playwright visual snapshots and reduced-motion and keyboard checks on every PR
-- [ ] 15. **Launch** - Choose the name and domain, set the licence, deploy to Vercel, and publish the README and install docs
+- [x] 15. **Launch** - Choose the name and domain, set the licence, deploy to Vercel, and publish the README and install docs
   - [x] 15a. **Launch-ready repo** - Lock CYBR//UI and `@cybr`, point registry and install URLs at cybr-ui.com, add the MIT licence, and publish the README and install docs
-  - [ ] 15b. **Vercel deploy** - Import the repo into Vercel, attach cybr-ui.com, set `NEXT_PUBLIC_SITE_URL`, and smoke-test the live registry and an `npx shadcn add`
+  - [x] 15b. **Vercel deploy** - Import the repo into Vercel, attach cybr-ui.com, set `NEXT_PUBLIC_SITE_URL`, and smoke-test the live registry and an `npx shadcn add`
 
 ## Later (post-MVP, not in v1)
 
