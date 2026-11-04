@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 
+import { pageMetadata } from "@/app/_lib/metadata";
 import { ComponentIndex } from "@/app/docs/_components/component-index";
 import { CATALOG, CATALOG_ITEMS } from "@/app/docs/_lib/catalog";
 
-export const metadata: Metadata = {
-  title: "Components · CYBR//UI",
-  description: "Every CYBR//UI component, grouped by set and searchable.",
-};
+export const metadata: Metadata = pageMetadata(
+  "Components · CYBR//UI",
+  "Every CYBR//UI component, grouped by set and searchable.",
+);
 
 export default function ComponentsIndexPage() {
   return (

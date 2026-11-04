@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Archivo_Black, JetBrains_Mono } from "next/font/google";
 import { SiteFooter } from "@/app/_components/site-footer";
 import { SiteHeader } from "@/app/_components/site-header";
+import { pageMetadata, SITE_NAME } from "@/app/_lib/metadata";
 import { themeInitScript } from "@/app/_lib/themes";
 import { CATALOG } from "@/app/docs/_lib/catalog";
 import { getRegistryOrigin } from "@/app/docs/_lib/registry";
@@ -21,11 +22,15 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+const siteMetadata = pageMetadata(
+  SITE_NAME,
+  "Animated React components in a Cyberpunk Brutalism design language.",
+);
+
 export const metadata: Metadata = {
+  ...siteMetadata,
   metadataBase: new URL(getRegistryOrigin()),
-  title: "CYBR//UI",
-  description:
-    "Animated React components in a Cyberpunk Brutalism design language.",
+  openGraph: { ...siteMetadata.openGraph, url: "/" },
 };
 
 const searchGroups = CATALOG.map((set) => ({

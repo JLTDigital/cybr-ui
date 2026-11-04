@@ -2,15 +2,13 @@ import { ComponentDocHeader } from "@/app/docs/_components/component-doc-header"
 import { ComponentPreview } from "@/app/docs/_components/component-preview";
 import { InstallCommand } from "@/app/docs/_components/install-command";
 import { PropsTable } from "@/app/docs/_components/props-table";
+import { pageMetadata } from "@/app/_lib/metadata";
 import { getRegistryItem } from "@/app/docs/_lib/registry";
 import { WarningTape } from "@/registry/ui/warning-tape";
 
 export const item = getRegistryItem("warning-tape");
 
-export const metadata = {
-  title: `${item.title} · CYBR//UI`,
-  description: item.description,
-};
+export const metadata = pageMetadata(`${item.title} · CYBR//UI`, item.description);
 
 <ComponentDocHeader item="warning-tape" />
 

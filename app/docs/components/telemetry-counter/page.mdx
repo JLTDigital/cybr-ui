@@ -3,15 +3,13 @@ import { ComponentPreview } from "@/app/docs/_components/component-preview";
 import { InstallCommand } from "@/app/docs/_components/install-command";
 import { PropsTable } from "@/app/docs/_components/props-table";
 import { Replay } from "@/app/docs/_components/replay";
+import { pageMetadata } from "@/app/_lib/metadata";
 import { getRegistryItem } from "@/app/docs/_lib/registry";
 import { TelemetryCounter } from "@/registry/ui/telemetry-counter";
 
 export const item = getRegistryItem("telemetry-counter");
 
-export const metadata = {
-  title: `${item.title} · CYBR//UI`,
-  description: item.description,
-};
+export const metadata = pageMetadata(`${item.title} · CYBR//UI`, item.description);
 
 <ComponentDocHeader item="telemetry-counter" />
 
