@@ -1,8 +1,10 @@
+import "@/app/docs/docs.css";
+
 import { highlight } from "@/app/docs/_lib/source";
 
-// Input is repo source read on the server, never user text, and Shiki escapes it.
-export async function CodeBlock({ code }: { code: string }) {
-  const html = await highlight(code);
+// Input is repo source or a fixed snippet, never user text, and Shiki escapes it.
+export async function CodeBlock({ code, lang }: { code: string; lang?: "tsx" | "css" }) {
+  const html = await highlight(code, lang);
 
   return (
     <div

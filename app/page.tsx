@@ -1,3 +1,4 @@
+import { CustomColours } from "@/app/_components/custom-colours";
 import { THEMES } from "@/app/_lib/themes";
 import { InstallCommand } from "@/app/docs/_components/install-command";
 import { CATALOG, CATALOG_ITEMS } from "@/app/docs/_lib/catalog";
@@ -122,6 +123,11 @@ export default function Home() {
               <DocsLink href="/docs/components/segmented-progress">Segmented Progress</DocsLink>
             </BentoGridItem>
           </BentoGrid>
+        </section>
+
+        <section id="colours" aria-labelledby="colours-heading" className="flex scroll-mt-6 flex-col gap-6">
+          <SectionLabel id="colours-heading" index="03" title="Custom colours" />
+          <CustomColours />
         </section>
       </div>
     </main>

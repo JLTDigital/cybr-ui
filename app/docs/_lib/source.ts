@@ -23,8 +23,8 @@ export async function getItemSource(item: string): Promise<string> {
   return readFile(path.join(process.cwd(), "registry", file.slice(REGISTRY_DIR.length)), "utf8");
 }
 
-export async function highlight(code: string): Promise<string> {
+export async function highlight(code: string, lang: "tsx" | "css" = "tsx"): Promise<string> {
   "use cache";
   cacheLife("max");
-  return codeToHtml(code, { lang: "tsx", theme });
+  return codeToHtml(code, { lang, theme });
 }
