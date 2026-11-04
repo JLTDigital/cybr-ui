@@ -1,4 +1,4 @@
-/* Docs-only: maps Shiki's css-variables theme onto the token palette. */
+/* Maps Shiki's css-variables theme onto the token palette. */
 .shiki {
   --shiki-foreground: var(--ink);
   --shiki-background: var(--ground-void);

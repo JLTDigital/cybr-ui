@@ -80,6 +80,48 @@ Two alternate palettes are available: `@cybr/theme-acid-terminal` and
 `data-theme="acid-terminal"` (or `"ice-neon"`) on `<html>` or on any element to
 scope it to that subtree.
 
+### Custom colours
+
+Every colour is one of ten CSS variables in `styles/cybr-tokens.css`. Edit the
+values under `:root` to change the default palette, or add a preset of your own.
+Import it after the tokens file:
+
+```css
+/* styles/my-theme.css */
+[data-theme="synthwave"] {
+  --bg: #1a1033;
+  --surface: #2a1a4d;
+  --line: #4a3a6d;
+  --dim: #7a6a9d;
+  --signal: #ff2bd6;
+  --ink: #fdf4ff;
+  --label: #c9b8e8;
+  --ground-deep: #0f0820;
+  --ground-void: #080410;
+  --neon-2: #2bf0ff;
+}
+```
+
+Then set `data-theme="synthwave"` on `<html>`, or on any element to theme only
+that subtree. Variables you leave out fall back to the defaults.
+
+| Token | Used for |
+| --- | --- |
+| `--bg` | Page background |
+| `--surface` | Raised, hover and disabled fills |
+| `--line` | Borders and grid lines (decoration only) |
+| `--dim` | Disabled and low-emphasis marks |
+| `--signal` | Main accent: buttons, highlights, focus rings |
+| `--ink` | Main text and hard offset shadows |
+| `--label` | Secondary text and captions |
+| `--ground-deep` | Dark panels, and text on top of `--signal` |
+| `--ground-void` | Darkest wells: code boxes and terminals |
+| `--neon-2` | Second accent: glitch split and code highlighting |
+
+Check contrast before shipping a palette. The built-in presets meet WCAG AA:
+4.5:1 for `--ink`, `--label` and `--signal` on `--bg`, and for `--ground-deep`
+on `--signal`; 3:1 for `--signal` on `--surface` and `--dim` on `--bg`.
+
 ### Reduced motion
 
 Every animated component has a static fallback under
