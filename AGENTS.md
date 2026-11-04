@@ -91,7 +91,7 @@ Package manager: npm (`package-lock.json`).
 - Registry build: `npm run registry:build` (`shadcn build`, writes `public/r/`)
 - Production server: `npm run start` (after `npm run build`)
 - Lint: `npm run lint`
-- Typecheck: `npm run typecheck` (`tsc --noEmit`)
+- Typecheck: `npm run typecheck` (`next typegen` then `tsc --noEmit`; typegen writes the route types such as `LayoutProps`, so it passes on a clean checkout)
 - Verify: `npm run verify` (lint, typecheck, then `npm run build`)
 - Browser tests: `npm run test:browser` (Playwright, Chromium; run
   `npm run build` first and `npx playwright install chromium` once). Starts
